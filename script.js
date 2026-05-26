@@ -1,36 +1,17 @@
-const counters = document.querySelectorAll("[data-count]");
+const note = document.querySelector(".note");
 
-const animateCounter = (counter) => {
-  const target = Number(counter.dataset.count);
-  const duration = 900;
-  const start = performance.now();
+if (note) {
+  note.addEventListener("mousemove", (event) => {
+    const bounds = note.getBoundingClientRect();
+    const x = event.clientX - bounds.left;
+    const y = event.clientY - bounds.top;
+    const rotateX = ((y / bounds.height) - 0.5) * -4;
+    const rotateY = ((x / bounds.width) - 0.5) * 4;
 
-  const tick = (now) => {
-    const progress = Math.min((now - start) / duration, 1);
-    counter.textContent = Math.round(target * progress);
+    note.style.transform = `rotate(1.5deg) perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
 
-    if (progress < 1) {
-      requestAnimationFrame(tick);
-    }
-  };
-
-  requestAnimationFrame(tick);
-};
-
-if ("IntersectionObserver" in window) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.4 }
-  );
-
-  counters.forEach((counter) => observer.observe(counter));
-} else {
-  counters.forEach(animateCounter);
+  note.addEventListener("mouseleave", () => {
+    note.style.transform = "rotate(1.5deg)";
+  });
 }
