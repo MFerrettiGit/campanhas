@@ -1,17 +1,8 @@
-const note = document.querySelector(".note");
+const heroImage = document.querySelector(".hero-media");
 
-if (note) {
-  note.addEventListener("mousemove", (event) => {
-    const bounds = note.getBoundingClientRect();
-    const x = event.clientX - bounds.left;
-    const y = event.clientY - bounds.top;
-    const rotateX = ((y / bounds.height) - 0.5) * -4;
-    const rotateY = ((x / bounds.width) - 0.5) * 4;
-
-    note.style.transform = `rotate(1.5deg) perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-  });
-
-  note.addEventListener("mouseleave", () => {
-    note.style.transform = "rotate(1.5deg)";
+if (heroImage) {
+  window.addEventListener("scroll", () => {
+    const offset = Math.min(window.scrollY * 0.018, 10);
+    heroImage.style.transform = `translateY(${offset}px)`;
   });
 }
