@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Concurso TechLuz — Abril/Maio 2026 | Ferretti</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --azul:#2B2FA8; --azul-2:#3a3fd0; --azul-dark:#1c1f78;
+  --verde:#34c759; --verde-2:#28a745;
+  --ouro:#f5b942; --laranja:#ff6b35;
+  --bg:#f4f6fb; --card:#ffffff; --ink:#16182e; --muted:#6b6f8a; --line:#e7eaf3;
+}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+a{color:inherit}
+
+/* HEADER */
+header{background:linear-gradient(135deg,var(--azul-dark),var(--azul) 55%,var(--azul-2));color:#fff;padding:30px 0 90px;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;border:40px solid rgba(255,255,255,.06);border-radius:50%}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{height:38px}
+.back{font-family:'Plus Jakarta Sans';font-size:.85rem;font-weight:600;color:#cdd1ff;text-decoration:none;background:rgba(255,255,255,.12);padding:8px 14px;border-radius:999px}
+.partner{display:inline-flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans';font-weight:700;letter-spacing:.5px;background:rgba(255,255,255,.14);padding:6px 14px;border-radius:999px;font-size:.8rem;margin-top:26px}
+.partner .dot{width:9px;height:9px;border-radius:50%;background:var(--verde)}
+h1.title{font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(1.9rem,5vw,3rem);margin-top:14px;line-height:1.05}
+.subtitle{color:#d4d7ff;font-size:1.05rem;margin-top:8px;max-width:640px}
+
+/* FACT STRIP */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:-58px;position:relative;z-index:2}
+.fact{background:var(--card);border-radius:16px;padding:16px 18px;box-shadow:0 12px 30px rgba(20,24,60,.10);border:1px solid var(--line)}
+.fact .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700}
+.fact .val{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.18rem;margin-top:5px}
+.fact .val.small{font-size:1rem}
+.fact.live .val{color:var(--verde-2)}
+
+section{margin-top:42px}
+h2{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.45rem;display:flex;align-items:center;gap:10px}
+h2 .bar{width:6px;height:24px;border-radius:6px;background:var(--azul)}
+.lead{color:var(--muted);margin-top:6px;margin-bottom:18px}
+
+/* MODALIDADES */
+.mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.mod{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;position:relative;overflow:hidden}
+.mod::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--azul)}
+.mod.m2::before{background:var(--ouro)} .mod.m3::before{background:var(--laranja)}
+.mod .tag{font-size:.7rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--azul);background:#eef0ff;padding:4px 10px;border-radius:999px;display:inline-block}
+.mod.m2 .tag{color:#a5740a;background:#fff6e2}.mod.m3 .tag{color:#c2410c;background:#ffefe8}
+.mod h3{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.1rem;margin:12px 0 6px}
+.mod p{color:var(--muted);font-size:.95rem}
+
+/* TABELA FAIXAS */
+.tiers{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.tiers table{width:100%;border-collapse:collapse}
+.tiers th{background:var(--azul);color:#fff;font-family:'Plus Jakarta Sans';font-size:.8rem;text-align:left;padding:12px 18px;letter-spacing:.4px}
+.tiers td{padding:12px 18px;border-top:1px solid var(--line);font-size:.95rem}
+.tiers tr:nth-child(even) td{background:#fafbff}
+.tiers .premio{font-family:'Plus Jakarta Sans';font-weight:800;color:var(--verde-2)}
+.tiers tr.top td{background:#eafff0}
+.tiers tr.top .premio{color:var(--laranja)}
+
+/* RANKING */
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:end;margin-bottom:22px}
+.pod{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 14px;text-align:center;position:relative}
+.pod .medal{font-size:1.8rem}
+.pod .nome{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.05rem;margin-top:6px}
+.pod .setor{color:var(--muted);font-size:.8rem}
+.pod .vlr{margin-top:10px;font-size:.9rem;color:var(--ink)}
+.pod .prm{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.25rem;color:var(--verde-2);margin-top:4px}
+.pod.p1{border-color:var(--ouro);box-shadow:0 12px 30px rgba(245,185,66,.25);transform:translateY(-10px)}
+.pod.p1 .prm{color:var(--laranja)}
+
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;overflow-x:auto}
+.tbl table{width:100%;border-collapse:collapse;min-width:560px}
+.tbl th{background:#f0f2fb;text-align:left;padding:12px 16px;font-family:'Plus Jakarta Sans';font-size:.78rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.tbl td{padding:12px 16px;border-top:1px solid var(--line);font-size:.92rem}
+.tbl tr.win td{background:#f3fff7}
+.tbl .pos{color:var(--muted);font-weight:700;width:42px}
+.tbl .nm{font-family:'Plus Jakarta Sans';font-weight:700}
+.tbl .reg{font-size:.78rem;color:#fff;padding:3px 9px;border-radius:999px;background:var(--azul);display:inline-block}
+.tbl .reg.NORDESTE{background:#0e7490}.tbl .reg.SUL{background:#7c3aed}.tbl .reg.GERÊNCIA,.tbl .reg.GERENCIA{background:#475569}
+.tbl .v{font-variant-numeric:tabular-nums}
+.tbl .p{font-family:'Plus Jakarta Sans';font-weight:800;color:var(--verde-2);font-variant-numeric:tabular-nums}
+.tbl .p.zero{color:var(--muted);font-weight:600}
+.muted-row td{color:var(--muted)}
+
+.reg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.note{background:#eef0ff;border:1px solid #d9ddff;border-radius:14px;padding:14px 18px;color:#2f3470;font-size:.92rem;margin-top:14px}
+
+footer{margin-top:54px;padding:30px 0 50px;color:var(--muted);font-size:.85rem;text-align:center;border-top:1px solid var(--line)}
+.updated{display:inline-flex;align-items:center;gap:8px;background:#e9fbef;color:var(--verde-2);font-weight:700;padding:8px 16px;border-radius:999px;font-family:'Plus Jakarta Sans';font-size:.85rem}
+.updated .pulse{width:9px;height:9px;border-radius:50%;background:var(--verde);box-shadow:0 0 0 0 rgba(52,199,89,.6);animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,199,89,.6)}70%{box-shadow:0 0 0 10px rgba(52,199,89,0)}100%{box-shadow:0 0 0 0 rgba(52,199,89,0)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <img class="brand" src="../assets/ferretti-branco.png" alt="Ferretti distribuidora" />
+      <a class="back" href="../index.html">← Todas as campanhas</a>
+    </div>
+    <div class="partner"><span class="dot"></span><span id="hPartner">PARCEIRO</span></div>
+    <h1 class="title" id="hTitle">Campanha</h1>
+    <p class="subtitle" id="hSub"></p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="facts" id="facts"></div>
+
+  <section>
+    <h2><span class="bar"></span>Como funciona</h2>
+    <p class="lead" id="mecLead"></p>
+    <div class="mods" id="mods"></div>
+    <div id="tiersWrap"></div>
+  </section>
+
+  <section>
+    <h2><span class="bar"></span>Pódio — Concorre sozinho</h2>
+    <p class="lead">Maiores prêmios individuais apurados até o momento.</p>
+    <div class="podium" id="podium"></div>
+    <div class="tbl"><table>
+      <thead><tr><th class="pos">#</th><th>Vendedor</th><th>Regional</th><th>Setor</th><th>Vendas</th><th>Prêmio</th></tr></thead>
+      <tbody id="rankBody"></tbody>
+    </table></div>
+  </section>
+
+  <section id="regSec">
+    <h2><span class="bar"></span>Premiação por regional</h2>
+    <p class="lead">Modalidades de equipe sobre o faturamento da regional.</p>
+    <div class="reg-grid" id="regGrid"></div>
+    <div class="note" id="regNote"></div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="updated"><span class="pulse"></span><span id="fUpdated"></span></div>
+    <p style="margin-top:14px" id="fPay"></p>
+    <p style="margin-top:6px">Ferretti distribuidora · Campanhas de vendas · Uso interno</p>
+  </div>
+</footer>
+
+<script>
+const CAMPANHA = {
+  parceiro: "GRUPO TECHLUZ ILUMINAÇÃO",
+  titulo: "Concurso TechLuz",
+  subtitulo: "Quanto maior a sua venda de produtos TechLuz, maior o seu prêmio. Concorra sozinho e ainda pela sua regional.",
+  periodo: "Abril e Maio / 2026",
+  inicio: "01/04/2026",
+  termino: "29/05/2026",
+  premioMinimo: "R$ 200,00",
+  pagamento: "Até 10/06/2026 — no Cartão Premiação",
+  resultadoAte: "05/05/2026",
+  atualizadoEm: "01/06/2026 às 09:08",
+  faixas: [
+    {de:"R$ 3.500,00", ate:"R$ 4.999,99", premio:"R$ 200,00"},
+    {de:"R$ 5.000,00", ate:"R$ 7.999,99", premio:"R$ 400,00"},
+    {de:"R$ 8.000,00", ate:"R$ 9.999,99", premio:"R$ 700,00"},
+    {de:"R$ 10.000,00", ate:"R$ 14.999,99", premio:"R$ 900,00"},
+    {de:"R$ 15.000,00", ate:"R$ 19.999,99", premio:"R$ 1.350,00"},
+    {de:"R$ 20.000,00", ate:"R$ 24.999,99", premio:"R$ 1.900,00"},
+    {de:"R$ 25.000,00", ate:"", premio:"R$ 2.500,00", top:false},
+    {de:"A partir de R$ 25.001,00", ate:"", premio:"10% sobre toda a venda", top:true}
+  ],
+  modalidades: [
+    {classe:"m1", tag:"Individual", titulo:"Concorre sozinho", texto:"Percentual sobre o seu faturamento — quanto maior a venda, maior o %. Veja a tabela de faixas abaixo."},
+    {classe:"m2", tag:"Equipe", titulo:"2% da regional", texto:"2% do faturamento da sua regional na parte que ultrapassar R$ 50.000,00."},
+    {classe:"m3", tag:"Equipe", titulo:"1,5% da regional", texto:"1,5% do faturamento da sua regional na parte que ultrapassar R$ 100.000,00."}
+  ],
+  ranking: [
+    {nome:"BRAGATTO", regional:"NORDESTE", setor:"São Carlos", vendas:9032.46, premio:700},
+    {nome:"COMINATO", regional:"NORDESTE", setor:"Setor Piracicaba", vendas:8740.60, premio:700},
+    {nome:"MAURÍCIO", regional:"SUL", setor:"Sorocaba", vendas:7044.30, premio:400},
+    {nome:"NELSON", regional:"SUL", setor:"Itapetininga", vendas:5744.33, premio:400},
+    {nome:"FERNANDO", regional:"NORDESTE", setor:"Ribeirão Preto", vendas:4978.00, premio:200},
+    {nome:"CELIA", regional:"NORDESTE", setor:"S.J. Boa Vista", vendas:4858.17, premio:200},
+    {nome:"LUIZ", regional:"NORDESTE", setor:"Franca", vendas:4763.43, premio:200},
+    {nome:"KARINA", regional:"SUL", setor:"Caraguatatuba", vendas:2852.85, premio:0},
+    {nome:"LUCAS", regional:"SUL", setor:"Indaiatuba", vendas:2542.32, premio:0},
+    {nome:"COSTINHA", regional:"NORDESTE", setor:"Rio Claro", vendas:1856.35, premio:0},
+    {nome:"MARIÂNGELA", regional:"SUL", setor:"S.J. dos Campos", vendas:1536.84, premio:0},
+    {nome:"CASTRO", regional:"SUL", setor:"Jundiaí", vendas:1231.82, premio:0},
+    {nome:"ALAN", regional:"SUL", setor:"Campinas Norte", vendas:633.20, premio:0},
+    {nome:"EUGÊNIO", regional:"SUL", setor:"Atibaia", vendas:221.40, premio:0}
+  ],
+  regionais: [
+    {modalidade:"2% acima de R$ 50.000,00", nome:"LOPES", regional:"NORDESTE", vendas:34229.01, premio:0},
+    {modalidade:"2% acima de R$ 50.000,00", nome:"RANGEL", regional:"SUL", vendas:21807.06, premio:0},
+    {modalidade:"1,5% acima de R$ 100.000,00", nome:"PAULO (Gerência)", regional:"GERÊNCIA", vendas:56036.07, premio:0}
+  ],
+  regNote: "Nenhuma regional atingiu o piso de faturamento para premiação de equipe no período apurado. Faturamento total acumulado: R$ 56.036,07."
+};
+
+const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const C = CAMPANHA;
+
+document.getElementById('hPartner').textContent = C.parceiro;
+document.getElementById('hTitle').textContent = C.titulo + " — " + C.periodo;
+document.getElementById('hSub').textContent = C.subtitulo;
+document.getElementById('mecLead').textContent = "São " + C.modalidades.length + " formas de ganhar nesta campanha:";
+
+document.getElementById('facts').innerHTML = [
+  ['Período', C.inicio + ' a ' + C.termino, ''],
+  ['Prêmio mínimo', C.premioMinimo, ''],
+  ['Pagamento previsto', C.pagamento, 'small'],
+  ['Resultado apurado até', C.resultadoAte, 'live']
+].map(f=>`<div class="fact ${f[2]==='live'?'live':''}"><div class="lbl">${f[0]}</div><div class="val ${f[2]==='small'?'small':''}">${f[1]}</div></div>`).join('');
+
+document.getElementById('mods').innerHTML = C.modalidades.map(m=>
+  `<div class="mod ${m.classe}"><span class="tag">${m.tag}</span><h3>${m.titulo}</h3><p>${m.texto}</p></div>`).join('');
+
+document.getElementById('tiersWrap').innerHTML =
+  `<div class="tiers"><table><thead><tr><th>Faixa de vendas no período</th><th>Prêmio</th></tr></thead><tbody>`+
+  C.faixas.map(t=>{
+    const faixa = t.ate ? `${t.de} a ${t.ate}` : t.de;
+    return `<tr class="${t.top?'top':''}"><td>${faixa}</td><td class="premio">${t.premio}</td></tr>`;
+  }).join('') + `</tbody></table></div>`;
+
+const ganhadores = C.ranking.filter(r=>r.premio>0).sort((a,b)=>b.premio-a.premio||b.vendas-a.vendas);
+const top3 = ganhadores.slice(0,3);
+const medals = ['🥇','🥈','🥉'];
+const order = top3.length===3 ? [1,0,2] : [...top3.keys()];
+document.getElementById('podium').innerHTML = order.map(i=>{
+  const r = top3[i]; if(!r) return '';
+  return `<div class="pod p${i+1}"><div class="medal">${medals[i]}</div><div class="nome">${r.nome}</div><div class="setor">${r.setor} · ${r.regional}</div><div class="vlr">${brl(r.vendas)}</div><div class="prm">${brl(r.premio)}</div></div>`;
+}).join('');
+
+const rankSorted = [...C.ranking].sort((a,b)=>b.vendas-a.vendas);
+document.getElementById('rankBody').innerHTML = rankSorted.map((r,i)=>
+  `<tr class="${r.premio>0?'win':'muted-row'}"><td class="pos">${i+1}</td><td class="nm">${r.nome}</td><td><span class="reg ${r.regional.replace('Ê','E')}">${r.regional}</span></td><td>${r.setor}</td><td class="v">${brl(r.vendas)}</td><td class="p ${r.premio>0?'':'zero'}">${r.premio>0?brl(r.premio):'—'}</td></tr>`
+).join('');
+
+document.getElementById('regGrid').innerHTML = C.regionais.map(r=>
+  `<div class="mod"><span class="tag">${r.modalidade}</span><h3>${r.nome}</h3><p>Regional ${r.regional}<br>Faturamento: <strong>${brl(r.vendas)}</strong><br>Prêmio: <strong style="color:${r.premio>0?'#28a745':'#6b6f8a'}">${r.premio>0?brl(r.premio):'Não atingiu o piso'}</strong></p></div>`
+).join('');
+document.getElementById('regNote').textContent = C.regNote;
+
+const stamp = C.atualizadoEm === 'AUTO'
+  ? new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})
+  : C.atualizadoEm;
+document.getElementById('fUpdated').textContent = 'Informações atualizadas em ' + stamp;
+document.getElementById('fPay').textContent = 'Pagamento: ' + C.pagamento + '. Prêmio mínimo de ' + C.premioMinimo + '.';
+</script>
+</body>
+</html>
