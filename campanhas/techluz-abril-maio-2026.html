@@ -171,8 +171,7 @@ body.locked{overflow:hidden}
 
 <footer>
   <div class="wrap">
-    <div class="updated"><span class="pulse"></span><span id="fUpdated"></span></div>
-    <p style="margin-top:14px" id="fPay"></p>
+    <p id="fPay"></p>
     <p style="margin-top:6px">Ferretti distribuidora · Campanhas de vendas · Uso interno</p>
   </div>
 </footer>
@@ -312,10 +311,6 @@ function applyScope(acc){
   document.getElementById('scopeBar').style.display = 'flex';
 }
 
-const stamp = C.atualizadoEm === 'AUTO'
-  ? new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})
-  : C.atualizadoEm;
-document.getElementById('fUpdated').textContent = 'Informações atualizadas em ' + stamp;
 document.getElementById('fPay').textContent = 'Pagamento: ' + C.pagamento + '. Prêmio mínimo de ' + C.premioMinimo + '.';
 
 // ===== Controle de acesso (senha case-insensitive; hash SHA-256 da senha em minúsculas) =====
