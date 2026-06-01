@@ -111,6 +111,10 @@ body.locked{overflow:hidden}
 #scopeBar{display:none;align-items:center;justify-content:space-between;gap:12px;background:#eef0ff;border:1px solid #d9ddff;border-radius:14px;padding:10px 16px;margin-top:22px;font-size:.9rem;color:#2f3470}
 #scopeBar b{font-family:'Plus Jakarta Sans'}
 #scopeBar button{background:none;border:none;color:var(--azul);font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans';font-size:.85rem}
+.scope-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#scopeBar #exportBtn{background:var(--verde-2);color:#fff;padding:8px 15px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+#scopeBar #exportBtn:hover{filter:brightness(.94)}
+#scopeBar #exportBtn[disabled]{opacity:.6;cursor:progress}
 
 /* BOTÃO DE TEMA */
 .topbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -163,7 +167,7 @@ body.locked{overflow:hidden}
 </header>
 
 <div class="wrap">
-  <div id="scopeBar"><span>Acesso: <b id="scopeLbl"></b></span><button id="scopeChange">trocar senha</button></div>
+  <div id="scopeBar"><span>Acesso: <b id="scopeLbl"></b></span><span class="scope-actions"><button id="exportBtn" type="button">⬇ Baixar resultado (.xlsx)</button><button id="scopeChange">trocar senha</button></span></div>
   <div class="facts" id="facts"></div>
 
   <section>
@@ -258,7 +262,9 @@ const CAMPANHA = {
 };
 
 const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const cxFmt = n => n.toLocaleString('pt-BR');
 const C = CAMPANHA;
+let LAST_VIEW = null;
 
 document.getElementById('hPartner').textContent = C.parceiro;
 document.getElementById('hTitle').textContent = C.titulo + " — " + C.periodo;
@@ -334,6 +340,7 @@ function applyScope(acc){
   }
   // Pódio apenas para quem vê todos os dados
   renderResultados(rank, regs, nivel>=3);
+  LAST_VIEW = {rank, regs, nivel, acc, mods};
   document.getElementById('scopeLbl').textContent = acc.label;
   document.getElementById('scopeBar').style.display = 'flex';
 }
@@ -388,6 +395,154 @@ document.getElementById('gateBtn').addEventListener('click', _tryAuth);
 document.getElementById('gateInput').addEventListener('keydown', e=>{ if(e.key==='Enter') _tryAuth(); });
 document.getElementById('scopeChange').addEventListener('click', ()=>location.reload());
 document.getElementById('gateInput').focus();
+
+// ===== Exportar resultado para .xlsx (visual, respeita o escopo da senha) =====
+// Genérico: detecta o modelo da mecânica — por CAIXA (C.precos) ou por FATURAMENTO (C.faixas).
+let _exceljsPromise = null;
+function _loadExcelJS(){
+  if(window.ExcelJS) return Promise.resolve();
+  if(_exceljsPromise) return _exceljsPromise;
+  _exceljsPromise = new Promise((resolve,reject)=>{
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js';
+    s.onload = ()=>resolve();
+    s.onerror = ()=>reject(new Error('Não foi possível carregar a biblioteca de exportação (sem internet?).'));
+    document.head.appendChild(s);
+  });
+  return _exceljsPromise;
+}
+
+async function _buildWorkbook(){
+  const view = LAST_VIEW || {rank:C.ranking, regs:C.regionais, nivel:3, acc:{label:'Todos os dados'}, mods:C.modalidades};
+  const MODELO_CAIXA = !!C.precos;            // por caixa (ex.: KINLIMP); senão por faturamento (ex.: TechLuz)
+  const AZUL='FF2B2FA8', LIGHT='FFEEF0FF', ZEBRA='FFF7F8FE', WIN='FFEAFBF0', TOTAL='FFE6ECFF', GREEN='FF1F9D45', MUTED='FF6B6F8A', LINE='FFE0E3F0';
+  const FMT_MONEY = '"R$"\\ #,##0.00', FMT_INT = '#,##0';
+
+  const wb = new ExcelJS.Workbook();
+  wb.creator = 'Ferretti distribuidora';
+  const ws = wb.addWorksheet('Resultado', {views:[{showGridLines:false}], pageSetup:{fitToPage:true,fitToWidth:1,fitToHeight:0,orientation:'portrait'}});
+
+  const headerRow = MODELO_CAIXA
+    ? ['#','Vendedor','Regional','Setor','Caixas 1 L','Caixas 500 ML','Total cx','Prêmio']
+    : ['#','Vendedor','Regional','Setor','Vendas','Prêmio'];
+  const widths = MODELO_CAIXA ? [5,24,15,22,12,14,11,15] : [5,24,15,24,16,16];
+  const NC = headerRow.length;
+  widths.forEach((w,i)=>ws.getColumn(i+1).width=w);
+
+  const fill = (cell,argb)=>{ cell.fill={type:'pattern',pattern:'solid',fgColor:{argb}}; };
+  const thin = (cell)=>{ const b={style:'thin',color:{argb:LINE}}; cell.border={top:b,bottom:b,left:b,right:b}; };
+  let r = 1;
+  const mergeAll = (val,opts)=>{ ws.mergeCells(r,1,r,NC); const c=ws.getCell(r,1); c.value=val; Object.assign(c,opts||{}); return c; };
+  const sectionHeader = (txt)=>{ const c=mergeAll(txt,{font:{bold:true,size:12,color:{argb:'FFFFFFFF'}},alignment:{vertical:'middle'}}); fill(c,AZUL); ws.getRow(r).height=20; r++; };
+
+  // Título
+  let c = mergeAll(C.titulo+' — '+C.periodo,{font:{size:16,bold:true,color:{argb:'FFFFFFFF'}},alignment:{vertical:'middle',horizontal:'center'}});
+  fill(c,AZUL); ws.getRow(r).height=28; r++;
+  mergeAll('Parceiro: '+C.parceiro+'  ·  Campanha de vendas — Ferretti distribuidora',{font:{italic:true,color:{argb:MUTED}},alignment:{horizontal:'center'}}); r+=2;
+
+  // Bloco de informações
+  [['Período', C.inicio+' a '+C.termino],
+   ['Prêmio mínimo', C.premioMinimo],
+   ['Pagamento previsto', C.pagamento],
+   ['Resultado apurado até', C.resultadoAte],
+   ['Seu acesso', (view.acc&&view.acc.label)||'Todos os dados']
+  ].forEach(([k,v])=>{ const a=ws.getCell(r,1); a.value=k; a.font={bold:true}; ws.mergeCells(r,2,r,NC); ws.getCell(r,2).value=v; r++; });
+  r++;
+
+  // Como funciona
+  sectionHeader('COMO FUNCIONA');
+  (view.mods||C.modalidades).forEach(m=>{
+    const a=ws.getCell(r,1); a.value=m.tag; a.font={bold:true,color:{argb:AZUL}}; a.alignment={vertical:'top'};
+    ws.mergeCells(r,2,r,NC); const b=ws.getCell(r,2); b.value=m.titulo+' — '+m.texto; b.alignment={wrapText:true,vertical:'top'};
+    ws.getRow(r).height=32; r++;
+  });
+  r++;
+
+  // Tabela de prêmio por caixa / faixas de faturamento
+  const miniHead = (arr)=>{ arr.forEach((t,i)=>{ const cc=ws.getCell(r,i+1); cc.value=t; cc.font={bold:true,color:{argb:AZUL}}; fill(cc,LIGHT); thin(cc); }); r++; };
+  const miniRow = (arr)=>{ arr.forEach((t,i)=>{ const cc=ws.getCell(r,i+1); cc.value=t; thin(cc); if(i>0){ cc.font={bold:true,color:{argb:GREEN}}; } }); r++; };
+  if(MODELO_CAIXA){
+    miniHead(['Produto','Vendedor (por caixa)','Gestor / Regional (por caixa)']);
+    C.precos.forEach(p=>miniRow([p.produto,p.vend,p.gestor]));
+  } else if(C.faixas){
+    miniHead(['Faixa de vendas no período','Prêmio']);
+    C.faixas.forEach(t=>miniRow([t.ate?(t.de+' a '+t.ate):t.de, t.premio]));
+  }
+  r++;
+
+  // Resultado (ranking)
+  sectionHeader(MODELO_CAIXA ? 'RESULTADO — PRÊMIO POR CAIXA' : 'RESULTADO');
+  headerRow.forEach((t,i)=>{ const cc=ws.getCell(r,i+1); cc.value=t; cc.font={bold:true,color:{argb:AZUL}}; fill(cc,LIGHT); thin(cc); cc.alignment={horizontal:(i===0?'center':(i>=4?'right':'left'))}; });
+  r++;
+  const totVal = MODELO_CAIXA ? (x=>x.cx1+x.cx5) : (x=>x.vendas);
+  const rankSorted = [...view.rank].sort((a,b)=>totVal(b)-totVal(a));
+  let t1=0,t5=0,tv=0,tp=0;
+  rankSorted.forEach((rr,i)=>{
+    const vals = MODELO_CAIXA ? [i+1,rr.nome,rr.regional,rr.setor,rr.cx1,rr.cx5,rr.cx1+rr.cx5,rr.premio]
+                              : [i+1,rr.nome,rr.regional,rr.setor,rr.vendas,rr.premio];
+    t1+=rr.cx1||0; t5+=rr.cx5||0; tv+=rr.vendas||0; tp+=rr.premio||0;
+    const win = rr.premio>0;
+    vals.forEach((v,ci)=>{
+      const cc=ws.getCell(r,ci+1); cc.value=v; thin(cc);
+      cc.alignment={horizontal:(ci===0?'center':(ci>=4?'right':'left'))};
+      if(win) fill(cc,WIN); else if(i%2===1) fill(cc,ZEBRA);
+      if(MODELO_CAIXA){ if(ci>=4&&ci<=6) cc.numFmt=FMT_INT; if(ci===7){ cc.numFmt=FMT_MONEY; cc.font={bold:true,color:{argb:win?GREEN:MUTED}}; } }
+      else { if(ci===4) cc.numFmt=FMT_MONEY; if(ci===5){ cc.numFmt=FMT_MONEY; cc.font={bold:true,color:{argb:win?GREEN:MUTED}}; } }
+    });
+    r++;
+  });
+  // Total
+  const totRow = MODELO_CAIXA ? ['','TOTAL','','',t1,t5,t1+t5,tp] : ['','TOTAL','','',tv,tp];
+  totRow.forEach((v,ci)=>{ const cc=ws.getCell(r,ci+1); cc.value=v; thin(cc); fill(cc,TOTAL); cc.font={bold:true}; cc.alignment={horizontal:(ci>=4?'right':'left')};
+    if(MODELO_CAIXA){ if(ci>=4&&ci<=6) cc.numFmt=FMT_INT; if(ci===7) cc.numFmt=FMT_MONEY; } else { if(ci>=4) cc.numFmt=FMT_MONEY; }
+  });
+  r+=2;
+
+  // Premiação por regional
+  if(view.regs && view.regs.length){
+    sectionHeader('PREMIAÇÃO POR REGIONAL');
+    const rh = MODELO_CAIXA ? ['Gestor','Regional','Caixas 1 L','Caixas 500 ML','Total cx','Prêmio'] : ['Gestor','Regional','Faturamento','Prêmio'];
+    rh.forEach((t,i)=>{ const cc=ws.getCell(r,i+1); cc.value=t; cc.font={bold:true,color:{argb:AZUL}}; fill(cc,LIGHT); thin(cc); cc.alignment={horizontal:(i>=2?'right':'left')}; });
+    r++;
+    view.regs.forEach(rg=>{
+      const vals = MODELO_CAIXA ? [rg.nome,rg.regional,rg.cx1,rg.cx5,rg.cx1+rg.cx5,rg.premio] : [rg.nome,rg.regional,rg.vendas,rg.premio];
+      vals.forEach((v,ci)=>{ const cc=ws.getCell(r,ci+1); cc.value=v; thin(cc); cc.alignment={horizontal:(ci>=2?'right':'left')};
+        if(MODELO_CAIXA){ if(ci>=2&&ci<=4) cc.numFmt=FMT_INT; if(ci===5){ cc.numFmt=FMT_MONEY; cc.font={bold:true,color:{argb:rg.premio>0?GREEN:MUTED}}; } }
+        else { if(ci===2) cc.numFmt=FMT_MONEY; if(ci===3){ cc.numFmt=FMT_MONEY; cc.font={bold:true,color:{argb:rg.premio>0?GREEN:MUTED}}; } }
+      });
+      r++;
+    });
+    if(C.regNote){ mergeAll(C.regNote,{font:{italic:true,color:{argb:MUTED}},alignment:{wrapText:true,vertical:'top'}}); ws.getRow(r).height=34; r++; }
+    r++;
+  }
+
+  // Rodapé
+  mergeAll('Pagamento: '+C.pagamento+'. Prêmio mínimo de '+C.premioMinimo+'.',{font:{bold:true}}); r++;
+  mergeAll('Gerado em '+new Date().toLocaleString('pt-BR')+' · Uso interno — Ferretti distribuidora',{font:{italic:true,color:{argb:MUTED}}}); r++;
+
+  return wb;
+}
+
+async function exportXLSX(){
+  const btn = document.getElementById('exportBtn');
+  const txt = btn ? btn.textContent : '';
+  try{
+    if(btn){ btn.disabled=true; btn.textContent='Gerando…'; }
+    await _loadExcelJS();
+    const wb = await _buildWorkbook();
+    const buf = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    const nome = (C.titulo+' - '+C.periodo).replace(/[\\/:*?"<>|]/g,'').trim()+'.xlsx';
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = nome; document.body.appendChild(a); a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  }catch(e){
+    alert(e && e.message ? e.message : 'Falha ao gerar a planilha.');
+  }finally{
+    if(btn){ btn.disabled=false; btn.textContent=txt; }
+  }
+}
+document.getElementById('exportBtn').addEventListener('click', exportXLSX);
 
 // ===== Tema claro/escuro =====
 function setTheme(t){
