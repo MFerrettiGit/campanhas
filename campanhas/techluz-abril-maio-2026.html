@@ -231,8 +231,8 @@ const CAMPANHA = {
   ],
   modalidades: [
     {classe:"m1", nivel:1, tag:"Vendedor", titulo:"Concorre sozinho", texto:"Percentual sobre o seu faturamento — quanto maior a venda, maior o %. Veja a tabela de faixas abaixo."},
-    {classe:"m2", nivel:2, tag:"Gestor / Regional", titulo:"2% da regional", texto:"2% do faturamento da sua regional na parte que ultrapassar R$ 50.000,00."},
-    {classe:"m3", nivel:3, tag:"Gerência", titulo:"1,5% da regional", texto:"1,5% do faturamento da sua regional na parte que ultrapassar R$ 100.000,00."}
+    {classe:"m2", nivel:2, tag:"Gestor / Regional", titulo:"2% da regional", texto:"2% sobre todo o faturamento da sua regional, desde que ultrapasse R$ 50.000,00 no período."},
+    {classe:"m3", nivel:3, tag:"Gerência", titulo:"1,5% da regional", texto:"1,5% sobre todo o faturamento da regional, desde que ultrapasse R$ 100.000,00 no período."}
   ],
   ranking: [
     {nome:"CASTRO", regional:"SUL", setor:"Jundiaí", vendas:24169.32, premio:1900},
@@ -254,11 +254,11 @@ const CAMPANHA = {
     {nome:"EDUARDO", regional:"GERÊNCIA", setor:"Contas Chaves", vendas:0, premio:0}
   ],
   regionais: [
-    {modalidade:"2% acima de R$ 50.000,00", nome:"LOPES", regional:"NORDESTE", vendas:88234.34, premio:764.69},
-    {modalidade:"2% acima de R$ 50.000,00", nome:"RANGEL", regional:"SUL", vendas:70838.86, premio:416.78},
-    {modalidade:"1,5% acima de R$ 100.000,00", nome:"PAULO (Gerência)", regional:"GERÊNCIA", vendas:159073.20, premio:886.10}
+    {modalidade:"2% do total (gatilho R$ 50.000,00)", nome:"LOPES", regional:"NORDESTE", vendas:88234.34, premio:1764.69},
+    {modalidade:"2% do total (gatilho R$ 50.000,00)", nome:"RANGEL", regional:"SUL", vendas:70838.86, premio:1416.78},
+    {modalidade:"1,5% do total (gatilho R$ 100.000,00)", nome:"PAULO (Gerência)", regional:"GERÊNCIA", vendas:159073.20, premio:2386.10}
   ],
-  regNote: "Faturamento total acumulado no período: R$ 159.073,20. As duas regionais ultrapassaram R$ 50.000,00 e a gerência ultrapassou R$ 100.000,00 — todas as modalidades de equipe foram atingidas. NORDESTE: 2% sobre R$ 38.234,34 = R$ 764,69. SUL: 2% sobre R$ 20.838,86 = R$ 416,78. Gerência: 1,5% sobre R$ 59.073,20 = R$ 886,10."
+  regNote: "Faturamento total acumulado no período: R$ 159.073,20. Atingido o gatilho, o percentual incide sobre todo o faturamento da regional. NORDESTE: 2% de R$ 88.234,34 = R$ 1.764,69. SUL: 2% de R$ 70.838,86 = R$ 1.416,78. Gerência: 1,5% de R$ 159.073,20 = R$ 2.386,10."
 };
 
 const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
