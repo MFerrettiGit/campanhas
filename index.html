@@ -70,6 +70,16 @@ footer a{color:var(--azul)}
 // Adicione novas campanhas no topo desta lista.
 const CAMPANHAS = [
   {
+    parceiro:"KINLIMP",
+    nome:"Concurso KINLIMP",
+    periodoLabel:"Abril e Maio / 2026",
+    inicio:"2026-04-01", termino:"2026-05-29", pagamento:"2026-06-10",
+    pagamentoLabel:"10/06/2026",
+    premioMinimo:"R$ 200,00",
+    resultadoAte:"29/05/2026",
+    link:"campanhas/kinlimp-abril-maio-2026.html"
+  },
+  {
     parceiro:"Grupo TechLuz Iluminação",
     nome:"Concurso TechLuz",
     periodoLabel:"Abril e Maio / 2026",
@@ -88,7 +98,7 @@ function parseBR(s){ const p=(s||'').split('/'); return p.length===3 ? new Date(
 function statusOf(c){
   const fim = new Date(c.termino+'T00:00:00');
   const res = parseBR(c.resultadoAte);
-  if(res && res > fim) return {cls:'fechada', txt:'FECHADA'};
+  if(res && res >= fim) return {cls:'fechada', txt:'FECHADA'};
   return {cls:'aberta', txt:'● ABERTA'};
 }
 
