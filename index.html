@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Campanhas de Vendas — Ferretti distribuidora</title>
+<script>(function(){try{if(localStorage.getItem('ferretti-theme')==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -33,12 +34,25 @@ h1{font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(2rem,5vw,3.1r
 .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:50px}
 footer{padding:30px 0 50px;text-align:center;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);margin-top:20px}
 footer a{color:var(--azul)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.themebtn{display:inline-flex;align-items:center;gap:6px;font-family:'Plus Jakarta Sans';font-size:.85rem;font-weight:600;color:#fff;background:rgba(255,255,255,.14);border:none;padding:8px 14px;border-radius:999px;cursor:pointer}
+.themebtn:hover{background:rgba(255,255,255,.26)}
+
+/* TEMA ESCURO */
+:root[data-theme="dark"]{--bg:#0e1018;--card:#181b27;--ink:#eceef6;--muted:#9aa0bd;--line:#2a2f42}
+[data-theme="dark"] .card{box-shadow:0 14px 34px rgba(0,0,0,.45)}
+[data-theme="dark"] .card:hover{box-shadow:0 20px 44px rgba(0,0,0,.6)}
+[data-theme="dark"] .cta{color:#8b8fff}
+[data-theme="dark"] footer a{color:#8b8fff}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
-    <img class="brand" src="assets/ferretti-branco.png" alt="Ferretti distribuidora" />
+    <div class="topbar">
+      <img class="brand" src="assets/ferretti-branco.png" alt="Ferretti distribuidora" />
+      <button id="themeBtn" class="themebtn" type="button"></button>
+    </div>
     <div class="eyebrow">Equipe de Vendas</div>
     <h1>Campanhas de Vendas</h1>
     <p class="sub">Acompanhe a mecânica, os prazos e os resultados de cada campanha da Ferretti distribuidora.</p>
@@ -99,6 +113,19 @@ if(!CAMPANHAS.length){
     </a>`;
   }).join('');
 }
+
+// ===== Tema claro/escuro =====
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  try{ localStorage.setItem('ferretti-theme', t); }catch(e){}
+  const b = document.getElementById('themeBtn');
+  if(b) b.textContent = (t==='dark' ? '☀️ Claro' : '🌙 Escuro');
+}
+document.getElementById('themeBtn').addEventListener('click', function(){
+  const atual = document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'light';
+  setTheme(atual==='dark' ? 'light' : 'dark');
+});
+setTheme(document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'light');
 </script>
 </body>
 </html>

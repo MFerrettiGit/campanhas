@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Concurso TechLuz — Abril/Maio 2026 | Ferretti</title>
+<script>(function(){try{if(localStorage.getItem('ferretti-theme')==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -110,6 +111,29 @@ body.locked{overflow:hidden}
 #scopeBar{display:none;align-items:center;justify-content:space-between;gap:12px;background:#eef0ff;border:1px solid #d9ddff;border-radius:14px;padding:10px 16px;margin-top:22px;font-size:.9rem;color:#2f3470}
 #scopeBar b{font-family:'Plus Jakarta Sans'}
 #scopeBar button{background:none;border:none;color:var(--azul);font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans';font-size:.85rem}
+
+/* BOTÃO DE TEMA */
+.topbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.themebtn{display:inline-flex;align-items:center;gap:6px;font-family:'Plus Jakarta Sans';font-size:.85rem;font-weight:600;color:#fff;background:rgba(255,255,255,.14);border:none;padding:8px 14px;border-radius:999px;cursor:pointer}
+.themebtn:hover{background:rgba(255,255,255,.26)}
+
+/* TEMA ESCURO */
+:root[data-theme="dark"]{
+  --bg:#0e1018; --card:#181b27; --ink:#eceef6; --muted:#9aa0bd; --line:#2a2f42; --verde-2:#34d36b;
+}
+[data-theme="dark"] .fact{box-shadow:0 12px 30px rgba(0,0,0,.45)}
+[data-theme="dark"] .tiers tr:nth-child(even) td{background:#1e2230}
+[data-theme="dark"] .tiers tr.top td{background:#16331f}
+[data-theme="dark"] .tbl th{background:#1e2230;color:var(--muted)}
+[data-theme="dark"] .tbl tr.win td{background:#15241a}
+[data-theme="dark"] .note{background:#1b2030;border-color:#2a2f42;color:#c9cee6}
+[data-theme="dark"] #scopeBar{background:#1b2030;border-color:#2a2f42;color:#c9cee6}
+[data-theme="dark"] #scopeBar button{color:#8b8fff}
+[data-theme="dark"] .mod .tag{background:#23283a;color:#aeb4ff}
+[data-theme="dark"] .mod.m2 .tag{background:#2e2718;color:#f0c46a}
+[data-theme="dark"] .mod.m3 .tag{background:#2e2018;color:#ff9e7a}
+.gatebox{background:var(--card)}
+.gatebox input{background:var(--card);color:var(--ink)}
 </style>
 </head>
 <body class="locked">
@@ -127,7 +151,10 @@ body.locked{overflow:hidden}
   <div class="wrap">
     <div class="topbar">
       <img class="brand" src="../assets/ferretti-branco.png" alt="Ferretti distribuidora" />
-      <a class="back" href="../index.html">← Todas as campanhas</a>
+      <div class="topbar-actions">
+        <button id="themeBtn" class="themebtn" type="button"></button>
+        <a class="back" href="../index.html">← Todas as campanhas</a>
+      </div>
     </div>
     <div class="partner"><span class="dot"></span><span id="hPartner">PARCEIRO</span></div>
     <h1 class="title" id="hTitle">Campanha</h1>
@@ -361,6 +388,19 @@ document.getElementById('gateBtn').addEventListener('click', _tryAuth);
 document.getElementById('gateInput').addEventListener('keydown', e=>{ if(e.key==='Enter') _tryAuth(); });
 document.getElementById('scopeChange').addEventListener('click', ()=>location.reload());
 document.getElementById('gateInput').focus();
+
+// ===== Tema claro/escuro =====
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  try{ localStorage.setItem('ferretti-theme', t); }catch(e){}
+  const b = document.getElementById('themeBtn');
+  if(b) b.textContent = (t==='dark' ? '☀️ Claro' : '🌙 Escuro');
+}
+document.getElementById('themeBtn').addEventListener('click', function(){
+  const atual = document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'light';
+  setTheme(atual==='dark' ? 'light' : 'dark');
+});
+setTheme(document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'light');
 </script>
 </body>
 </html>
