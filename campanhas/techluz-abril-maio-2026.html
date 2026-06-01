@@ -183,7 +183,7 @@ const CAMPANHA = {
   premioMinimo: "R$ 200,00",
   pagamento: "Até 10/06/2026 — no Cartão Premiação",
   resultadoAte: "05/05/2026",
-  atualizadoEm: "01/06/2026 às 09:08",
+  atualizadoEm: "01/06/2026",
   faixas: [
     {de:"R$ 3.500,00", ate:"R$ 4.999,99", premio:"R$ 200,00"},
     {de:"R$ 5.000,00", ate:"R$ 7.999,99", premio:"R$ 400,00"},
@@ -195,9 +195,9 @@ const CAMPANHA = {
     {de:"A partir de R$ 25.001,00", ate:"", premio:"10% sobre toda a venda", top:true}
   ],
   modalidades: [
-    {classe:"m1", tag:"Individual", titulo:"Concorre sozinho", texto:"Percentual sobre o seu faturamento — quanto maior a venda, maior o %. Veja a tabela de faixas abaixo."},
-    {classe:"m2", tag:"Equipe", titulo:"2% da regional", texto:"2% do faturamento da sua regional na parte que ultrapassar R$ 50.000,00."},
-    {classe:"m3", tag:"Equipe", titulo:"1,5% da regional", texto:"1,5% do faturamento da sua regional na parte que ultrapassar R$ 100.000,00."}
+    {classe:"m1", nivel:1, tag:"Vendedor", titulo:"Concorre sozinho", texto:"Percentual sobre o seu faturamento — quanto maior a venda, maior o %. Veja a tabela de faixas abaixo."},
+    {classe:"m2", nivel:2, tag:"Gestor / Regional", titulo:"2% da regional", texto:"2% do faturamento da sua regional na parte que ultrapassar R$ 50.000,00."},
+    {classe:"m3", nivel:3, tag:"Gerência", titulo:"1,5% da regional", texto:"1,5% do faturamento da sua regional na parte que ultrapassar R$ 100.000,00."}
   ],
   ranking: [
     {nome:"BRAGATTO", regional:"NORDESTE", setor:"São Carlos", vendas:9032.46, premio:700},
@@ -232,7 +232,6 @@ const C = CAMPANHA;
 document.getElementById('hPartner').textContent = C.parceiro;
 document.getElementById('hTitle').textContent = C.titulo + " — " + C.periodo;
 document.getElementById('hSub').textContent = C.subtitulo;
-document.getElementById('mecLead').textContent = "São " + C.modalidades.length + " formas de ganhar nesta campanha:";
 
 document.getElementById('facts').innerHTML = [
   ['Período', C.inicio + ' a ' + C.termino, ''],
@@ -240,9 +239,6 @@ document.getElementById('facts').innerHTML = [
   ['Pagamento previsto', C.pagamento, 'small'],
   ['Resultado apurado até', C.resultadoAte, 'live']
 ].map(f=>`<div class="fact ${f[2]==='live'?'live':''}"><div class="lbl">${f[0]}</div><div class="val ${f[2]==='small'?'small':''}">${f[1]}</div></div>`).join('');
-
-document.getElementById('mods').innerHTML = C.modalidades.map(m=>
-  `<div class="mod ${m.classe}"><span class="tag">${m.tag}</span><h3>${m.titulo}</h3><p>${m.texto}</p></div>`).join('');
 
 document.getElementById('tiersWrap').innerHTML =
   `<div class="tiers"><table><thead><tr><th>Faixa de vendas no período</th><th>Prêmio</th></tr></thead><tbody>`+
@@ -252,12 +248,12 @@ document.getElementById('tiersWrap').innerHTML =
   }).join('') + `</tbody></table></div>`;
 
 // ===== Render dos resultados (filtrável por escopo de acesso) =====
-function renderResultados(rank, regs){
+function renderResultados(rank, regs, showPodium){
   const ganhadores = rank.filter(r=>r.premio>0).sort((a,b)=>b.premio-a.premio||b.vendas-a.vendas);
   const top3 = ganhadores.slice(0,3);
   const medals = ['🥇','🥈','🥉'];
   const podSec = document.getElementById('podiumSec');
-  if(ganhadores.length){
+  if(showPodium && ganhadores.length){
     podSec.style.display = '';
     const order = top3.length===3 ? [1,0,2] : [...top3.keys()];
     document.getElementById('podium').innerHTML = order.map(i=>{
@@ -283,16 +279,30 @@ function renderResultados(rank, regs){
 
 const _norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
 function applyScope(acc){
-  let rank = C.ranking, regs = C.regionais;
+  // Níveis: setor=1 (vendedor), regional=2 (gestor), todos=3 (gerência)
+  const nivel = acc.tipo==='setor' ? 1 : (acc.tipo==='regional' ? 2 : 3);
+
+  // "Como funciona": mostra só as modalidades até o nível do acesso
+  const mods = C.modalidades.filter(m => (m.nivel||1) <= nivel);
+  document.getElementById('mecLead').textContent = mods.length===1
+    ? "Veja como você ganha nesta campanha:"
+    : "São " + mods.length + " formas de ganhar nesta campanha:";
+  document.getElementById('mods').innerHTML = mods.map(m=>
+    `<div class="mod ${m.classe}"><span class="tag">${m.tag}</span><h3>${m.titulo}</h3><p>${m.texto}</p></div>`).join('');
+
+  // Ranking e premiação por regional, conforme o escopo
+  let rank = C.ranking, regs = [];
   if(acc.tipo === 'regional'){
     rank = C.ranking.filter(r=>_norm(r.regional)===_norm(acc.valor));
     regs = C.regionais.filter(r=>_norm(r.regional)===_norm(acc.valor));
   } else if(acc.tipo === 'setor'){
     rank = C.ranking.filter(r=>_norm(r.setor)===_norm(acc.valor));
-    const regOf = rank.length ? rank[0].regional : null;
-    regs = regOf ? C.regionais.filter(r=>_norm(r.regional)===_norm(regOf)) : [];
+    regs = []; // setor não vê premiação por regional
+  } else {
+    regs = C.regionais; // todos
   }
-  renderResultados(rank, regs);
+  // Pódio apenas para quem vê todos os dados
+  renderResultados(rank, regs, nivel>=3);
   document.getElementById('scopeLbl').textContent = acc.label;
   document.getElementById('scopeBar').style.display = 'flex';
 }
