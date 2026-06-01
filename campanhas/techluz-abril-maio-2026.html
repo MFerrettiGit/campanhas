@@ -93,9 +93,36 @@ footer{margin-top:54px;padding:30px 0 50px;color:var(--muted);font-size:.85rem;t
 .updated{display:inline-flex;align-items:center;gap:8px;background:#e9fbef;color:var(--verde-2);font-weight:700;padding:8px 16px;border-radius:999px;font-family:'Plus Jakarta Sans';font-size:.85rem}
 .updated .pulse{width:9px;height:9px;border-radius:50%;background:var(--verde);box-shadow:0 0 0 0 rgba(52,199,89,.6);animation:pulse 1.8s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,199,89,.6)}70%{box-shadow:0 0 0 10px rgba(52,199,89,0)}100%{box-shadow:0 0 0 0 rgba(52,199,89,0)}}
+
+/* GATE / SENHA */
+body.locked{overflow:hidden}
+#gate{position:fixed;inset:0;z-index:1000;background:linear-gradient(135deg,var(--azul-dark),var(--azul) 60%,var(--azul-2));display:flex;align-items:center;justify-content:center;padding:20px}
+#gate.hidden{display:none}
+.gatebox{background:#fff;border-radius:20px;padding:34px 30px;max-width:380px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.35);text-align:center}
+.gatebox img{height:32px;margin-bottom:16px}
+.gatebox h2{display:block;font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.25rem}
+.gatebox p{color:var(--muted);font-size:.9rem;margin:8px 0 18px}
+.gatebox input{width:100%;padding:13px 16px;border:2px solid var(--line);border-radius:12px;font-size:1rem;font-family:'DM Sans';text-align:center;letter-spacing:1px}
+.gatebox input:focus{outline:none;border-color:var(--azul)}
+.gatebox button{width:100%;margin-top:14px;padding:13px;border:none;border-radius:12px;background:var(--azul);color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:1rem;cursor:pointer}
+.gatebox button:hover{background:var(--azul-dark)}
+.gateerr{color:#d33;font-size:.85rem;margin-top:12px;min-height:18px;font-weight:600}
+#scopeBar{display:none;align-items:center;justify-content:space-between;gap:12px;background:#eef0ff;border:1px solid #d9ddff;border-radius:14px;padding:10px 16px;margin-top:22px;font-size:.9rem;color:#2f3470}
+#scopeBar b{font-family:'Plus Jakarta Sans'}
+#scopeBar button{background:none;border:none;color:var(--azul);font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans';font-size:.85rem}
 </style>
 </head>
-<body>
+<body class="locked">
+<div id="gate">
+  <div class="gatebox">
+    <img src="../assets/ferretti-azul.png" alt="Ferretti distribuidora" />
+    <h2>Acesso restrito</h2>
+    <p>Digite sua senha para ver os resultados desta campanha.</p>
+    <input id="gateInput" type="password" placeholder="senha" autocomplete="off" autocapitalize="off" spellcheck="false" />
+    <button id="gateBtn">Entrar</button>
+    <div class="gateerr" id="gateErr"></div>
+  </div>
+</div>
 <header>
   <div class="wrap">
     <div class="topbar">
@@ -109,6 +136,7 @@ footer{margin-top:54px;padding:30px 0 50px;color:var(--muted);font-size:.85rem;t
 </header>
 
 <div class="wrap">
+  <div id="scopeBar"><span>Acesso: <b id="scopeLbl"></b></span><button id="scopeChange">trocar senha</button></div>
   <div class="facts" id="facts"></div>
 
   <section>
@@ -118,7 +146,7 @@ footer{margin-top:54px;padding:30px 0 50px;color:var(--muted);font-size:.85rem;t
     <div id="tiersWrap"></div>
   </section>
 
-  <section>
+  <section id="podiumSec">
     <h2><span class="bar"></span>Pódio — Concorre sozinho</h2>
     <p class="lead">Maiores prêmios individuais apurados até o momento.</p>
     <div class="podium" id="podium"></div>
@@ -185,7 +213,10 @@ const CAMPANHA = {
     {nome:"MARIÂNGELA", regional:"SUL", setor:"S.J. dos Campos", vendas:1536.84, premio:0},
     {nome:"CASTRO", regional:"SUL", setor:"Jundiaí", vendas:1231.82, premio:0},
     {nome:"ALAN", regional:"SUL", setor:"Campinas Norte", vendas:633.20, premio:0},
-    {nome:"EUGÊNIO", regional:"SUL", setor:"Atibaia", vendas:221.40, premio:0}
+    {nome:"EUGÊNIO", regional:"SUL", setor:"Atibaia", vendas:221.40, premio:0},
+    {nome:"MAIRA", regional:"NORDESTE", setor:"Americana", vendas:0, premio:0},
+    {nome:"RACHEL", regional:"NORDESTE", setor:"Circuito", vendas:0, premio:0},
+    {nome:"EDUARDO", regional:"GERÊNCIA", setor:"Contas Chaves", vendas:0, premio:0}
   ],
   regionais: [
     {modalidade:"2% acima de R$ 50.000,00", nome:"LOPES", regional:"NORDESTE", vendas:34229.01, premio:0},
@@ -220,30 +251,106 @@ document.getElementById('tiersWrap').innerHTML =
     return `<tr class="${t.top?'top':''}"><td>${faixa}</td><td class="premio">${t.premio}</td></tr>`;
   }).join('') + `</tbody></table></div>`;
 
-const ganhadores = C.ranking.filter(r=>r.premio>0).sort((a,b)=>b.premio-a.premio||b.vendas-a.vendas);
-const top3 = ganhadores.slice(0,3);
-const medals = ['🥇','🥈','🥉'];
-const order = top3.length===3 ? [1,0,2] : [...top3.keys()];
-document.getElementById('podium').innerHTML = order.map(i=>{
-  const r = top3[i]; if(!r) return '';
-  return `<div class="pod p${i+1}"><div class="medal">${medals[i]}</div><div class="nome">${r.nome}</div><div class="setor">${r.setor} · ${r.regional}</div><div class="vlr">${brl(r.vendas)}</div><div class="prm">${brl(r.premio)}</div></div>`;
-}).join('');
+// ===== Render dos resultados (filtrável por escopo de acesso) =====
+function renderResultados(rank, regs){
+  const ganhadores = rank.filter(r=>r.premio>0).sort((a,b)=>b.premio-a.premio||b.vendas-a.vendas);
+  const top3 = ganhadores.slice(0,3);
+  const medals = ['🥇','🥈','🥉'];
+  const podSec = document.getElementById('podiumSec');
+  if(ganhadores.length){
+    podSec.style.display = '';
+    const order = top3.length===3 ? [1,0,2] : [...top3.keys()];
+    document.getElementById('podium').innerHTML = order.map(i=>{
+      const r = top3[i]; if(!r) return '';
+      return `<div class="pod p${i+1}"><div class="medal">${medals[i]}</div><div class="nome">${r.nome}</div><div class="setor">${r.setor} · ${r.regional}</div><div class="vlr">${brl(r.vendas)}</div><div class="prm">${brl(r.premio)}</div></div>`;
+    }).join('');
+  } else { podSec.style.display = 'none'; }
 
-const rankSorted = [...C.ranking].sort((a,b)=>b.vendas-a.vendas);
-document.getElementById('rankBody').innerHTML = rankSorted.map((r,i)=>
-  `<tr class="${r.premio>0?'win':'muted-row'}"><td class="pos">${i+1}</td><td class="nm">${r.nome}</td><td><span class="reg ${r.regional.replace('Ê','E')}">${r.regional}</span></td><td>${r.setor}</td><td class="v">${brl(r.vendas)}</td><td class="p ${r.premio>0?'':'zero'}">${r.premio>0?brl(r.premio):'—'}</td></tr>`
-).join('');
+  const rankSorted = [...rank].sort((a,b)=>b.vendas-a.vendas);
+  document.getElementById('rankBody').innerHTML = rankSorted.map((r,i)=>
+    `<tr class="${r.premio>0?'win':'muted-row'}"><td class="pos">${i+1}</td><td class="nm">${r.nome}</td><td><span class="reg ${r.regional.replace('Ê','E')}">${r.regional}</span></td><td>${r.setor}</td><td class="v">${brl(r.vendas)}</td><td class="p ${r.premio>0?'':'zero'}">${r.premio>0?brl(r.premio):'—'}</td></tr>`
+  ).join('') || `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:18px">Sem dados para este acesso.</td></tr>`;
 
-document.getElementById('regGrid').innerHTML = C.regionais.map(r=>
-  `<div class="mod"><span class="tag">${r.modalidade}</span><h3>${r.nome}</h3><p>Regional ${r.regional}<br>Faturamento: <strong>${brl(r.vendas)}</strong><br>Prêmio: <strong style="color:${r.premio>0?'#28a745':'#6b6f8a'}">${r.premio>0?brl(r.premio):'Não atingiu o piso'}</strong></p></div>`
-).join('');
-document.getElementById('regNote').textContent = C.regNote;
+  const regSec = document.getElementById('regSec');
+  if(regs.length){
+    regSec.style.display = '';
+    document.getElementById('regGrid').innerHTML = regs.map(r=>
+      `<div class="mod"><span class="tag">${r.modalidade}</span><h3>${r.nome}</h3><p>Regional ${r.regional}<br>Faturamento: <strong>${brl(r.vendas)}</strong><br>Prêmio: <strong style="color:${r.premio>0?'#28a745':'#6b6f8a'}">${r.premio>0?brl(r.premio):'Não atingiu o piso'}</strong></p></div>`
+    ).join('');
+    document.getElementById('regNote').textContent = C.regNote;
+  } else { regSec.style.display = 'none'; }
+}
+
+const _norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
+function applyScope(acc){
+  let rank = C.ranking, regs = C.regionais;
+  if(acc.tipo === 'regional'){
+    rank = C.ranking.filter(r=>_norm(r.regional)===_norm(acc.valor));
+    regs = C.regionais.filter(r=>_norm(r.regional)===_norm(acc.valor));
+  } else if(acc.tipo === 'setor'){
+    rank = C.ranking.filter(r=>_norm(r.setor)===_norm(acc.valor));
+    const regOf = rank.length ? rank[0].regional : null;
+    regs = regOf ? C.regionais.filter(r=>_norm(r.regional)===_norm(regOf)) : [];
+  }
+  renderResultados(rank, regs);
+  document.getElementById('scopeLbl').textContent = acc.label;
+  document.getElementById('scopeBar').style.display = 'flex';
+}
 
 const stamp = C.atualizadoEm === 'AUTO'
   ? new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})
   : C.atualizadoEm;
 document.getElementById('fUpdated').textContent = 'Informações atualizadas em ' + stamp;
 document.getElementById('fPay').textContent = 'Pagamento: ' + C.pagamento + '. Prêmio mínimo de ' + C.premioMinimo + '.';
+
+// ===== Controle de acesso (senha case-insensitive; hash SHA-256 da senha em minúsculas) =====
+const ACESSOS = [
+  {h:"15f54d41cbfe598bd87f5109489c4f435db816e9e5ea1d14f335aa742671786b", tipo:"todos", label:"Todos os dados"},
+  {h:"a4f55b36371b2ab32db9278b6d593df4157c2ea7b5b50c32a5eac40b94afe582", tipo:"todos", label:"Todos os dados"},
+  {h:"8f21a995f2b3c950e6ebb59612a0edb6b534a4ea41a1c602393a5417e0a25876", tipo:"todos", label:"Todos os dados"},
+  {h:"6a88e91d86f376c4692a3f0cbb4d98fc910d89375bee43e569b450000e362327", tipo:"todos", label:"Todos os dados"},
+  {h:"f6cebde0a8a3a1cf6b24725a398e833c4493be02894e91c7fb658b1d5d0e315f", tipo:"todos", label:"Todos os dados"},
+  {h:"5e8603b463a25e63cc6789221b8a0fa98d9fcaf55c2a2b13739ee439eb61e808", tipo:"regional", valor:"NORDESTE", label:"Regional Nordeste"},
+  {h:"d4a54a000a6ecff9b501ad659c1664a1a8866fb1a00a6af532c7512688f0db0e", tipo:"regional", valor:"SUL", label:"Regional Sul (Sudeste)"},
+  {h:"8ab47043ad92392d258a36eaec504a05147d1b3a8ac55cca94009c0debf06426", tipo:"setor", valor:"Contas Chaves", label:"Setor Contas Chaves"},
+  {h:"01909b4e129d72d9db19134cdedc4f73c5c6315e6b84553707e7ff94370d7bb9", tipo:"setor", valor:"Americana", label:"Setor Americana"},
+  {h:"c6d8f738079870511501f4aa74c7b2f6bc3bbe262a035cf8956242692c0ef9b5", tipo:"setor", valor:"Atibaia", label:"Setor Atibaia"},
+  {h:"ea5acf9a963a80b8ba33710b18e2cdbf2db4b2858987b82685363758ca48d6b8", tipo:"setor", valor:"Campinas Norte", label:"Setor Campinas Norte"},
+  {h:"4c088950123b752060624127c337560aaebfe6be6fc11f01f67fae2acda9de40", tipo:"setor", valor:"Caraguatatuba", label:"Setor Caraguatatuba"},
+  {h:"53b55f1377f1fa45810768196a01c492ac8bf6b2fd0b05706b1c8a1d6e01e6ba", tipo:"setor", valor:"Circuito", label:"Setor Circuito"},
+  {h:"d98135ca1d750b3f6c8e054bf7c8715a3ca3c3322ebaef1ea144a43816b2152c", tipo:"setor", valor:"Franca", label:"Setor Franca"},
+  {h:"d06a367d0e7166b6d56ba87061f08d6521f7ad5877c8526c01edde2d704e87af", tipo:"setor", valor:"Indaiatuba", label:"Setor Indaiatuba"},
+  {h:"aa6a30d680926db949ed121bcf74d53eb68030ae1028fb6021ce18cf27fcc69c", tipo:"setor", valor:"Itapetininga", label:"Setor Itapetininga"},
+  {h:"861198c33307530a47dc5d9ba0ee6eb2d9dd78e84af5f609d452ac6a6e7a2345", tipo:"setor", valor:"Jundiaí", label:"Setor Jundiaí"},
+  {h:"a1cf8577996d9ff33591000ccf6eadde5e84db9d51dea8f8b1edbd773c60d98f", tipo:"setor", valor:"Ribeirão Preto", label:"Setor Ribeirão Preto"},
+  {h:"b7f6fe70090f351bf045415bf09024106046f6a537b454d1c39cfefdeb95a323", tipo:"setor", valor:"Rio Claro", label:"Setor Rio Claro"},
+  {h:"570e2beb91e359ecde788f49d8f9f8e48f144ceb9f6cc4044d682d952290a4f4", tipo:"setor", valor:"S.J. Boa Vista", label:"Setor S.J. Boa Vista"},
+  {h:"69158fc95d6df989e0fa7edb6f3c64a05cc3ac438e7b9dea1e0382bbba7e3119", tipo:"setor", valor:"S.J. dos Campos", label:"Setor S.J. dos Campos"},
+  {h:"04635bde2d0aa9e1b0a5c84ed736678c1c9101bfd9f9d941db352c2e9e241b5f", tipo:"setor", valor:"São Carlos", label:"Setor São Carlos"},
+  {h:"0efff8a041272fc596754a93c5c1dc39069bb78b0ed855918deeb8b1afaef64a", tipo:"setor", valor:"Setor Piracicaba", label:"Setor Piracicaba"},
+  {h:"496f31caf7df726ab7ad9d7c84f2abb371f04cef936ea5a2d042289562ee2284", tipo:"setor", valor:"Sorocaba", label:"Setor Sorocaba"}
+];
+
+async function _sha256(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function _tryAuth(){
+  const err = document.getElementById('gateErr');
+  const pwd = (document.getElementById('gateInput').value || '').trim().toLowerCase();
+  if(!pwd){ err.textContent = 'Digite a senha.'; return; }
+  const h = await _sha256(pwd);
+  const acc = ACESSOS.find(a=>a.h===h);
+  if(!acc){ err.textContent = 'Senha inválida.'; return; }
+  err.textContent = '';
+  applyScope(acc);
+  document.body.classList.remove('locked');
+  document.getElementById('gate').classList.add('hidden');
+}
+document.getElementById('gateBtn').addEventListener('click', _tryAuth);
+document.getElementById('gateInput').addEventListener('keydown', e=>{ if(e.key==='Enter') _tryAuth(); });
+document.getElementById('scopeChange').addEventListener('click', ()=>location.reload());
+document.getElementById('gateInput').focus();
 </script>
 </body>
 </html>
