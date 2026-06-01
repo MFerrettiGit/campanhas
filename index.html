@@ -19,13 +19,11 @@ h1{font-family:'Plus Jakarta Sans';font-weight:800;font-size:clamp(2rem,5vw,3.1r
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-top:-40px;position:relative;z-index:2;padding-bottom:30px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 14px 34px rgba(20,24,60,.08);text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-4px);box-shadow:0 20px 44px rgba(20,24,60,.14)}
-.card .head{padding:20px 22px;background:linear-gradient(135deg,var(--azul-dark),var(--azul-2));color:#fff;position:relative}
-.card .partner{font-size:.72rem;letter-spacing:.6px;text-transform:uppercase;font-weight:700;color:#cdd1ff}
-.card .nome{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.3rem;margin-top:6px}
+.card .head{padding:46px 22px 20px;background:linear-gradient(135deg,var(--azul-dark),var(--azul-2));color:#fff;position:relative}
+.card .nome{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.3rem}
 .status{position:absolute;top:16px;right:16px;font-family:'Plus Jakarta Sans';font-size:.68rem;font-weight:800;letter-spacing:.5px;padding:5px 11px;border-radius:999px}
-.status.ativa{background:var(--verde);color:#062b12}
-.status.encerrada{background:#ffd9d0;color:#9a3412}
-.status.pagamento{background:var(--ouro);color:#4a2e00}
+.status.aberta{background:var(--verde);color:#062b12}
+.status.fechada{background:#ffd9d0;color:#9a3412}
 .card .body{padding:18px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
 .row{display:flex;justify-content:space-between;gap:10px;font-size:.9rem;border-bottom:1px dashed var(--line);padding-bottom:8px}
 .row:last-of-type{border-bottom:none}
@@ -69,15 +67,15 @@ const CAMPANHAS = [
   }
 ];
 
+// "dd/MM/yyyy" -> Date
+function parseBR(s){ const p=(s||'').split('/'); return p.length===3 ? new Date(+p[2], +p[1]-1, +p[0]) : null; }
+
+// Aberta (verde) enquanto em vigor; Fechada quando o último resultado é posterior ao término.
 function statusOf(c){
-  const hoje = new Date(); hoje.setHours(0,0,0,0);
-  const ini = new Date(c.inicio+'T00:00:00');
   const fim = new Date(c.termino+'T00:00:00');
-  const pag = new Date(c.pagamento+'T00:00:00');
-  if(hoje < ini) return {cls:'pagamento', txt:'EM BREVE'};
-  if(hoje <= fim) return {cls:'ativa', txt:'● ATIVA'};
-  if(hoje <= pag) return {cls:'pagamento', txt:'AGUARDA PAGAMENTO'};
-  return {cls:'encerrada', txt:'ENCERRADA'};
+  const res = parseBR(c.resultadoAte);
+  if(res && res > fim) return {cls:'fechada', txt:'FECHADA'};
+  return {cls:'aberta', txt:'● ABERTA'};
 }
 
 const grid = document.getElementById('grid');
@@ -89,7 +87,6 @@ if(!CAMPANHAS.length){
     return `<a class="card" href="${c.link}">
       <div class="head">
         <span class="status ${s.cls}">${s.txt}</span>
-        <div class="partner">${c.parceiro}</div>
         <div class="nome">${c.nome}</div>
       </div>
       <div class="body">
