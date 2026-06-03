@@ -265,10 +265,13 @@ document.getElementById('facts').innerHTML = [
   ['Resultado apurado até', C.resultadoAte, 'live']
 ].map(f=>`<div class="fact ${f[2]==='live'?'live':''}"><div class="lbl">${f[0]}</div><div class="val ${f[2]==='small'?'small':''}">${f[1]}</div></div>`).join('');
 
-document.getElementById('tiersWrap').innerHTML =
-  `<div class="tiers"><table><thead><tr><th>Produto</th><th>Vendedor (por caixa)</th><th>Gestor / Regional (por caixa)</th></tr></thead><tbody>`+
-  C.precos.map(p=>`<tr><td class="prod">${p.produto}</td><td class="premio">${p.vend}</td><td class="premio">${p.gestor}</td></tr>`).join('') +
-  `</tbody></table></div>`;
+function renderTiersWrap(nivel){
+  const showGestor = nivel >= 2;
+  document.getElementById('tiersWrap').innerHTML =
+    `<div class="tiers"><table><thead><tr><th>Produto</th><th>Vendedor (por caixa)</th>${showGestor?'<th>Gestor / Regional (por caixa)</th>':''}</tr></thead><tbody>`+
+    C.precos.map(p=>`<tr><td class="prod">${p.produto}</td><td class="premio">${p.vend}</td>${showGestor?`<td class="premio">${p.gestor}</td>`:''}</tr>`).join('') +
+    `</tbody></table></div>`;
+}
 
 // ===== Render dos resultados (filtrável por escopo de acesso) =====
 function renderResultados(rank, regs, showPodium){
@@ -305,6 +308,7 @@ const _norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[�
 function applyScope(acc){
   // Níveis: setor=1 (vendedor), regional=2 (gestor), todos=3 (gerência)
   const nivel = acc.tipo==='setor' ? 1 : (acc.tipo==='regional' ? 2 : 3);
+  renderTiersWrap(nivel);
 
   // "Como funciona": mostra só as modalidades até o nível do acesso
   const mods = C.modalidades.filter(m => (m.nivel||1) <= nivel);
