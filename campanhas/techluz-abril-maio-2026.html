@@ -86,6 +86,8 @@ h2 .bar{width:6px;height:24px;border-radius:6px;background:var(--azul)}
 .tbl .p{font-family:'Plus Jakarta Sans';font-weight:800;color:var(--verde-2);font-variant-numeric:tabular-nums}
 .tbl .p.zero{color:var(--muted);font-weight:600}
 .muted-row td{color:var(--muted)}
+.tbl tr.total-row td{background:#eef0ff;font-weight:800;border-top:2px solid var(--azul)}
+[data-theme="dark"] .tbl tr.total-row td{background:#1b2040}
 
 .reg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .note{background:#eef0ff;border:1px solid #d9ddff;border-radius:14px;padding:14px 18px;color:#2f3470;font-size:.92rem;margin-top:14px}
@@ -168,7 +170,7 @@ body.locked{overflow:hidden}
 
 <div class="wrap">
   <div class="facts" id="facts"></div>
-  <div id="scopeBar"><span>Acesso: <b id="scopeLbl"></b></span><span class="scope-actions"><button id="exportBtn" type="button">⬇ Baixar resultado (.xlsx)</button><button id="scopeChange">trocar senha</button></span></div>
+  <div id="scopeBar"><span>Acesso: <b id="scopeLbl"></b></span><span class="scope-actions"><button id="exportBtn" type="button">⬇ Baixar resultado (.xlsx)</button><button id="finBtn" type="button" style="display:none">📑 Planilha do financeiro</button><button id="scopeChange">trocar senha</button></span></div>
 
   <section>
     <h2><span class="bar"></span>Como funciona</h2>
@@ -207,6 +209,7 @@ body.locked{overflow:hidden}
   </div>
 </footer>
 
+<script src="../financeiro.js"></script>
 <script>
 const CAMPANHA = {
   parceiro: "GRUPO TECHLUZ ILUMINAÇÃO",
@@ -300,9 +303,12 @@ function renderResultados(rank, regs, showPodium){
   } else { podSec.style.display = 'none'; }
 
   const rankSorted = [...rank].sort((a,b)=>b.vendas-a.vendas);
-  document.getElementById('rankBody').innerHTML = rankSorted.map((r,i)=>
+  const _tV = rankSorted.reduce((s,r)=>s+(r.vendas||0),0);
+  const _tP = rankSorted.reduce((s,r)=>s+(r.premio||0),0);
+  const _totRow = rankSorted.length ? `<tr class="total-row"><td></td><td colspan="3">TOTAL · ${rankSorted.length} ${rankSorted.length===1?'setor':'setores'}</td><td class="v">${brl(_tV)}</td><td class="p">${brl(_tP)}</td></tr>` : '';
+  document.getElementById('rankBody').innerHTML = (rankSorted.map((r,i)=>
     `<tr class="${r.premio>0?'win':'muted-row'}"><td class="pos">${i+1}</td><td class="nm">${r.nome}</td><td><span class="reg ${r.regional.replace('Ê','E')}">${r.regional}</span></td><td>${r.setor}</td><td class="v">${brl(r.vendas)}</td><td class="p ${r.premio>0?'':'zero'}">${r.premio>0?brl(r.premio):'—'}</td></tr>`
-  ).join('') || `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:18px">Sem dados para este acesso.</td></tr>`;
+  ).join('') + _totRow) || `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:18px">Sem dados para este acesso.</td></tr>`;
 
   const regSec = document.getElementById('regSec');
   if(regs.length){
@@ -343,15 +349,16 @@ function applyScope(acc){
   LAST_VIEW = {rank, regs, nivel, acc, mods};
   document.getElementById('scopeLbl').textContent = acc.label;
   document.getElementById('scopeBar').style.display = 'flex';
+  const _fin = document.getElementById('finBtn'); if(_fin) _fin.style.display = acc.fin ? '' : 'none';
 }
 
 document.getElementById('fPay').textContent = 'Pagamento: ' + C.pagamento + '. Prêmio mínimo de ' + C.premioMinimo + '.';
 
 // ===== Controle de acesso (senha case-insensitive; hash SHA-256 da senha em minúsculas) =====
 const ACESSOS = [
-  {h:"15f54d41cbfe598bd87f5109489c4f435db816e9e5ea1d14f335aa742671786b", tipo:"todos", label:"Todos os dados"},
-  {h:"a4f55b36371b2ab32db9278b6d593df4157c2ea7b5b50c32a5eac40b94afe582", tipo:"todos", label:"Todos os dados"},
-  {h:"8f21a995f2b3c950e6ebb59612a0edb6b534a4ea41a1c602393a5417e0a25876", tipo:"todos", label:"Todos os dados"},
+  {h:"15f54d41cbfe598bd87f5109489c4f435db816e9e5ea1d14f335aa742671786b", tipo:"todos", fin:true, label:"Todos os dados"},
+  {h:"a4f55b36371b2ab32db9278b6d593df4157c2ea7b5b50c32a5eac40b94afe582", tipo:"todos", fin:true, label:"Todos os dados"},
+  {h:"8f21a995f2b3c950e6ebb59612a0edb6b534a4ea41a1c602393a5417e0a25876", tipo:"todos", fin:true, label:"Todos os dados"},
   {h:"6a88e91d86f376c4692a3f0cbb4d98fc910d89375bee43e569b450000e362327", tipo:"todos", label:"Todos os dados"},
   {h:"f6cebde0a8a3a1cf6b24725a398e833c4493be02894e91c7fb658b1d5d0e315f", tipo:"todos", label:"Todos os dados"},
   {h:"5e8603b463a25e63cc6789221b8a0fa98d9fcaf55c2a2b13739ee439eb61e808", tipo:"regional", valor:"NORDESTE", label:"Regional Nordeste"},
@@ -543,6 +550,8 @@ async function exportXLSX(){
   }
 }
 document.getElementById('exportBtn').addEventListener('click', exportXLSX);
+const _finBtn = document.getElementById('finBtn');
+if(_finBtn) _finBtn.addEventListener('click', ()=>{ if(window.gerarFinanceiroXlsx) window.gerarFinanceiroXlsx(); else alert('Recurso do financeiro indisponível (financeiro.js não carregou).'); });
 
 // ===== Tema claro/escuro =====
 function setTheme(t){
