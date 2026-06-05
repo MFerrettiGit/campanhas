@@ -37,6 +37,17 @@ footer a{color:var(--azul)}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .themebtn{display:inline-flex;align-items:center;gap:6px;font-family:'Plus Jakarta Sans';font-size:.85rem;font-weight:600;color:#fff;background:rgba(255,255,255,.14);border:none;padding:8px 14px;border-radius:999px;cursor:pointer}
 .themebtn:hover{background:rgba(255,255,255,.26)}
+.topbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.authpill{display:inline-flex;align-items:center;gap:7px;font-family:'Plus Jakarta Sans';font-size:.82rem;font-weight:700;color:#fff;background:rgba(255,255,255,.14);padding:8px 14px;border-radius:999px;max-width:260px}
+.authpill .who{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hubgate{position:fixed;inset:0;z-index:1000;background:rgba(12,14,30,.55);display:flex;align-items:center;justify-content:center;padding:20px}
+.hubgatebox{background:var(--card);color:var(--ink);border-radius:20px;padding:30px 26px;max-width:380px;width:100%;box-shadow:0 30px 70px rgba(0,0,0,.4);text-align:center}
+.hubgatebox h3{font-family:'Plus Jakarta Sans';font-weight:800;font-size:1.25rem}
+.hubgatebox p{color:var(--muted);font-size:.9rem;margin-top:6px}
+.hubgatebox input{width:100%;margin-top:16px;padding:13px 16px;border:2px solid var(--line);border-radius:12px;font-size:1rem;font-family:'DM Sans';text-align:center;letter-spacing:1px;background:var(--bg);color:var(--ink)}
+.hubgatebox button{width:100%;margin-top:12px;padding:13px;border:none;border-radius:12px;background:var(--azul);color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:1rem;cursor:pointer}
+.hubgatebox button.ghost{background:transparent;color:var(--muted);font-weight:700;margin-top:8px;padding:10px}
+.gateerr{color:#e0405a;font-size:.85rem;margin-top:10px;min-height:18px}
 
 /* TEMA ESCURO */
 :root[data-theme="dark"]{--bg:#0e1018;--card:#181b27;--ink:#eceef6;--muted:#9aa0bd;--line:#2a2f42}
@@ -47,11 +58,25 @@ footer a{color:var(--azul)}
 </style>
 </head>
 <body>
+<div id="hubGate" class="hubgate" style="display:none">
+  <div class="hubgatebox">
+    <h3>Acesso às campanhas</h3>
+    <p>Digite sua senha para identificar e salvar seu acesso neste navegador. Vale para todas as campanhas.</p>
+    <input id="hubGateInput" type="password" autocomplete="off" placeholder="sua senha" />
+    <button id="hubGateBtn" type="button">Entrar</button>
+    <button id="hubGateClear" type="button" class="ghost">Sair / remover acesso salvo</button>
+    <div class="gateerr" id="hubGateErr"></div>
+  </div>
+</div>
 <header>
   <div class="wrap">
     <div class="topbar">
       <img class="brand" src="assets/ferretti-branco.png" alt="Ferretti distribuidora" />
-      <button id="themeBtn" class="themebtn" type="button"></button>
+      <div class="topbar-actions">
+        <div id="authPill" class="authpill" title="Acesso salvo neste navegador"><span id="authIcon">🔒</span><span class="who" id="authWho">Sem acesso salvo</span></div>
+        <button id="authBtn" class="themebtn" type="button">Entrar</button>
+        <button id="themeBtn" class="themebtn" type="button"></button>
+      </div>
     </div>
     <div class="eyebrow">Equipe de Vendas</div>
     <h1>Campanhas de Vendas</h1>
@@ -146,6 +171,61 @@ document.getElementById('themeBtn').addEventListener('click', function(){
   setTheme(atual==='dark' ? 'light' : 'dark');
 });
 setTheme(document.documentElement.getAttribute('data-theme')==='dark' ? 'dark' : 'light');
+
+// ===== Acesso salvo (mesmo localStorage usado pelas páginas de campanha) =====
+const ACESSOS = [
+  {h:"15f54d41cbfe598bd87f5109489c4f435db816e9e5ea1d14f335aa742671786b", label:"Todos os dados"},
+  {h:"a4f55b36371b2ab32db9278b6d593df4157c2ea7b5b50c32a5eac40b94afe582", label:"Todos os dados"},
+  {h:"8f21a995f2b3c950e6ebb59612a0edb6b534a4ea41a1c602393a5417e0a25876", label:"Todos os dados"},
+  {h:"6a88e91d86f376c4692a3f0cbb4d98fc910d89375bee43e569b450000e362327", label:"Todos os dados"},
+  {h:"f6cebde0a8a3a1cf6b24725a398e833c4493be02894e91c7fb658b1d5d0e315f", label:"Todos os dados"},
+  {h:"5e8603b463a25e63cc6789221b8a0fa98d9fcaf55c2a2b13739ee439eb61e808", label:"Regional Nordeste"},
+  {h:"d4a54a000a6ecff9b501ad659c1664a1a8866fb1a00a6af532c7512688f0db0e", label:"Regional Sul (Sudeste)"},
+  {h:"8ab47043ad92392d258a36eaec504a05147d1b3a8ac55cca94009c0debf06426", label:"Setor Contas Chaves"},
+  {h:"01909b4e129d72d9db19134cdedc4f73c5c6315e6b84553707e7ff94370d7bb9", label:"Setor Americana"},
+  {h:"c6d8f738079870511501f4aa74c7b2f6bc3bbe262a035cf8956242692c0ef9b5", label:"Setor Atibaia"},
+  {h:"ea5acf9a963a80b8ba33710b18e2cdbf2db4b2858987b82685363758ca48d6b8", label:"Setor Campinas Norte"},
+  {h:"4c088950123b752060624127c337560aaebfe6be6fc11f01f67fae2acda9de40", label:"Setor Caraguatatuba"},
+  {h:"53b55f1377f1fa45810768196a01c492ac8bf6b2fd0b05706b1c8a1d6e01e6ba", label:"Setor Circuito"},
+  {h:"d98135ca1d750b3f6c8e054bf7c8715a3ca3c3322ebaef1ea144a43816b2152c", label:"Setor Franca"},
+  {h:"d06a367d0e7166b6d56ba87061f08d6521f7ad5877c8526c01edde2d704e87af", label:"Setor Indaiatuba"},
+  {h:"aa6a30d680926db949ed121bcf74d53eb68030ae1028fb6021ce18cf27fcc69c", label:"Setor Itapetininga"},
+  {h:"861198c33307530a47dc5d9ba0ee6eb2d9dd78e84af5f609d452ac6a6e7a2345", label:"Setor Jundiaí"},
+  {h:"a1cf8577996d9ff33591000ccf6eadde5e84db9d51dea8f8b1edbd773c60d98f", label:"Setor Ribeirão Preto"},
+  {h:"b7f6fe70090f351bf045415bf09024106046f6a537b454d1c39cfefdeb95a323", label:"Setor Rio Claro"},
+  {h:"570e2beb91e359ecde788f49d8f9f8e48f144ceb9f6cc4044d682d952290a4f4", label:"Setor S.J. Boa Vista"},
+  {h:"69158fc95d6df989e0fa7edb6f3c64a05cc3ac438e7b9dea1e0382bbba7e3119", label:"Setor S.J. dos Campos"},
+  {h:"04635bde2d0aa9e1b0a5c84ed736678c1c9101bfd9f9d941db352c2e9e241b5f", label:"Setor São Carlos"},
+  {h:"0efff8a041272fc596754a93c5c1dc39069bb78b0ed855918deeb8b1afaef64a", label:"Setor Piracicaba"},
+  {h:"496f31caf7df726ab7ad9d7c84f2abb371f04cef936ea5a2d042289562ee2284", label:"Setor Sorocaba"}
+];
+async function _sha256(str){ const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)); return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join(''); }
+function _currentAcc(){ let h=''; try{ h=localStorage.getItem('ferretti-campanha-acc')||''; }catch(e){} return h ? ACESSOS.find(a=>a.h===h) : null; }
+function resolveAuth(){
+  const acc=_currentAcc();
+  const who=document.getElementById('authWho'), icon=document.getElementById('authIcon'), btn=document.getElementById('authBtn');
+  if(acc){ icon.textContent='🔓'; who.textContent=acc.label; btn.textContent='Trocar senha'; }
+  else { icon.textContent='🔒'; who.textContent='Sem acesso salvo'; btn.textContent='Entrar'; }
+}
+const _hubGate=document.getElementById('hubGate');
+function openHubGate(){ document.getElementById('hubGateErr').textContent=''; document.getElementById('hubGateInput').value=''; _hubGate.style.display='flex'; setTimeout(()=>document.getElementById('hubGateInput').focus(),30); }
+function closeHubGate(){ _hubGate.style.display='none'; }
+async function _hubTry(){
+  const err=document.getElementById('hubGateErr');
+  const pwd=(document.getElementById('hubGateInput').value||'').trim().toLowerCase();
+  if(!pwd){ err.textContent='Digite a senha.'; return; }
+  const h=await _sha256(pwd);
+  const acc=ACESSOS.find(a=>a.h===h);
+  if(!acc){ err.textContent='Senha inválida.'; return; }
+  try{ localStorage.setItem('ferretti-campanha-acc', h); }catch(e){}
+  resolveAuth(); closeHubGate();
+}
+document.getElementById('authBtn').addEventListener('click', openHubGate);
+document.getElementById('hubGateBtn').addEventListener('click', _hubTry);
+document.getElementById('hubGateInput').addEventListener('keydown', e=>{ if(e.key==='Enter') _hubTry(); });
+document.getElementById('hubGateClear').addEventListener('click', ()=>{ try{ localStorage.removeItem('ferretti-campanha-acc'); }catch(e){} resolveAuth(); closeHubGate(); });
+_hubGate.addEventListener('click', e=>{ if(e.target===_hubGate) closeHubGate(); });
+resolveAuth();
 </script>
 </body>
 </html>
