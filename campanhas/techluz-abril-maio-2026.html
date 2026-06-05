@@ -180,13 +180,13 @@ body.locked{overflow:hidden}
   </section>
 
   <section id="podiumSec">
-    <h2><span class="bar"></span>Pódio — Concorre sozinho</h2>
+    <h2><span class="bar"></span>Pódio — Prêmio individual</h2>
     <p class="lead">Maiores prêmios individuais apurados até o momento.</p>
     <div class="podium" id="podium"></div>
   </section>
 
   <section id="rankSec">
-    <h2><span class="bar"></span><span id="rankTitle">Resultado — Concorre sozinho</span></h2>
+    <h2><span class="bar"></span><span id="rankTitle">Resultado — Prêmio individual</span></h2>
     <p class="lead" id="rankLead">Vendas e prêmio por vendedor no período apurado.</p>
     <div class="tbl"><table>
       <thead><tr><th class="pos">#</th><th>Vendedor</th><th>Regional</th><th>Setor</th><th>Vendas</th><th>Prêmio</th></tr></thead>
@@ -196,7 +196,7 @@ body.locked{overflow:hidden}
 
   <section id="regSec">
     <h2><span class="bar"></span>Premiação por regional</h2>
-    <p class="lead">Modalidades de equipe sobre o faturamento da regional.</p>
+    <p class="lead">Prêmios de equipe sobre o faturamento da regional.</p>
     <div class="reg-grid" id="regGrid"></div>
     <div class="note" id="regNote"></div>
   </section>
@@ -230,12 +230,12 @@ const CAMPANHA = {
     {de:"R$ 15.000,00", ate:"R$ 19.999,99", premio:"R$ 1.350,00"},
     {de:"R$ 20.000,00", ate:"R$ 24.999,99", premio:"R$ 1.900,00"},
     {de:"R$ 25.000,00", ate:"", premio:"R$ 2.500,00", top:false},
-    {de:"A partir de R$ 25.001,00", ate:"", premio:"10% sobre toda a venda", top:true}
+    {de:"A partir de R$ 25.001,00", ate:"", premio:"Prêmio de 10% sobre toda a venda", top:true}
   ],
   modalidades: [
-    {classe:"m1", nivel:1, tag:"Vendedor", titulo:"Concorre sozinho", texto:"Percentual sobre o seu faturamento — quanto maior a venda, maior o %. Veja a tabela de faixas abaixo."},
-    {classe:"m2", nivel:2, tag:"Gestor / Regional", titulo:"2% da regional", texto:"2% sobre todo o faturamento da sua regional, desde que ultrapasse R$ 50.000,00 no período."},
-    {classe:"m3", nivel:3, tag:"Gerência", titulo:"1,5% da regional", texto:"1,5% sobre todo o faturamento da regional, desde que ultrapasse R$ 100.000,00 no período."}
+    {classe:"m1", nivel:1, tag:"Vendedor", titulo:"Prêmio individual", texto:"Prêmio em % sobre o seu faturamento — quanto maior a venda, maior o prêmio. Veja a tabela de faixas abaixo."},
+    {classe:"m2", nivel:2, tag:"Gestor / Regional", titulo:"Prêmio: 2% da regional", texto:"Prêmio de 2% sobre todo o faturamento da sua regional, desde que ultrapasse R$ 50.000,00 no período."},
+    {classe:"m3", nivel:3, tag:"Gerência", titulo:"Prêmio: 1,5% da regional", texto:"Prêmio de 1,5% sobre todo o faturamento da regional, desde que ultrapasse R$ 100.000,00 no período."}
   ],
   ranking: [
     {nome:"CASTRO", regional:"SUL", setor:"Jundiaí", vendas:24169.32, premio:1900},
@@ -257,11 +257,11 @@ const CAMPANHA = {
     {nome:"EDUARDO", regional:"GERÊNCIA", setor:"Contas Chaves", vendas:0, premio:0}
   ],
   regionais: [
-    {modalidade:"2% do total (gatilho R$ 50.000,00)", nome:"LOPES", regional:"NORDESTE", vendas:88234.34, premio:1764.69},
-    {modalidade:"2% do total (gatilho R$ 50.000,00)", nome:"RANGEL", regional:"SUL", vendas:70838.86, premio:1416.78},
-    {modalidade:"1,5% do total (gatilho R$ 100.000,00)", nome:"PAULO (Gerência)", regional:"GERÊNCIA", vendas:159073.20, premio:2386.10}
+    {modalidade:"Prêmio: 2% do total (gatilho R$ 50.000,00)", nome:"LOPES", regional:"NORDESTE", vendas:88234.34, premio:1764.69},
+    {modalidade:"Prêmio: 2% do total (gatilho R$ 50.000,00)", nome:"RANGEL", regional:"SUL", vendas:70838.86, premio:1416.78},
+    {modalidade:"Prêmio: 1,5% do total (gatilho R$ 100.000,00)", nome:"PAULO (Gerência)", regional:"GERÊNCIA", vendas:159073.20, premio:2386.10}
   ],
-  regNote: "Faturamento total acumulado no período: R$ 159.073,20. Atingido o gatilho, o percentual incide sobre todo o faturamento da regional. NORDESTE: 2% de R$ 88.234,34 = R$ 1.764,69. SUL: 2% de R$ 70.838,86 = R$ 1.416,78. Gerência: 1,5% de R$ 159.073,20 = R$ 2.386,10."
+  regNote: "Faturamento total acumulado no período: R$ 159.073,20. Atingido o gatilho, o prêmio incide sobre todo o faturamento da regional. NORDESTE: 2% de R$ 88.234,34 = R$ 1.764,69. SUL: 2% de R$ 70.838,86 = R$ 1.416,78. Gerência: 1,5% de R$ 159.073,20 = R$ 2.386,10."
 };
 
 const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
@@ -327,9 +327,7 @@ function applyScope(acc){
 
   // "Como funciona": mostra só as modalidades até o nível do acesso
   const mods = C.modalidades.filter(m => (m.nivel||1) <= nivel);
-  document.getElementById('mecLead').textContent = mods.length===1
-    ? "Veja como você ganha nesta campanha:"
-    : "São " + mods.length + " formas de ganhar nesta campanha:";
+  const _ml = document.getElementById('mecLead'); if(_ml){ _ml.textContent=''; _ml.style.display='none'; }
   document.getElementById('mods').innerHTML = mods.map(m=>
     `<div class="mod ${m.classe}"><span class="tag">${m.tag}</span><h3>${m.titulo}</h3><p>${m.texto}</p></div>`).join('');
 
@@ -394,14 +392,17 @@ async function _tryAuth(){
   const acc = ACESSOS.find(a=>a.h===h);
   if(!acc){ err.textContent = 'Senha inválida.'; return; }
   err.textContent = '';
+  try{ localStorage.setItem('ferretti-campanha-acc', h); }catch(e){}
   applyScope(acc);
   document.body.classList.remove('locked');
   document.getElementById('gate').classList.add('hidden');
 }
 document.getElementById('gateBtn').addEventListener('click', _tryAuth);
 document.getElementById('gateInput').addEventListener('keydown', e=>{ if(e.key==='Enter') _tryAuth(); });
-document.getElementById('scopeChange').addEventListener('click', ()=>location.reload());
+document.getElementById('scopeChange').addEventListener('click', ()=>{ try{ localStorage.removeItem('ferretti-campanha-acc'); }catch(e){} location.reload(); });
 document.getElementById('gateInput').focus();
+// Login persistente: se já houver uma senha válida salva neste navegador, entra direto.
+(function(){ let h=''; try{ h=localStorage.getItem('ferretti-campanha-acc')||''; }catch(e){} if(!h) return; const acc=ACESSOS.find(a=>a.h===h); if(!acc) return; applyScope(acc); document.body.classList.remove('locked'); document.getElementById('gate').classList.add('hidden'); })();
 
 // ===== Exportar resultado para .xlsx (visual, respeita o escopo da senha) =====
 // Genérico: detecta o modelo da mecânica — por CAIXA (C.precos) ou por FATURAMENTO (C.faixas).
@@ -422,7 +423,7 @@ function _loadExcelJS(){
 async function _buildWorkbook(){
   const view = LAST_VIEW || {rank:C.ranking, regs:C.regionais, nivel:3, acc:{label:'Todos os dados'}, mods:C.modalidades};
   const MODELO_CAIXA = !!C.precos;            // por caixa (ex.: KINLIMP); senão por faturamento (ex.: TechLuz)
-  const AZUL='FF2B2FA8', LIGHT='FFEEF0FF', ZEBRA='FFF7F8FE', WIN='FFEAFBF0', TOTAL='FFE6ECFF', GREEN='FF1F9D45', MUTED='FF6B6F8A', LINE='FFE0E3F0';
+  const AZUL='FF2B2FA8', LIGHT='FFEEF0FF', ZEBRA='FFF7F8FE', WIN='FFEAFBF0', TOTAL='FFE6ECFF', GREEN='FF1F9D45', MUTED='FF6B6F8A', LINE='FFE0E3F0', RED='FFFAD4D4', REDTX='FFB02A37';
   const FMT_MONEY = '"R$"\\ #,##0.00', FMT_INT = '#,##0';
 
   const wb = new ExcelJS.Workbook();
@@ -430,9 +431,9 @@ async function _buildWorkbook(){
   const ws = wb.addWorksheet('Resultado', {views:[{showGridLines:false}], pageSetup:{fitToPage:true,fitToWidth:1,fitToHeight:0,orientation:'portrait'}});
 
   const headerRow = MODELO_CAIXA
-    ? ['#','Vendedor','Regional','Setor','Caixas 1 L','Caixas 500 ML','Total cx','Prêmio']
-    : ['#','Vendedor','Regional','Setor','Vendas','Prêmio'];
-  const widths = MODELO_CAIXA ? [5,24,15,22,12,14,11,15] : [5,24,15,24,16,16];
+    ? ['#','Vendedor','Regional','Setor','Caixas 1 L','Caixas 500 ML','Total cx','Prêmio','Motivo']
+    : ['#','Vendedor','Regional','Setor','Vendas','Prêmio','Motivo'];
+  const widths = MODELO_CAIXA ? [5,24,15,22,12,14,11,15,32] : [5,24,15,24,16,16,32];
   const NC = headerRow.length;
   widths.forEach((w,i)=>ws.getColumn(i+1).width=w);
 
@@ -479,27 +480,33 @@ async function _buildWorkbook(){
 
   // Resultado (ranking)
   sectionHeader(MODELO_CAIXA ? 'RESULTADO — PRÊMIO POR CAIXA' : 'RESULTADO');
-  headerRow.forEach((t,i)=>{ const cc=ws.getCell(r,i+1); cc.value=t; cc.font={bold:true,color:{argb:AZUL}}; fill(cc,LIGHT); thin(cc); cc.alignment={horizontal:(i===0?'center':(i>=4?'right':'left'))}; });
+  headerRow.forEach((t,i)=>{ const cc=ws.getCell(r,i+1); cc.value=t; cc.font={bold:true,color:{argb:AZUL}}; fill(cc,LIGHT); thin(cc); cc.alignment={horizontal:(i===0?'center':((i>=4&&i<NC-1)?'right':'left'))}; });
   r++;
   const totVal = MODELO_CAIXA ? (x=>x.cx1+x.cx5) : (x=>x.vendas);
   const rankSorted = [...view.rank].sort((a,b)=>totVal(b)-totVal(a));
+  const motivoFn = MODELO_CAIXA
+    ? (rr=> rr.premio>0 ? '' : 'Não atingiu o prêmio mínimo (R$ 200,00)')
+    : (rr=> rr.premio>0 ? '' : 'Vendas abaixo da faixa mínima (R$ 3.500,00)');
+  const PCOL = MODELO_CAIXA ? 7 : 5, MCOL = NC-1;
   let t1=0,t5=0,tv=0,tp=0;
   rankSorted.forEach((rr,i)=>{
-    const vals = MODELO_CAIXA ? [i+1,rr.nome,rr.regional,rr.setor,rr.cx1,rr.cx5,rr.cx1+rr.cx5,rr.premio]
-                              : [i+1,rr.nome,rr.regional,rr.setor,rr.vendas,rr.premio];
+    const vals = (MODELO_CAIXA ? [i+1,rr.nome,rr.regional,rr.setor,rr.cx1,rr.cx5,rr.cx1+rr.cx5,rr.premio]
+                              : [i+1,rr.nome,rr.regional,rr.setor,rr.vendas,rr.premio]).concat([motivoFn(rr)]);
     t1+=rr.cx1||0; t5+=rr.cx5||0; tv+=rr.vendas||0; tp+=rr.premio||0;
     const win = rr.premio>0;
     vals.forEach((v,ci)=>{
       const cc=ws.getCell(r,ci+1); cc.value=v; thin(cc);
-      cc.alignment={horizontal:(ci===0?'center':(ci>=4?'right':'left'))};
-      if(win) fill(cc,WIN); else if(i%2===1) fill(cc,ZEBRA);
-      if(MODELO_CAIXA){ if(ci>=4&&ci<=6) cc.numFmt=FMT_INT; if(ci===7){ cc.numFmt=FMT_MONEY; cc.font={bold:true,color:{argb:win?GREEN:MUTED}}; } }
-      else { if(ci===4) cc.numFmt=FMT_MONEY; if(ci===5){ cc.numFmt=FMT_MONEY; cc.font={bold:true,color:{argb:win?GREEN:MUTED}}; } }
+      const isMoneyCol = ci>=4 && ci<MCOL;
+      cc.alignment={horizontal:(ci===0?'center':(isMoneyCol?'right':'left')), wrapText:(ci===MCOL)};
+      if(win) fill(cc,WIN); else fill(cc,RED);
+      if(MODELO_CAIXA){ if(ci>=4&&ci<=6) cc.numFmt=FMT_INT; } else { if(ci===4) cc.numFmt=FMT_MONEY; }
+      if(ci===PCOL){ cc.numFmt=FMT_MONEY; cc.font={bold:true,color:{argb:win?GREEN:REDTX}}; }
+      if(ci===MCOL && !win){ cc.font={italic:true,color:{argb:REDTX}}; }
     });
     r++;
   });
   // Total
-  const totRow = MODELO_CAIXA ? ['','TOTAL','','',t1,t5,t1+t5,tp] : ['','TOTAL','','',tv,tp];
+  const totRow = (MODELO_CAIXA ? ['','TOTAL','','',t1,t5,t1+t5,tp] : ['','TOTAL','','',tv,tp]).concat(['']);
   totRow.forEach((v,ci)=>{ const cc=ws.getCell(r,ci+1); cc.value=v; thin(cc); fill(cc,TOTAL); cc.font={bold:true}; cc.alignment={horizontal:(ci>=4?'right':'left')};
     if(MODELO_CAIXA){ if(ci>=4&&ci<=6) cc.numFmt=FMT_INT; if(ci===7) cc.numFmt=FMT_MONEY; } else { if(ci>=4) cc.numFmt=FMT_MONEY; }
   });

@@ -188,7 +188,7 @@ body.locked{overflow:hidden}
 
   <section id="regSec">
     <h2><span class="bar"></span>Premiação dos gestores</h2>
-    <p class="lead">5% sobre o faturamento de introdução total da regional.</p>
+    <p class="lead">Prêmio de 5% sobre o faturamento de introdução total da regional.</p>
     <div class="reg-grid" id="regGrid"></div>
     <div class="note" id="regNote"></div>
   </section>
@@ -206,7 +206,7 @@ body.locked{overflow:hidden}
 const CAMPANHA = {
   parceiro: "MULTIONIC",
   titulo: "Concurso Multionic",
-  subtitulo: "Introduza a linha Multionic e ganhe: 10% sobre o seu faturamento de introdução. Os gestores ganham 5% sobre a introdução da equipe.",
+  subtitulo: "Introduza a linha Multionic e concorra ao prêmio de 10% sobre o seu faturamento de introdução. Os gestores recebem prêmio de 5% sobre a introdução da equipe.",
   periodo: "Abril e Maio / 2026",
   inicio: "01/04/2026",
   termino: "29/05/2026",
@@ -215,12 +215,12 @@ const CAMPANHA = {
   resultadoAte: "29/05/2026",
   atualizadoEm: "03/06/2026",
   percentuais: [
-    {who:"Vendedor", big:"10%", desc:"sobre a sua introdução"},
-    {who:"Gestor / Regional", big:"5%", desc:"sobre a introdução da equipe"}
+    {who:"Vendedor", big:"10%", desc:"de prêmio sobre a sua introdução"},
+    {who:"Gestor / Regional", big:"5%", desc:"de prêmio sobre a introdução da equipe"}
   ],
   modalidades: [
-    {classe:"m1", nivel:1, tag:"Vendedor", titulo:"10% da sua introdução", texto:"Você recebe 10% sobre o seu faturamento de INTRODUÇÃO da linha Multionic no período. Prêmio mínimo de R$ 200,00 para receber (abaixo disso não há pagamento)."},
-    {classe:"m2", nivel:2, tag:"Gestor / Regional", titulo:"5% da equipe", texto:"O gestor recebe 5% sobre o faturamento de introdução TOTAL da sua equipe (regional) no período."}
+    {classe:"m1", nivel:1, tag:"Vendedor", titulo:"Prêmio: 10% da sua introdução", texto:"Você recebe um prêmio de 10% sobre o seu faturamento de INTRODUÇÃO da linha Multionic no período. Prêmio mínimo de R$ 200,00 para receber (abaixo disso não há prêmio)."},
+    {classe:"m2", nivel:2, tag:"Gestor / Regional", titulo:"Prêmio: 5% da equipe", texto:"O gestor recebe um prêmio de 5% sobre o faturamento de introdução TOTAL da sua equipe (regional) no período."}
   ],
   ranking: [
     {nome:"Ribeirão Preto",  regional:"NORDESTE", setor:"Ribeirão Preto",  vendas:21073.46, premio:2107.35},
@@ -242,10 +242,10 @@ const CAMPANHA = {
     {nome:"Indaiatuba",      regional:"SUL",      setor:"Indaiatuba",      vendas:3965.92,  premio:396.59}
   ],
   regionais: [
-    {modalidade:"5% da introdução da equipe", nome:"Equipe Nordeste", regional:"NORDESTE", vendas:64189.40, premio:3209.47},
-    {modalidade:"5% da introdução da equipe", nome:"Equipe Sul",      regional:"SUL",      vendas:48701.34, premio:2435.07}
+    {modalidade:"Prêmio: 5% da introdução da equipe", nome:"Equipe Nordeste", regional:"NORDESTE", vendas:64189.40, premio:3209.47},
+    {modalidade:"Prêmio: 5% da introdução da equipe", nome:"Equipe Sul",      regional:"SUL",      vendas:48701.34, premio:2435.07}
   ],
-  regNote: "Cada gestor recebe 5% sobre o faturamento de introdução total da sua equipe (regional) no período. Introdução total da campanha: R$ 208.178,18."
+  regNote: "Cada gestor recebe um prêmio de 5% sobre o faturamento de introdução total da sua equipe (regional) no período. Introdução total da campanha: R$ 208.178,18."
 };
 
 const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
@@ -307,9 +307,7 @@ function applyScope(acc){
 
   // "Como funciona": mostra só as modalidades até o nível do acesso
   const mods = C.modalidades.filter(m => (m.nivel||1) <= nivel);
-  document.getElementById('mecLead').textContent = mods.length===1
-    ? "Veja como você ganha nesta campanha:"
-    : "São " + mods.length + " formas de ganhar nesta campanha:";
+  const _ml = document.getElementById('mecLead'); if(_ml){ _ml.textContent=''; _ml.style.display='none'; }
   document.getElementById('mods').innerHTML = mods.map(m=>
     `<div class="mod ${m.classe}"><span class="tag">${m.tag}</span><h3>${m.titulo}</h3><p>${m.texto}</p></div>`).join('');
 
@@ -374,14 +372,17 @@ async function _tryAuth(){
   const acc = ACESSOS.find(a=>a.h===h);
   if(!acc){ err.textContent = 'Senha inválida.'; return; }
   err.textContent = '';
+  try{ localStorage.setItem('ferretti-campanha-acc', h); }catch(e){}
   applyScope(acc);
   document.body.classList.remove('locked');
   document.getElementById('gate').classList.add('hidden');
 }
 document.getElementById('gateBtn').addEventListener('click', _tryAuth);
 document.getElementById('gateInput').addEventListener('keydown', e=>{ if(e.key==='Enter') _tryAuth(); });
-document.getElementById('scopeChange').addEventListener('click', ()=>location.reload());
+document.getElementById('scopeChange').addEventListener('click', ()=>{ try{ localStorage.removeItem('ferretti-campanha-acc'); }catch(e){} location.reload(); });
 document.getElementById('gateInput').focus();
+// Login persistente: se já houver uma senha válida salva neste navegador, entra direto.
+(function(){ let h=''; try{ h=localStorage.getItem('ferretti-campanha-acc')||''; }catch(e){} if(!h) return; const acc=ACESSOS.find(a=>a.h===h); if(!acc) return; applyScope(acc); document.body.classList.remove('locked'); document.getElementById('gate').classList.add('hidden'); })();
 
 // ===== Exportar resultado para .xlsx (visual, respeita o escopo da senha) =====
 let _exceljsPromise = null;
@@ -400,15 +401,15 @@ function _loadExcelJS(){
 
 async function _buildWorkbook(){
   const view = LAST_VIEW || {rank:C.ranking, regs:C.regionais, nivel:3, acc:{label:'Todos os dados'}, mods:C.modalidades};
-  const AZUL='FF2B2FA8', LIGHT='FFEEF0FF', ZEBRA='FFF7F8FE', WIN='FFEAFBF0', TOTAL='FFE6ECFF', GREEN='FF1F9D45', MUTED='FF6B6F8A', LINE='FFE0E3F0';
+  const AZUL='FF2B2FA8', LIGHT='FFEEF0FF', ZEBRA='FFF7F8FE', WIN='FFEAFBF0', TOTAL='FFE6ECFF', GREEN='FF1F9D45', MUTED='FF6B6F8A', LINE='FFE0E3F0', RED='FFFAD4D4', REDTX='FFB02A37';
   const FMT_MONEY = '"R$"\\ #,##0.00';
 
   const wb = new ExcelJS.Workbook();
   wb.creator = 'Ferretti distribuidora';
   const ws = wb.addWorksheet('Resultado', {views:[{showGridLines:false}], pageSetup:{fitToPage:true,fitToWidth:1,fitToHeight:0,orientation:'portrait'}});
 
-  const headerRow = ['#','Setor','Regional','Introdução','Prêmio (10%)'];
-  const widths = [5,24,15,18,16];
+  const headerRow = ['#','Setor','Regional','Introdução','Prêmio (10%)','Motivo'];
+  const widths = [5,24,15,18,16,32];
   const NC = headerRow.length;
   widths.forEach((w,i)=>ws.getColumn(i+1).width=w);
 
@@ -443,26 +444,30 @@ async function _buildWorkbook(){
 
   // Resultado (ranking)
   sectionHeader('RESULTADO — INTRODUÇÃO POR SETOR');
-  headerRow.forEach((t,i)=>{ const cc=ws.getCell(r,i+1); cc.value=t; cc.font={bold:true,color:{argb:AZUL}}; fill(cc,LIGHT); thin(cc); cc.alignment={horizontal:(i===0?'center':(i>=3?'right':'left'))}; });
+  headerRow.forEach((t,i)=>{ const cc=ws.getCell(r,i+1); cc.value=t; cc.font={bold:true,color:{argb:AZUL}}; fill(cc,LIGHT); thin(cc); cc.alignment={horizontal:(i===0?'center':((i>=3&&i<NC-1)?'right':'left'))}; });
   r++;
   const rankSorted = [...view.rank].sort((a,b)=>b.vendas-a.vendas);
+  const motivoFn = (rr=> rr.premio>0 ? '' : 'Não atingiu o prêmio mínimo (R$ 200,00)');
+  const MCOL = NC-1;
   let tv=0,tp=0;
   rankSorted.forEach((rr,i)=>{
-    const vals = [i+1,rr.nome,rr.regional,rr.vendas,rr.premio];
+    const vals = [i+1,rr.nome,rr.regional,rr.vendas,rr.premio,motivoFn(rr)];
     tv+=rr.vendas||0; tp+=rr.premio||0;
     const win = rr.premio>0;
     vals.forEach((v,ci)=>{
       const cc=ws.getCell(r,ci+1); cc.value=v; thin(cc);
-      cc.alignment={horizontal:(ci===0?'center':(ci>=3?'right':'left'))};
-      if(win) fill(cc,WIN); else if(i%2===1) fill(cc,ZEBRA);
+      const isMoneyCol = ci>=3 && ci<MCOL;
+      cc.alignment={horizontal:(ci===0?'center':(isMoneyCol?'right':'left')), wrapText:(ci===MCOL)};
+      if(win) fill(cc,WIN); else fill(cc,RED);
       if(ci===3) cc.numFmt=FMT_MONEY;
-      if(ci===4){ cc.numFmt=FMT_MONEY; cc.font={bold:true,color:{argb:win?GREEN:MUTED}}; }
+      if(ci===4){ cc.numFmt=FMT_MONEY; cc.font={bold:true,color:{argb:win?GREEN:REDTX}}; }
+      if(ci===MCOL && !win){ cc.font={italic:true,color:{argb:REDTX}}; }
     });
     r++;
   });
   // Total
-  ['','TOTAL','',tv,tp].forEach((v,ci)=>{ const cc=ws.getCell(r,ci+1); cc.value=v; thin(cc); fill(cc,TOTAL); cc.font={bold:true}; cc.alignment={horizontal:(ci>=3?'right':'left')};
-    if(ci>=3) cc.numFmt=FMT_MONEY;
+  ['','TOTAL','',tv,tp,''].forEach((v,ci)=>{ const cc=ws.getCell(r,ci+1); cc.value=v; thin(cc); fill(cc,TOTAL); cc.font={bold:true}; cc.alignment={horizontal:((ci>=3&&ci<NC-1)?'right':'left')};
+    if(ci===3||ci===4) cc.numFmt=FMT_MONEY;
   });
   r+=2;
 

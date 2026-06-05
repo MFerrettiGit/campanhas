@@ -174,7 +174,8 @@
 
   // ---------- montagem do workbook ----------
   var AZUL = "FF2B2FA8", LIGHT = "FFEEF0FF", ZEBRA = "FFF7F8FE", WIN = "FFEAFBF0",
-      TOTAL = "FFE6ECFF", GREEN = "FF1F9D45", MUTED = "FF6B6F8A", LINE = "FFE0E3F0", WHITE = "FFFFFFFF";
+      TOTAL = "FFE6ECFF", GREEN = "FF1F9D45", MUTED = "FF6B6F8A", LINE = "FFE0E3F0", WHITE = "FFFFFFFF",
+      RED = "FFFAD4D4", REDTX = "FFB02A37";
   var FMT_MONEY = '"R$"\\ #,##0.00', FMT_INT = "#,##0";
 
   function styleHelpers(ws) {
@@ -260,9 +261,9 @@
     var ws = wb.addWorksheet(camp.nome.toUpperCase().substring(0, 31), { views: [{ showGridLines: false }], pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0, orientation: "portrait" } });
     var H = styleHelpers(ws);
     var head = CAIXA
-      ? ["Regional", "Setor", "Nome", "Caixas 1 L", "Caixas 500 ML", "Total cx", "Prêmio"]
-      : ["Regional", "Setor", "Nome", camp.base, "Prêmio"];
-    var widths = CAIXA ? [14, 20, 16, 12, 14, 11, 15] : [14, 20, 16, 16, 15];
+      ? ["Regional", "Setor", "Nome", "Caixas 1 L", "Caixas 500 ML", "Total cx", "Prêmio", "Motivo"]
+      : ["Regional", "Setor", "Nome", camp.base, "Prêmio", "Motivo"];
+    var widths = CAIXA ? [14, 20, 16, 12, 14, 11, 15, 30] : [14, 20, 16, 16, 15, 30];
     var NC = head.length;
     widths.forEach(function (w, i) { ws.getColumn(i + 1).width = w; });
 
@@ -276,27 +277,35 @@
 
     head.forEach(function (t, i) {
       var cc = ws.getCell(r, i + 1); cc.value = t; cc.font = { bold: true, color: { argb: AZUL } }; H.fill(cc, LIGHT); H.thin(cc);
-      cc.alignment = { horizontal: (i >= 3 ? "right" : "left") };
+      cc.alignment = { horizontal: (i >= 3 && i < NC - 1 ? "right" : "left") };
     });
     r++;
 
     var rankSorted = camp.ranking.slice().sort(function (a, b) { return (b.premio || 0) - (a.premio || 0); });
+    var PCOL = CAIXA ? 6 : 4, MCOL = NC - 1;
+    var motivoFn = function (rr) {
+      if ((rr.premio || 0) > 0) return "";
+      return camp.modelo === "faturamento" ? "Vendas abaixo da faixa mínima (R$ 3.500,00)" : "Não atingiu o prêmio mínimo (R$ 200,00)";
+    };
     var t1 = 0, t5 = 0, tv = 0, tp = 0;
     rankSorted.forEach(function (rr, i) {
       var win = (rr.premio || 0) > 0;
-      var vals = CAIXA
+      var vals = (CAIXA
         ? [rr.regional, rr.setor, nomeSetor(rr.setor), rr.cx1, rr.cx5, (rr.cx1 + rr.cx5), rr.premio]
-        : [rr.regional, rr.setor, nomeSetor(rr.setor), rr.vendas, rr.premio];
+        : [rr.regional, rr.setor, nomeSetor(rr.setor), rr.vendas, rr.premio]).concat([motivoFn(rr)]);
       t1 += rr.cx1 || 0; t5 += rr.cx5 || 0; tv += rr.vendas || 0; tp += rr.premio || 0;
       vals.forEach(function (v, ci) {
-        var cc = ws.getCell(r, ci + 1); cc.value = v; H.thin(cc); cc.alignment = { horizontal: (ci >= 3 ? "right" : "left") };
-        if (win) H.fill(cc, WIN); else if (i % 2 === 1) H.fill(cc, ZEBRA);
-        if (CAIXA) { if (ci >= 3 && ci <= 5) cc.numFmt = FMT_INT; if (ci === 6) { cc.numFmt = FMT_MONEY; cc.font = { bold: true, color: { argb: win ? GREEN : MUTED } }; } }
-        else { if (ci === 3) cc.numFmt = FMT_MONEY; if (ci === 4) { cc.numFmt = FMT_MONEY; cc.font = { bold: true, color: { argb: win ? GREEN : MUTED } }; } }
+        var cc = ws.getCell(r, ci + 1); cc.value = v; H.thin(cc);
+        var isMoneyCol = ci >= 3 && ci < MCOL;
+        cc.alignment = { horizontal: (isMoneyCol ? "right" : "left"), wrapText: (ci === MCOL) };
+        if (win) H.fill(cc, WIN); else H.fill(cc, RED);
+        if (CAIXA) { if (ci >= 3 && ci <= 5) cc.numFmt = FMT_INT; } else { if (ci === 3) cc.numFmt = FMT_MONEY; }
+        if (ci === PCOL) { cc.numFmt = FMT_MONEY; cc.font = { bold: true, color: { argb: win ? GREEN : REDTX } }; }
+        if (ci === MCOL && !win) { cc.font = { italic: true, color: { argb: REDTX } }; }
       });
       r++;
     });
-    var totRow = CAIXA ? ["TOTAL", "", "", t1, t5, (t1 + t5), tp] : ["TOTAL", "", "", tv, tp];
+    var totRow = (CAIXA ? ["TOTAL", "", "", t1, t5, (t1 + t5), tp] : ["TOTAL", "", "", tv, tp]).concat([""]);
     totRow.forEach(function (v, ci) {
       var cc = ws.getCell(r, ci + 1); cc.value = v; H.thin(cc); H.fill(cc, TOTAL); cc.font = { bold: true }; cc.alignment = { horizontal: (ci >= 3 ? "right" : "left") };
       if (CAIXA) { if (ci >= 3 && ci <= 5) cc.numFmt = FMT_INT; if (ci === 6) cc.numFmt = FMT_MONEY; } else { if (ci >= 3) cc.numFmt = FMT_MONEY; }
