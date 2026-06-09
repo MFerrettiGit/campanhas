@@ -49,29 +49,29 @@
           "Gestor: 2% do faturamento da regional (gatilho R$ 50.000,00). Gerência: 1,5% (gatilho R$ 100.000,00)."
         ],
         ranking: [
-          { setor: "Jundiaí",          regional: "SUL",      vendas: 24169.32, premio: 1900 },
+          { setor: "Jundiaí", regional: "SUL", vendas: 24169.32, premio: 1900 },
           { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 23014.06, premio: 1900 },
-          { setor: "São Carlos",       regional: "NORDESTE", vendas: 19037.67, premio: 1350 },
-          { setor: "Sorocaba",         regional: "SUL",      vendas: 12937.31, premio: 900 },
-          { setor: "S.J. Boa Vista",   regional: "NORDESTE", vendas: 12192.94, premio: 900 },
-          { setor: "Indaiatuba",       regional: "SUL",      vendas: 10316.33, premio: 900 },
-          { setor: "Rio Claro",        regional: "NORDESTE", vendas: 10122.00, premio: 900 },
-          { setor: "Itapetininga",     regional: "SUL",      vendas: 9556.54,  premio: 700 },
-          { setor: "Ribeirão Preto",   regional: "NORDESTE", vendas: 8470.35,  premio: 700 },
-          { setor: "Circuito",         regional: "NORDESTE", vendas: 7037.95,  premio: 400 },
-          { setor: "Franca",           regional: "NORDESTE", vendas: 6502.35,  premio: 400 },
-          { setor: "Caraguatatuba",    regional: "SUL",      vendas: 4960.92,  premio: 200 },
-          { setor: "Campinas Norte",   regional: "SUL",      vendas: 3218.76,  premio: 0 },
-          { setor: "Atibaia",          regional: "SUL",      vendas: 3171.08,  premio: 0 },
-          { setor: "S.J. dos Campos",  regional: "SUL",      vendas: 2508.60,  premio: 0 },
-          { setor: "Americana",        regional: "NORDESTE", vendas: 1857.02,  premio: 0 },
-          { setor: "Contas Chaves",    regional: "GERÊNCIA", vendas: 0,        premio: 0 }
+          { setor: "São Carlos", regional: "NORDESTE", vendas: 19037.67, premio: 1350 },
+          { setor: "Sorocaba", regional: "SUL", vendas: 12937.31, premio: 900 },
+          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 12192.94, premio: 900 },
+          { setor: "Indaiatuba", regional: "SUL", vendas: 10316.33, premio: 900 },
+          { setor: "Rio Claro", regional: "NORDESTE", vendas: 10122.00, premio: 900 },
+          { setor: "Itapetininga", regional: "SUL", vendas: 9556.54, premio: 700 },
+          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 8470.35, premio: 700 },
+          { setor: "Circuito", regional: "NORDESTE", vendas: 7037.95, premio: 400 },
+          { setor: "Franca", regional: "NORDESTE", vendas: 6502.35, premio: 400 },
+          { setor: "Caraguatatuba", regional: "SUL", vendas: 4960.92, premio: 200 },
+          { setor: "Campinas Norte", regional: "SUL", vendas: 3218.76, premio: 0 },
+          { setor: "Atibaia", regional: "SUL", vendas: 3171.08, premio: 0 },
+          { setor: "S.J. dos Campos", regional: "SUL", vendas: 2508.60, premio: 0 },
+          { setor: "Americana", regional: "NORDESTE", vendas: 1857.02, premio: 0 },
+          { setor: "Contas Chaves", regional: "GERÊNCIA", vendas: 0.00, premio: 0 }
         ],
         regionais: [
           { area: "NORDESTE", vendas: 88234.34, premio: 1764.69 },
-          { area: "SUL",      vendas: 70838.86, premio: 1416.78 }
+          { area: "SUL", vendas: 70838.86, premio: 1416.78 }
         ],
-        gerencia: { vendas: 159073.20, premio: 2386.10 }
+        gerencia: { vendas: 159073.2, premio: 2386.1 }
       },
       {
         key: "KINLIMP", nome: "KINLIMP", modelo: "caixa", base: "Caixas",
@@ -80,27 +80,27 @@
           "Gestor: sobre o total de caixas da regional — 1 L = R$ 2,50/cx e 500 ML = R$ 1,50/cx."
         ],
         ranking: [
-          { setor: "Circuito",         regional: "NORDESTE", cx1: 477, cx5: 42,  premio: 3030 },
-          { setor: "Contas Chaves",    regional: "GERÊNCIA", cx1: 324, cx5: 186, premio: 2688 },
-          { setor: "Atibaia",          regional: "SUL",      cx1: 144, cx5: 79,  premio: 1180 },
-          { setor: "Indaiatuba",       regional: "SUL",      cx1: 102, cx5: 19,  premio: 688 },
-          { setor: "Ribeirão Preto",   regional: "NORDESTE", cx1: 50,  cx5: 45,  premio: 480 },
-          { setor: "S.J. Boa Vista",   regional: "NORDESTE", cx1: 74,  cx5: 8,   premio: 476 },
-          { setor: "Americana",        regional: "NORDESTE", cx1: 62,  cx5: 19,  premio: 448 },
-          { setor: "Franca",           regional: "NORDESTE", cx1: 37,  cx5: 56,  premio: 446 },
-          { setor: "Campinas Norte",   regional: "SUL",      cx1: 40,  cx5: 29,  premio: 356 },
-          { setor: "Jundiaí",          regional: "SUL",      cx1: 33,  cx5: 32,  premio: 326 },
-          { setor: "Rio Claro",        regional: "NORDESTE", cx1: 42,  cx5: 10,  premio: 292 },
-          { setor: "Caraguatatuba",    regional: "SUL",      cx1: 29,  cx5: 21,  premio: 258 },
-          { setor: "Sorocaba",         regional: "SUL",      cx1: 41,  cx5: 2,   premio: 254 },
-          { setor: "São Carlos",       regional: "NORDESTE", cx1: 22,  cx5: 25,  premio: 232 },
-          { setor: "S.J. dos Campos",  regional: "SUL",      cx1: 22,  cx5: 19,  premio: 208 },
-          { setor: "Itapetininga",     regional: "SUL",      cx1: 18,  cx5: 20,  premio: 0 },
-          { setor: "Setor Piracicaba", regional: "NORDESTE", cx1: 16,  cx5: 5,   premio: 0 }
+          { setor: "Circuito", regional: "NORDESTE", cx1: 477, cx5: 42, premio: 3030 },
+          { setor: "Contas Chaves", regional: "GERÊNCIA", cx1: 324, cx5: 186, premio: 2688 },
+          { setor: "Atibaia", regional: "SUL", cx1: 144, cx5: 79, premio: 1180 },
+          { setor: "Indaiatuba", regional: "SUL", cx1: 102, cx5: 19, premio: 688 },
+          { setor: "Ribeirão Preto", regional: "NORDESTE", cx1: 50, cx5: 45, premio: 480 },
+          { setor: "S.J. Boa Vista", regional: "NORDESTE", cx1: 74, cx5: 8, premio: 476 },
+          { setor: "Americana", regional: "NORDESTE", cx1: 62, cx5: 19, premio: 448 },
+          { setor: "Franca", regional: "NORDESTE", cx1: 37, cx5: 56, premio: 446 },
+          { setor: "Campinas Norte", regional: "SUL", cx1: 40, cx5: 29, premio: 356 },
+          { setor: "Jundiaí", regional: "SUL", cx1: 33, cx5: 32, premio: 326 },
+          { setor: "Rio Claro", regional: "NORDESTE", cx1: 42, cx5: 10, premio: 292 },
+          { setor: "Caraguatatuba", regional: "SUL", cx1: 29, cx5: 21, premio: 258 },
+          { setor: "Sorocaba", regional: "SUL", cx1: 41, cx5: 2, premio: 254 },
+          { setor: "São Carlos", regional: "NORDESTE", cx1: 22, cx5: 25, premio: 232 },
+          { setor: "S.J. dos Campos", regional: "SUL", cx1: 22, cx5: 19, premio: 208 },
+          { setor: "Itapetininga", regional: "SUL", cx1: 18, cx5: 20, premio: 0 },
+          { setor: "Setor Piracicaba", regional: "NORDESTE", cx1: 16, cx5: 5, premio: 0 }
         ],
         regionais: [
           { area: "NORDESTE", cx1: 780, cx5: 210, premio: 2265 },
-          { area: "SUL",      cx1: 429, cx5: 221, premio: 1404 }
+          { area: "SUL", cx1: 429, cx5: 221, premio: 1404 }
         ],
         gerencia: null
       },
@@ -111,27 +111,27 @@
           "Gestor: 5% sobre o faturamento de introdução total da sua equipe (regional)."
         ],
         ranking: [
-          { setor: "Ribeirão Preto",   regional: "NORDESTE", vendas: 21073.46, premio: 2107.35 },
-          { setor: "Circuito",         regional: "NORDESTE", vendas: 16393.06, premio: 1639.31 },
-          { setor: "S.J. Boa Vista",   regional: "NORDESTE", vendas: 8872.74,  premio: 887.27 },
-          { setor: "São Carlos",       regional: "NORDESTE", vendas: 7595.30,  premio: 759.53 },
-          { setor: "Franca",           regional: "NORDESTE", vendas: 4055.17,  premio: 405.52 },
-          { setor: "Americana",        regional: "NORDESTE", vendas: 2131.83,  premio: 213.18 },
-          { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 2002.66,  premio: 200.27 },
-          { setor: "Rio Claro",        regional: "NORDESTE", vendas: 2065.18,  premio: 206.52 },
-          { setor: "Contas Chaves",    regional: "SUDESTE",  vendas: 95287.44, premio: 9528.74 },
-          { setor: "Jundiaí",          regional: "SUL",      vendas: 10274.33, premio: 1027.43 },
-          { setor: "S.J. dos Campos",  regional: "SUL",      vendas: 8699.04,  premio: 869.90 },
-          { setor: "Campinas Norte",   regional: "SUL",      vendas: 7706.21,  premio: 770.62 },
-          { setor: "Atibaia",          regional: "SUL",      vendas: 5384.20,  premio: 538.42 },
-          { setor: "Sorocaba",         regional: "SUL",      vendas: 4532.40,  premio: 453.24 },
-          { setor: "Itapetininga",     regional: "SUL",      vendas: 4085.00,  premio: 408.50 },
-          { setor: "Caraguatatuba",    regional: "SUL",      vendas: 4054.24,  premio: 405.42 },
-          { setor: "Indaiatuba",       regional: "SUL",      vendas: 3965.92,  premio: 396.59 }
+          { setor: "Contas Chaves", regional: "SUDESTE", vendas: 95508.64, premio: 9550.86 },
+          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 20940.46, premio: 2094.05 },
+          { setor: "Circuito", regional: "NORDESTE", vendas: 16393.06, premio: 1639.31 },
+          { setor: "Jundiaí", regional: "SUL", vendas: 10274.33, premio: 1027.43 },
+          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 8872.74, premio: 887.27 },
+          { setor: "S.J. dos Campos", regional: "SUL", vendas: 8699.04, premio: 869.9 },
+          { setor: "Campinas Norte", regional: "SUL", vendas: 7706.21, premio: 770.62 },
+          { setor: "São Carlos", regional: "NORDESTE", vendas: 7595.30, premio: 759.53 },
+          { setor: "Sorocaba", regional: "SUL", vendas: 6412.36, premio: 641.24 },
+          { setor: "Atibaia", regional: "SUL", vendas: 5384.20, premio: 538.42 },
+          { setor: "Itapetininga", regional: "SUL", vendas: 4085.00, premio: 408.5 },
+          { setor: "Franca", regional: "NORDESTE", vendas: 4055.17, premio: 405.52 },
+          { setor: "Caraguatatuba", regional: "SUL", vendas: 4054.24, premio: 405.42 },
+          { setor: "Indaiatuba", regional: "SUL", vendas: 3965.92, premio: 396.59 },
+          { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 2146.46, premio: 214.65 },
+          { setor: "Americana", regional: "NORDESTE", vendas: 2131.83, premio: 213.18 },
+          { setor: "Rio Claro", regional: "NORDESTE", vendas: 2065.18, premio: 206.52 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 64189.40, premio: 3209.47 },
-          { area: "SUL",      vendas: 48701.34, premio: 2435.07 }
+          { area: "NORDESTE", vendas: 64200.20, premio: 3210.01 },
+          { area: "SUL", vendas: 50581.30, premio: 2529.06 }
         ],
         gerencia: null
       }
