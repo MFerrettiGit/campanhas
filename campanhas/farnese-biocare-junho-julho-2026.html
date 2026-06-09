@@ -210,7 +210,7 @@ body.locked{overflow:hidden}
 const CAMPANHA = {
   parceiro: "Farnese Biocare",
   titulo: "Concurso Farnese Biocare",
-  subtitulo: "Prêmio por caixa na Linha Farnese Biocare: cada caixa vendida vale um prêmio, conforme a sua classificação no ranking. Vendedores, gestores e gerentes concorrem — e ainda há o Conta-Chave Farnese R, que premia a abertura de novos clientes.",
+  subtitulo: "Prêmio por caixa na Linha Farnese Biocare: cada caixa vendida vale um prêmio, conforme a sua classificação no ranking. Vendedores, gestores e gerentes concorrem nesta campanha.",
   periodo: "Junho e Julho / 2026",
   inicio: "09/06/2026",
   termino: "31/07/2026",
@@ -239,7 +239,7 @@ const CAMPANHA = {
   ],
   modalidades: [
     {classe:"m1", nivel:1, tag:"Vendedor", titulo:"Concurso de Vendedores", texto:"Distribuir mais, conquistar mais! A classificação é pelo PERCENTUAL DA CARTEIRA DE CADA SETOR. O prêmio é calculado sobre o total de caixas vendidas, conforme a sua posição no ranking — de R$ 10,00 a R$ 18,00 por caixa. Prêmio mínimo de R$ 200,00 (20 caixas) para receber. Desempate: maior número de caixas distribuídas."},
-    {classe:"m1", nivel:1, tag:"Vendedor · Conta-Chave", titulo:"Conta-Chave Farnese R", texto:"Abrir novas portas, criar grandes oportunidades! Prêmio de R$ 500,00 por cada novo cliente aberto com a Linha Farnese R. Limite de 4 clientes na campanha — premiação máxima de R$ 2.000,00."},
+    {classe:"m1", nivel:1, cc:true, tag:"Conta-Chave", titulo:"Conta-Chave Farnese Biocare", texto:"Abrir novas portas, criar grandes oportunidades! Prêmio de R$ 500,00 por cada novo cliente aberto com a Linha Farnese Biocare. Limite de 4 clientes na campanha — premiação máxima de R$ 2.000,00."},
     {classe:"m2", nivel:2, tag:"Gestor", titulo:"Concurso de Gestores", texto:"Liderar, desenvolver e multiplicar resultados! Classificação pelo PERCENTUAL DA CARTEIRA DE CADA SETOR. Prêmio por caixa sobre o total de caixas da equipe: 1º gestor R$ 15,00/cx e 2º gestor R$ 12,00/cx. Prêmio mínimo de R$ 800,00. Desempate: maior número total de caixas distribuídas pela equipe."},
     {classe:"m3", nivel:3, tag:"Gerente", titulo:"Concurso Gerente", texto:"Gestão que lidera, resultados que inspiram! Classificação pelo PERCENTUAL CONSOLIDADO DA CARTEIRA TOTAL DA REGIONAL. Prêmio de R$ 18,00 por caixa sobre o total consolidado de caixas da regional. Prêmio mínimo de R$ 1.600,00. Desempate: maior número total de caixas (consolidado regional)."}
   ],
@@ -270,11 +270,14 @@ function _tierTable(titulo, colEsq, colDir, rows){
     rows.map(r=>`<tr><td class="prod">${r[0]}</td><td class="premio" style="text-align:right">${r[1]}</td></tr>`).join('')+
     `</tbody></table></div>`;
 }
-function renderTiersWrap(nivel){
+function renderTiersWrap(nivel, showCC){
   let html = '';
-  // Vendedores e Conta-Chave: todos os níveis veem (nível 1+)
+  // Concurso de Vendedores: todos os níveis veem
   html += _tierTable('Concurso de Vendedores — Prêmio por caixa', 'Classificação (% da carteira do setor)', 'Prêmio por caixa', C.vendTiers.map(t=>[t.faixa,t.premio]));
-  html += _tierTable('Conta-Chave Farnese R — Prêmio por cliente aberto', 'Novos clientes Farnese R', 'Prêmio acumulado', C.contaChave.map(t=>[t.clientes,t.premio]));
+  // Conta-Chave: só aparece para o setor Contas Chaves (e para a gerência/todos)
+  if(showCC){
+    html += _tierTable('Conta-Chave Farnese Biocare — Prêmio por cliente aberto', 'Novos clientes Farnese Biocare', 'Prêmio acumulado', C.contaChave.map(t=>[t.clientes,t.premio]));
+  }
   // Gestores: nível 2+ (gestor/regional e gerência)
   if(nivel >= 2){
     html += _tierTable('Concurso de Gestores — Prêmio por caixa (equipe)', 'Classificação do gestor', 'Prêmio por caixa', C.gestorTiers.map(t=>[t.pos,t.premio]));
@@ -325,10 +328,12 @@ const _norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[�
 function applyScope(acc){
   // Níveis: setor=1 (vendedor), regional=2 (gestor), todos=3 (gerência)
   const nivel = acc.tipo==='setor' ? 1 : (acc.tipo==='regional' ? 2 : 3);
-  renderTiersWrap(nivel);
+  // Conta-Chave: exclusivo do setor Contas Chaves; a gerência (todos) também vê.
+  const showCC = (acc.tipo==='setor' && _norm(acc.valor)===_norm('Contas Chaves')) || acc.tipo==='todos';
+  renderTiersWrap(nivel, showCC);
 
-  // "Como funciona": mostra só as modalidades até o nível do acesso
-  const mods = C.modalidades.filter(m => (m.nivel||1) <= nivel);
+  // "Como funciona": mostra só as modalidades até o nível do acesso (e a do Conta-Chave só quando showCC)
+  const mods = C.modalidades.filter(m => ((m.nivel||1) <= nivel) && (!m.cc || showCC));
   const _ml = document.getElementById('mecLead'); if(_ml){ _ml.textContent=''; _ml.style.display='none'; }
   document.getElementById('mods').innerHTML = mods.map(m=>
     `<div class="mod ${m.classe}"><span class="tag">${m.tag}</span><h3>${m.titulo}</h3><p>${m.texto}</p></div>`).join('');
@@ -366,6 +371,7 @@ const ACESSOS = [
   {h:"8ab47043ad92392d258a36eaec504a05147d1b3a8ac55cca94009c0debf06426", tipo:"setor", valor:"Contas Chaves", label:"Setor Contas Chaves"},
   {h:"01909b4e129d72d9db19134cdedc4f73c5c6315e6b84553707e7ff94370d7bb9", tipo:"setor", valor:"Americana", label:"Setor Americana"},
   {h:"c6d8f738079870511501f4aa74c7b2f6bc3bbe262a035cf8956242692c0ef9b5", tipo:"setor", valor:"Atibaia", label:"Setor Atibaia"},
+  {h:"5a7e7651a1bce6ec1f356f8874f063fc81b8c1fbf6e57fda545131172095fbd4", tipo:"setor", valor:"Atibaia", label:"Setor Atibaia"},
   {h:"ea5acf9a963a80b8ba33710b18e2cdbf2db4b2858987b82685363758ca48d6b8", tipo:"setor", valor:"Campinas Norte", label:"Setor Campinas Norte"},
   {h:"4c088950123b752060624127c337560aaebfe6be6fc11f01f67fae2acda9de40", tipo:"setor", valor:"Caraguatatuba", label:"Setor Caraguatatuba"},
   {h:"53b55f1377f1fa45810768196a01c492ac8bf6b2fd0b05706b1c8a1d6e01e6ba", tipo:"setor", valor:"Circuito", label:"Setor Circuito"},
