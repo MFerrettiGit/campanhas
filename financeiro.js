@@ -86,8 +86,8 @@
           { setor: "Indaiatuba", regional: "SUL", cx1: 102, cx5: 19, premio: 688 },
           { setor: "Ribeirão Preto", regional: "NORDESTE", cx1: 50, cx5: 45, premio: 480 },
           { setor: "S.J. Boa Vista", regional: "NORDESTE", cx1: 74, cx5: 8, premio: 476 },
-          { setor: "Americana", regional: "NORDESTE", cx1: 62, cx5: 19, premio: 448 },
           { setor: "Franca", regional: "NORDESTE", cx1: 37, cx5: 56, premio: 446 },
+          { setor: "Americana", regional: "NORDESTE", cx1: 62, cx5: 18, premio: 444 },
           { setor: "Campinas Norte", regional: "SUL", cx1: 40, cx5: 29, premio: 356 },
           { setor: "Jundiaí", regional: "SUL", cx1: 33, cx5: 32, premio: 326 },
           { setor: "Rio Claro", regional: "NORDESTE", cx1: 42, cx5: 10, premio: 292 },
@@ -99,7 +99,7 @@
           { setor: "Setor Piracicaba", regional: "NORDESTE", cx1: 16, cx5: 5, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", cx1: 780, cx5: 210, premio: 2265 },
+          { area: "NORDESTE", cx1: 780, cx5: 209, premio: 2263.5 },
           { area: "SUL", cx1: 429, cx5: 221, premio: 1404 }
         ],
         gerencia: null
