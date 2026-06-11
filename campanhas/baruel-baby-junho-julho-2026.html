@@ -208,9 +208,9 @@ const CAMPANHA = {
   periodo: "Junho e Julho / 2026",
   inicio: "01/06/2026",
   termino: "31/07/2026",
-  gatilho: "Mínimo de 20 positivações por mês de cada item",
+  gatilho: "Mínimo de 40 positivações no bimestre de cada item",
   pagamento: "20/08/2026 — no Cartão Premiação",
-  resultadoAte: "11/06/2026 08:01",
+  resultadoAte: "11/06/2026 09:07",
   atualizadoEm: "11/06/2026",
   parcial: true,
   // Prêmio fixo por posição em CADA ranking de produto
@@ -237,7 +237,6 @@ const CAMPANHA = {
     {setor:"Ribeirão Preto",   nome:"FERNANDO",   regional:"NORDESTE"},
     {setor:"S.J. Boa Vista",   nome:"CELIA",      regional:"NORDESTE"},
     {setor:"Setor Piracicaba", nome:"COMINATO",   regional:"NORDESTE"},
-    {setor:"Contas Chaves",    nome:"EDUARDO",    regional:"SUDESTE"},
     {setor:"Atibaia",          nome:"EUGÊNIO",    regional:"SUL"},
     {setor:"Indaiatuba",       nome:"LUCAS",      regional:"SUL"},
     {setor:"Campinas Norte",   nome:"ALAN",       regional:"SUL"},
@@ -249,17 +248,18 @@ const CAMPANHA = {
   ],
   // Positivações apuradas por produto/setor (Junho/2026 — parcial)
   positivacoes: {
-    shs: {"Americana":5, "Rio Claro":4, "S.J. dos Campos":4, "Atibaia":1, "Circuito":1, "Contas Chaves":1, "Franca":1, "Indaiatuba":1, "Jundiaí":1},
+    shs: {"Americana":5, "Rio Claro":4, "S.J. dos Campos":4, "Atibaia":1, "Circuito":1, "Franca":1, "Indaiatuba":1, "Jundiaí":1},
     shr: {"Americana":6, "Franca":2, "Circuito":1, "Ribeirão Preto":1, "Rio Claro":1, "S.J. dos Campos":1, "Setor Piracicaba":1},
-    sab: {"Franca":2, "Americana":1, "Circuito":1, "Contas Chaves":1, "Ribeirão Preto":1, "Rio Claro":1, "São Carlos":1}
+    sab: {"Franca":2, "Americana":1, "Circuito":1, "Ribeirão Preto":1, "Rio Claro":1, "São Carlos":1}
   },
-  // Supervisor por regional (nome do gestor exibido junto da regional líder)
-  supervisores: {"NORDESTE":"LOPES", "SUL":"RANGEL", "SUDESTE":"—"}
+  // Supervisor por regional (nome do gestor exibido junto da regional líder).
+  // SUDESTE não participa do prêmio de gestor.
+  supervisores: {"NORDESTE":"LOPES", "SUL":"RANGEL"}
 };
 
 const brl = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 const C = CAMPANHA;
-const GAT = 20; // gatilho de positivações/mês por item
+const GAT = 40; // gatilho de positivações no bimestre por item
 let LAST_VIEW = null;
 
 document.getElementById('hPartner').textContent = C.parceiro;
@@ -274,16 +274,18 @@ document.getElementById('facts').innerHTML = [
 ].map(f=>`<div class="fact ${f[2]==='live'?'live':''}"><div class="lbl">${f[0]}</div><div class="val ${f[2]==='small'?'small':''}">${f[1]}</div></div>`).join('');
 
 document.getElementById('gatilhoBox').innerHTML =
-  `⚠️ <b>Gatilho:</b> só recebe prêmio quem fizer no mínimo <b>${GAT} positivações por mês</b> de cada item. ` +
-  (C.parcial ? `Esta é a <b>classificação parcial de Junho/2026</b> — os valores ao lado de cada posição são o <b>prêmio previsto</b> e só serão pagos a quem atingir o gatilho.` : '');
+  `⚠️ <b>Gatilho:</b> só recebe prêmio quem fizer no mínimo <b>${GAT} positivações no bimestre</b> de cada item. ` +
+  (C.parcial ? `Esta é a <b>classificação parcial</b> — os valores ao lado de cada posição são o <b>prêmio previsto</b> e só serão pagos a quem atingir o gatilho.` : '');
 
-// Tabela de prêmios (igual para os 3 rankings)
-function renderTiers(){
+// Tabela de prêmios (igual para os 3 rankings). O prêmio de supervisor só
+// aparece para gestor/gerência (nivel >= 2) — vendedor não vê.
+function renderTiers(nivel){
   const rows = C.premiosPos.map((v,i)=>`<tr><td class="prod">${i+1}º colocado</td><td class="premio">${brl(v)}</td></tr>`).join('');
+  const supRow = (nivel>=2)
+    ? `<tr class="sup"><td class="prod">1º Supervisor (por produto)</td><td class="premio">${brl(C.premioSupervisor)}</td></tr>`
+    : '';
   document.getElementById('tiersWrap').innerHTML =
-    `<div class="tiers"><table><thead><tr><th>Posição em cada ranking</th><th>Prêmio</th></tr></thead><tbody>${rows}`+
-    `<tr class="sup"><td class="prod">1º Supervisor (por produto)</td><td class="premio">${brl(C.premioSupervisor)}</td></tr>`+
-    `</tbody></table></div>`;
+    `<div class="tiers"><table><thead><tr><th>Posição em cada ranking</th><th>Prêmio</th></tr></thead><tbody>${rows}${supRow}</tbody></table></div>`;
 }
 
 // Monta o ranking GLOBAL de um produto (posição e prêmio sempre globais)
@@ -348,7 +350,7 @@ const _norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[�
 function applyScope(acc){
   // Níveis: setor=1 (vendedor), regional=2 (gestor), todos=3 (gerência)
   const nivel = acc.tipo==='setor' ? 1 : (acc.tipo==='regional' ? 2 : 3);
-  renderTiers();
+  renderTiers(nivel);
 
   // "Como funciona": mostra só as modalidades até o nível do acesso
   const mods = C.modalidades.filter(m => (m.nivel||1) <= nivel);
@@ -376,7 +378,7 @@ function applyScope(acc){
   } else {
     supSec.style.display = '';
     renderSup(regionaisVisiveis);
-    document.getElementById('supNote').textContent = 'Prêmio de 1º Supervisor (R$ 600) por produto, para a regional com mais positivações do item. Sujeito ao gatilho de '+GAT+' positivações/mês. Valores em ✱ são previstos (campanha em andamento).';
+    document.getElementById('supNote').textContent = 'Prêmio de 1º Supervisor (R$ 600) por produto, para a regional com mais positivações do item. Sujeito ao gatilho de '+GAT+' positivações no bimestre. Valores em ✱ são previstos (campanha em andamento).';
   }
 
   LAST_VIEW = {visibleSetores, regionaisVisiveis, nivel, acc, mods};
@@ -489,7 +491,7 @@ async function _buildWorkbook(){
   [['Posição em cada ranking','Prêmio']].forEach(arr=>{ arr.forEach((t,i)=>{ const cc=ws.getCell(r,i+1); cc.value=t; cc.font={bold:true,color:{argb:AZUL}}; fill(cc,LIGHT); thin(cc); }); }); r++;
   C.premiosPos.forEach((v,i)=>{ const a=ws.getCell(r,1); a.value=(i+1)+'º colocado'; thin(a); const b=ws.getCell(r,2); b.value=v; b.numFmt=FMT_MONEY; b.font={bold:true,color:{argb:GREEN}}; thin(b); r++; });
   { const a=ws.getCell(r,1); a.value='1º Supervisor (por produto)'; a.font={bold:true,color:{argb:OURO}}; fill(a,OUROBG); thin(a); const b=ws.getCell(r,2); b.value=C.premioSupervisor; b.numFmt=FMT_MONEY; b.font={bold:true,color:{argb:GREEN}}; fill(b,OUROBG); thin(b); r++; }
-  mergeAll('Gatilho: só recebe quem fizer no mínimo '+GAT+' positivações/mês de cada item. Classificação parcial de Junho/2026 — valores são prêmio PREVISTO da posição.',{font:{italic:true,color:{argb:MUTED}},alignment:{wrapText:true,vertical:'top'}}); ws.getRow(r).height=30; r+=2;
+  mergeAll('Gatilho: só recebe quem fizer no mínimo '+GAT+' positivações no bimestre de cada item. Classificação parcial — valores são prêmio PREVISTO da posição.',{font:{italic:true,color:{argb:MUTED}},alignment:{wrapText:true,vertical:'top'}}); ws.getRow(r).height=30; r+=2;
 
   const headerRow = ['#','Vendedor','Regional','Setor','Positivações','Prêmio previsto'];
   C.produtos.forEach(p=>{
