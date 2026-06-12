@@ -12,9 +12,9 @@
 
   var FIN = {
     titulo: "PRÊMIOS — PAGAMENTO",
-    periodo: "Abril e Maio / 2026",
-    pagamento: "Até 10/06/2026 — no Cartão Premiação",
-    apuradoAte: "29/05/2026",
+    periodo: "Junho e Julho / 2026",
+    pagamento: "Até 20/08/2026 — no Cartão Premiação",
+    apuradoAte: "12/06/2026 (parcial)",
     // Pessoas canônicas (setor -> tipo, nome). Ordem alfabética por setor (igual ao modelo).
     pessoas: [
       { setor: "Americana",        tipo: "VENDEDOR",      nome: "MAIRA" },
