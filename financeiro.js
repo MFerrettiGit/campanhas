@@ -43,96 +43,43 @@
     // Campanhas (ordem das colunas no RESUMO).
     campanhas: [
       {
-        key: "TECHLUZ", nome: "TechLuz", modelo: "faturamento", base: "Vendas",
+        key: "BARUEL", nome: "Baruel Baby", modelo: "positivacoes", base: "Positivações",
         mecanica: [
-          "Prêmio por faixa de faturamento no período (de/até → prêmio); a partir de R$ 25.001,00 = 10% sobre toda a venda.",
-          "Gestor: 2% do faturamento da regional (gatilho R$ 50.000,00). Gerência: 1,5% (gatilho R$ 100.000,00)."
+          "Positivação = pedido que contém o item. São 3 rankings (Shampoo Suave, Refil Glicerina, Sabonete Refil); prêmio fixo por posição em cada ranking: 1º R$ 600, 2º R$ 500, 3º R$ 400, 4º R$ 300, 5º R$ 200, 6º R$ 150.",
+          "Gatilho: mínimo de 40 positivações no bimestre de cada item. Supervisor: R$ 600 à regional líder de cada item. Valores PREVISTOS — campanha em andamento."
         ],
         ranking: [
-          { setor: "Jundiaí", regional: "SUL", vendas: 24169.32, premio: 1900 },
-          { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 23014.06, premio: 1900 },
-          { setor: "São Carlos", regional: "NORDESTE", vendas: 19037.67, premio: 1350 },
-          { setor: "Sorocaba", regional: "SUL", vendas: 12937.31, premio: 900 },
-          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 12192.94, premio: 900 },
-          { setor: "Indaiatuba", regional: "SUL", vendas: 10316.33, premio: 900 },
-          { setor: "Rio Claro", regional: "NORDESTE", vendas: 10122.00, premio: 900 },
-          { setor: "Itapetininga", regional: "SUL", vendas: 9556.54, premio: 700 },
-          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 8470.35, premio: 700 },
-          { setor: "Circuito", regional: "NORDESTE", vendas: 7037.95, premio: 400 },
-          { setor: "Franca", regional: "NORDESTE", vendas: 6502.35, premio: 400 },
-          { setor: "Caraguatatuba", regional: "SUL", vendas: 4960.92, premio: 200 },
-          { setor: "Campinas Norte", regional: "SUL", vendas: 3218.76, premio: 0 },
-          { setor: "Atibaia", regional: "SUL", vendas: 3171.08, premio: 0 },
-          { setor: "S.J. dos Campos", regional: "SUL", vendas: 2508.60, premio: 0 },
-          { setor: "Americana", regional: "NORDESTE", vendas: 1857.02, premio: 0 },
-          { setor: "Contas Chaves", regional: "GERÊNCIA", vendas: 0.00, premio: 0 }
+          { setor: "Caraguatatuba", regional: "SUL", vendas: 12, premio: 1600 },
+          { setor: "Americana", regional: "NORDESTE", vendas: 16, premio: 1500 },
+          { setor: "Circuito", regional: "NORDESTE", vendas: 9, premio: 1100 },
+          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 8, premio: 700 },
+          { setor: "Rio Claro", regional: "NORDESTE", vendas: 7, premio: 550 },
+          { setor: "Franca", regional: "NORDESTE", vendas: 7, premio: 550 },
+          { setor: "S.J. dos Campos", regional: "SUL", vendas: 5, premio: 300 },
+          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 3, premio: 150 },
+          { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 3, premio: 0 },
+          { setor: "Campinas Norte", regional: "SUL", vendas: 2, premio: 0 },
+          { setor: "Indaiatuba", regional: "SUL", vendas: 1, premio: 0 },
+          { setor: "Atibaia", regional: "SUL", vendas: 1, premio: 0 },
+          { setor: "São Carlos", regional: "NORDESTE", vendas: 1, premio: 0 },
+          { setor: "Jundiaí", regional: "SUL", vendas: 1, premio: 0 },
+          { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 },
+          { setor: "Sorocaba", regional: "SUL", vendas: 0, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 88234.34, premio: 1764.69 },
-          { area: "SUL", vendas: 70838.86, premio: 1416.78 }
-        ],
-        gerencia: { vendas: 159073.2, premio: 2386.1 }
-      },
-      {
-        key: "KINLIMP", nome: "KINLIMP", modelo: "caixa", base: "Caixas",
-        mecanica: [
-          "Prêmio por caixa vendida: KINLIMP 1 L = R$ 6,00/cx e 500 ML = R$ 4,00/cx. Prêmio mínimo de R$ 200,00 para receber.",
-          "Gestor: sobre o total de caixas da regional — 1 L = R$ 2,50/cx e 500 ML = R$ 1,50/cx."
-        ],
-        ranking: [
-          { setor: "Circuito", regional: "NORDESTE", cx1: 477, cx5: 42, premio: 3030 },
-          { setor: "Contas Chaves", regional: "GERÊNCIA", cx1: 324, cx5: 186, premio: 2688 },
-          { setor: "Atibaia", regional: "SUL", cx1: 144, cx5: 79, premio: 1180 },
-          { setor: "Indaiatuba", regional: "SUL", cx1: 102, cx5: 19, premio: 688 },
-          { setor: "Ribeirão Preto", regional: "NORDESTE", cx1: 50, cx5: 45, premio: 480 },
-          { setor: "S.J. Boa Vista", regional: "NORDESTE", cx1: 74, cx5: 8, premio: 476 },
-          { setor: "Franca", regional: "NORDESTE", cx1: 37, cx5: 56, premio: 446 },
-          { setor: "Americana", regional: "NORDESTE", cx1: 62, cx5: 18, premio: 444 },
-          { setor: "Campinas Norte", regional: "SUL", cx1: 40, cx5: 29, premio: 356 },
-          { setor: "Jundiaí", regional: "SUL", cx1: 33, cx5: 32, premio: 326 },
-          { setor: "Rio Claro", regional: "NORDESTE", cx1: 42, cx5: 10, premio: 292 },
-          { setor: "Caraguatatuba", regional: "SUL", cx1: 29, cx5: 21, premio: 258 },
-          { setor: "Sorocaba", regional: "SUL", cx1: 41, cx5: 2, premio: 254 },
-          { setor: "São Carlos", regional: "NORDESTE", cx1: 22, cx5: 25, premio: 232 },
-          { setor: "S.J. dos Campos", regional: "SUL", cx1: 22, cx5: 19, premio: 208 },
-          { setor: "Itapetininga", regional: "SUL", cx1: 18, cx5: 20, premio: 0 },
-          { setor: "Setor Piracicaba", regional: "NORDESTE", cx1: 16, cx5: 5, premio: 0 }
-        ],
-        regionais: [
-          { area: "NORDESTE", cx1: 780, cx5: 209, premio: 2263.5 },
-          { area: "SUL", cx1: 429, cx5: 221, premio: 1404 }
+          { area: "NORDESTE", vendas: 54, premio: 1800 },
+          { area: "SUL", vendas: 22, premio: 0 }
         ],
         gerencia: null
       },
       {
-        key: "MULTIONIC", nome: "Multionic", modelo: "percentual", base: "Introdução",
+        key: "FARNESE", nome: "Farnese Biocare", modelo: "caixa", base: "Caixas",
         mecanica: [
-          "Prêmio = 10% sobre o faturamento de introdução da linha Multionic no período. Prêmio mínimo de R$ 200,00 para receber.",
-          "Gestor: 5% sobre o faturamento de introdução total da sua equipe (regional)."
+          "Prêmio por caixa conforme a classificação por % da carteira do setor (1º-3º R$ 18/cx … 14º-16º R$ 10/cx) + Conta-Chave (R$ 500 por cliente novo).",
+          "Aguardando apuração — ainda sem dados."
         ],
-        ranking: [
-          { setor: "Contas Chaves", regional: "SUDESTE", vendas: 95508.64, premio: 9550.86 },
-          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 20940.46, premio: 2094.05 },
-          { setor: "Circuito", regional: "NORDESTE", vendas: 16393.06, premio: 1639.31 },
-          { setor: "Jundiaí", regional: "SUL", vendas: 10274.33, premio: 1027.43 },
-          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 8872.74, premio: 887.27 },
-          { setor: "S.J. dos Campos", regional: "SUL", vendas: 8699.04, premio: 869.9 },
-          { setor: "Campinas Norte", regional: "SUL", vendas: 7706.21, premio: 770.62 },
-          { setor: "São Carlos", regional: "NORDESTE", vendas: 7595.30, premio: 759.53 },
-          { setor: "Sorocaba", regional: "SUL", vendas: 6412.36, premio: 641.24 },
-          { setor: "Atibaia", regional: "SUL", vendas: 5384.20, premio: 538.42 },
-          { setor: "Itapetininga", regional: "SUL", vendas: 4085.00, premio: 408.5 },
-          { setor: "Franca", regional: "NORDESTE", vendas: 4055.17, premio: 405.52 },
-          { setor: "Caraguatatuba", regional: "SUL", vendas: 4054.24, premio: 405.42 },
-          { setor: "Indaiatuba", regional: "SUL", vendas: 3965.92, premio: 396.59 },
-          { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 2146.46, premio: 214.65 },
-          { setor: "Americana", regional: "NORDESTE", vendas: 2131.83, premio: 213.18 },
-          { setor: "Rio Claro", regional: "NORDESTE", vendas: 2065.18, premio: 206.52 }
-        ],
-        regionais: [
-          { area: "NORDESTE", vendas: 64200.20, premio: 3210.01 },
-          { area: "SUL", vendas: 50581.30, premio: 2529.06 }
-        ],
+        ranking: [],
+        regionais: [],
         gerencia: null
       }
     ]
@@ -258,6 +205,8 @@
 
   function buildDetalhe(wb, camp) {
     var CAIXA = camp.modelo === "caixa";
+    var POS = camp.modelo === "positivacoes";
+    var BASEFMT = POS ? FMT_INT : FMT_MONEY;
     var ws = wb.addWorksheet(camp.nome.toUpperCase().substring(0, 31), { views: [{ showGridLines: false }], pageSetup: { fitToPage: true, fitToWidth: 1, fitToHeight: 0, orientation: "portrait" } });
     var H = styleHelpers(ws);
     var head = CAIXA
@@ -285,7 +234,9 @@
     var PCOL = CAIXA ? 6 : 4, MCOL = NC - 1;
     var motivoFn = function (rr) {
       if ((rr.premio || 0) > 0) return "";
-      return camp.modelo === "faturamento" ? "Vendas abaixo da faixa mínima (R$ 3.500,00)" : "Não atingiu o prêmio mínimo (R$ 200,00)";
+      if (camp.modelo === "faturamento") return "Vendas abaixo da faixa mínima (R$ 3.500,00)";
+      if (camp.modelo === "positivacoes") return "Fora do top 6 do produto / abaixo do gatilho";
+      return "Não atingiu o prêmio mínimo (R$ 200,00)";
     };
     var t1 = 0, t5 = 0, tv = 0, tp = 0;
     rankSorted.forEach(function (rr, i) {
@@ -299,7 +250,7 @@
         var isMoneyCol = ci >= 3 && ci < MCOL;
         cc.alignment = { horizontal: (isMoneyCol ? "right" : "left"), wrapText: (ci === MCOL) };
         if (win) H.fill(cc, WIN); else H.fill(cc, RED);
-        if (CAIXA) { if (ci >= 3 && ci <= 5) cc.numFmt = FMT_INT; } else { if (ci === 3) cc.numFmt = FMT_MONEY; }
+        if (CAIXA) { if (ci >= 3 && ci <= 5) cc.numFmt = FMT_INT; } else { if (ci === 3) cc.numFmt = BASEFMT; }
         if (ci === PCOL) { cc.numFmt = FMT_MONEY; cc.font = { bold: true, color: { argb: win ? GREEN : REDTX } }; }
         if (ci === MCOL && !win) { cc.font = { italic: true, color: { argb: REDTX } }; }
       });
@@ -308,7 +259,7 @@
     var totRow = (CAIXA ? ["TOTAL", "", "", t1, t5, (t1 + t5), tp] : ["TOTAL", "", "", tv, tp]).concat([""]);
     totRow.forEach(function (v, ci) {
       var cc = ws.getCell(r, ci + 1); cc.value = v; H.thin(cc); H.fill(cc, TOTAL); cc.font = { bold: true }; cc.alignment = { horizontal: (ci >= 3 ? "right" : "left") };
-      if (CAIXA) { if (ci >= 3 && ci <= 5) cc.numFmt = FMT_INT; if (ci === 6) cc.numFmt = FMT_MONEY; } else { if (ci >= 3) cc.numFmt = FMT_MONEY; }
+      if (CAIXA) { if (ci >= 3 && ci <= 5) cc.numFmt = FMT_INT; if (ci === 6) cc.numFmt = FMT_MONEY; } else { if (ci === 3) cc.numFmt = BASEFMT; if (ci === 4) cc.numFmt = FMT_MONEY; }
     });
     r += 2;
 
@@ -325,7 +276,7 @@
         vals.forEach(function (v, ci) {
           var cc = ws.getCell(r, ci + 1); cc.value = v; H.thin(cc); cc.alignment = { horizontal: (ci >= 2 ? "right" : "left") };
           if (CAIXA) { if (ci >= 2 && ci <= 4) cc.numFmt = FMT_INT; if (ci === 5) { cc.numFmt = FMT_MONEY; cc.font = { bold: true, color: { argb: rg.premio > 0 ? GREEN : MUTED } }; } }
-          else { if (ci === 2) cc.numFmt = FMT_MONEY; if (ci === 3) { cc.numFmt = FMT_MONEY; cc.font = { bold: true, color: { argb: rg.premio > 0 ? GREEN : MUTED } }; } }
+          else { if (ci === 2) cc.numFmt = BASEFMT; if (ci === 3) { cc.numFmt = FMT_MONEY; cc.font = { bold: true, color: { argb: rg.premio > 0 ? GREEN : MUTED } }; } }
         });
         r++;
       });
