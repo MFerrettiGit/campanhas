@@ -49,26 +49,26 @@
           "Gatilho: mínimo de 40 positivações no bimestre de cada item. Supervisor: R$ 600 à regional líder de cada item. Valores PREVISTOS — campanha em andamento."
         ],
         ranking: [
-          { setor: "Americana", regional: "NORDESTE", vendas: 19, premio: 1700 },
+          { setor: "Americana", regional: "NORDESTE", vendas: 19, premio: 1600 },
           { setor: "Caraguatatuba", regional: "SUL", vendas: 15, premio: 1600 },
-          { setor: "Circuito", regional: "NORDESTE", vendas: 9, premio: 1000 },
-          { setor: "Rio Claro", regional: "NORDESTE", vendas: 8, premio: 550 },
+          { setor: "Circuito", regional: "NORDESTE", vendas: 12, premio: 1200 },
           { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 8, premio: 500 },
-          { setor: "Franca", regional: "NORDESTE", vendas: 7, premio: 500 },
-          { setor: "S.J. dos Campos", regional: "SUL", vendas: 5, premio: 300 },
+          { setor: "Franca", regional: "NORDESTE", vendas: 7, premio: 450 },
+          { setor: "Rio Claro", regional: "NORDESTE", vendas: 8, premio: 400 },
           { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 5, premio: 300 },
+          { setor: "S.J. dos Campos", regional: "SUL", vendas: 5, premio: 200 },
+          { setor: "Campinas Norte", regional: "SUL", vendas: 4, premio: 200 },
           { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 3, premio: 0 },
-          { setor: "Campinas Norte", regional: "SUL", vendas: 2, premio: 0 },
-          { setor: "Indaiatuba", regional: "SUL", vendas: 1, premio: 0 },
+          { setor: "São Carlos", regional: "NORDESTE", vendas: 2, premio: 0 },
           { setor: "Atibaia", regional: "SUL", vendas: 1, premio: 0 },
-          { setor: "São Carlos", regional: "NORDESTE", vendas: 1, premio: 0 },
+          { setor: "Indaiatuba", regional: "SUL", vendas: 1, premio: 0 },
           { setor: "Jundiaí", regional: "SUL", vendas: 1, premio: 0 },
-          { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 },
-          { setor: "Sorocaba", regional: "SUL", vendas: 0, premio: 0 }
+          { setor: "Sorocaba", regional: "SUL", vendas: 0, premio: 0 },
+          { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 60, premio: 1800 },
-          { area: "SUL", vendas: 25, premio: 0 }
+          { area: "NORDESTE", vendas: 64, premio: 1800 },
+          { area: "SUL", vendas: 27, premio: 0 }
         ],
         gerencia: null
       },
