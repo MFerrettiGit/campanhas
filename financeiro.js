@@ -49,14 +49,14 @@
           "Gatilho: mínimo de 40 positivações no bimestre de cada item. Supervisor: R$ 600 à regional líder de cada item. Valores PREVISTOS — campanha em andamento."
         ],
         ranking: [
-          { setor: "Caraguatatuba", regional: "SUL", vendas: 24, premio: 1600 },
-          { setor: "Americana", regional: "NORDESTE", vendas: 19, premio: 1500 },
-          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 17, premio: 1100 },
-          { setor: "Circuito", regional: "NORDESTE", vendas: 15, premio: 1000 },
-          { setor: "Rio Claro", regional: "NORDESTE", vendas: 9, premio: 400 },
-          { setor: "Campinas Norte", regional: "SUL", vendas: 6, premio: 350 },
-          { setor: "Franca", regional: "NORDESTE", vendas: 7, premio: 300 },
+          { setor: "Caraguatatuba", regional: "SUL", vendas: 26, premio: 1600 },
+          { setor: "Americana", regional: "NORDESTE", vendas: 22, premio: 1500 },
+          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 21, premio: 1200 },
+          { setor: "Circuito", regional: "NORDESTE", vendas: 15, premio: 850 },
+          { setor: "Rio Claro", regional: "NORDESTE", vendas: 13, premio: 600 },
+          { setor: "Campinas Norte", regional: "SUL", vendas: 7, premio: 350 },
           { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 7, premio: 200 },
+          { setor: "Franca", regional: "NORDESTE", vendas: 7, premio: 150 },
           { setor: "S.J. dos Campos", regional: "SUL", vendas: 5, premio: 0 },
           { setor: "São Carlos", regional: "NORDESTE", vendas: 4, premio: 0 },
           { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 3, premio: 0 },
@@ -67,8 +67,8 @@
           { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 81, premio: 1800 },
-          { area: "SUL", vendas: 42, premio: 0 }
+          { area: "NORDESTE", vendas: 92, premio: 1800 },
+          { area: "SUL", vendas: 45, premio: 0 }
         ],
         gerencia: null
       },
