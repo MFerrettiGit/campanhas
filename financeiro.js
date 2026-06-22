@@ -57,8 +57,8 @@
           { setor: "Campinas Norte", regional: "SUL", vendas: 7, premio: 350 },
           { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 7, premio: 200 },
           { setor: "Franca", regional: "NORDESTE", vendas: 7, premio: 150 },
-          { setor: "S.J. dos Campos", regional: "SUL", vendas: 5, premio: 0 },
-          { setor: "São Carlos", regional: "NORDESTE", vendas: 4, premio: 0 },
+          { setor: "S.J. dos Campos", regional: "SUL", vendas: 8, premio: 0 },
+          { setor: "São Carlos", regional: "NORDESTE", vendas: 5, premio: 0 },
           { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 3, premio: 0 },
           { setor: "Atibaia", regional: "SUL", vendas: 3, premio: 0 },
           { setor: "Sorocaba", regional: "SUL", vendas: 2, premio: 0 },
@@ -67,8 +67,8 @@
           { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 92, premio: 1800 },
-          { area: "SUL", vendas: 45, premio: 0 }
+          { area: "NORDESTE", vendas: 93, premio: 1800 },
+          { area: "SUL", vendas: 48, premio: 0 }
         ],
         gerencia: null
       },
