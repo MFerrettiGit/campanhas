@@ -49,12 +49,12 @@
           "Gatilho: mínimo de 40 positivações no bimestre de cada item. Supervisor: R$ 600 à regional líder de cada item. Valores PREVISTOS — campanha em andamento."
         ],
         ranking: [
-          { setor: "Caraguatatuba", regional: "SUL", vendas: 26, premio: 1600 },
-          { setor: "Americana", regional: "NORDESTE", vendas: 22, premio: 1500 },
+          { setor: "Caraguatatuba", regional: "SUL", vendas: 27, premio: 1600 },
+          { setor: "Americana", regional: "NORDESTE", vendas: 24, premio: 1500 },
           { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 24, premio: 1200 },
           { setor: "Circuito", regional: "NORDESTE", vendas: 15, premio: 850 },
           { setor: "Rio Claro", regional: "NORDESTE", vendas: 13, premio: 600 },
-          { setor: "Campinas Norte", regional: "SUL", vendas: 7, premio: 350 },
+          { setor: "Campinas Norte", regional: "SUL", vendas: 9, premio: 350 },
           { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 8, premio: 200 },
           { setor: "Franca", regional: "NORDESTE", vendas: 7, premio: 150 },
           { setor: "S.J. dos Campos", regional: "SUL", vendas: 8, premio: 0 },
@@ -67,8 +67,8 @@
           { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 98, premio: 1800 },
-          { area: "SUL", vendas: 50, premio: 0 }
+          { area: "NORDESTE", vendas: 100, premio: 1800 },
+          { area: "SUL", vendas: 53, premio: 0 }
         ],
         gerencia: null
       },
