@@ -59,16 +59,16 @@
           { setor: "Franca", regional: "NORDESTE", vendas: 7, premio: 150 },
           { setor: "S.J. dos Campos", regional: "SUL", vendas: 8, premio: 0 },
           { setor: "São Carlos", regional: "NORDESTE", vendas: 6, premio: 0 },
-          { setor: "Indaiatuba", regional: "SUL", vendas: 3, premio: 0 },
-          { setor: "Atibaia", regional: "SUL", vendas: 3, premio: 0 },
+          { setor: "Sorocaba", regional: "SUL", vendas: 4, premio: 0 },
+          { setor: "Indaiatuba", regional: "SUL", vendas: 4, premio: 0 },
           { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 3, premio: 0 },
-          { setor: "Sorocaba", regional: "SUL", vendas: 2, premio: 0 },
+          { setor: "Atibaia", regional: "SUL", vendas: 3, premio: 0 },
           { setor: "Jundiaí", regional: "SUL", vendas: 1, premio: 0 },
           { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 }
         ],
         regionais: [
           { area: "NORDESTE", vendas: 100, premio: 1800 },
-          { area: "SUL", vendas: 53, premio: 0 }
+          { area: "SUL", vendas: 56, premio: 0 }
         ],
         gerencia: null
       },
