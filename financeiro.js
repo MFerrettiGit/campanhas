@@ -51,7 +51,7 @@
         ranking: [
           { setor: "Caraguatatuba", regional: "SUL", vendas: 27, premio: 1600 },
           { setor: "Americana", regional: "NORDESTE", vendas: 24, premio: 1500 },
-          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 24, premio: 1200 },
+          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 25, premio: 1200 },
           { setor: "Circuito", regional: "NORDESTE", vendas: 15, premio: 850 },
           { setor: "Rio Claro", regional: "NORDESTE", vendas: 15, premio: 550 },
           { setor: "Indaiatuba", regional: "SUL", vendas: 8, premio: 400 },
@@ -67,7 +67,7 @@
           { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 107, premio: 1800 },
+          { area: "NORDESTE", vendas: 108, premio: 1800 },
           { area: "SUL", vendas: 62, premio: 0 }
         ],
         gerencia: null
