@@ -52,23 +52,23 @@
           { setor: "Caraguatatuba", regional: "SUL", vendas: 28, premio: 1600 },
           { setor: "Americana", regional: "NORDESTE", vendas: 24, premio: 1400 },
           { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 25, premio: 1200 },
-          { setor: "Circuito", regional: "NORDESTE", vendas: 15, premio: 700 },
+          { setor: "Circuito", regional: "NORDESTE", vendas: 16, premio: 700 },
           { setor: "Rio Claro", regional: "NORDESTE", vendas: 15, premio: 550 },
           { setor: "Indaiatuba", regional: "SUL", vendas: 12, premio: 500 },
-          { setor: "São Carlos", regional: "NORDESTE", vendas: 11, premio: 200 },
-          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 10, premio: 150 },
+          { setor: "São Carlos", regional: "NORDESTE", vendas: 12, premio: 200 },
+          { setor: "S.J. dos Campos", regional: "SUL", vendas: 13, premio: 150 },
           { setor: "Campinas Norte", regional: "SUL", vendas: 9, premio: 150 },
-          { setor: "S.J. dos Campos", regional: "SUL", vendas: 10, premio: 0 },
+          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 10, premio: 0 },
           { setor: "Franca", regional: "NORDESTE", vendas: 8, premio: 0 },
-          { setor: "Sorocaba", regional: "SUL", vendas: 6, premio: 0 },
-          { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 4, premio: 0 },
+          { setor: "Sorocaba", regional: "SUL", vendas: 7, premio: 0 },
+          { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 5, premio: 0 },
           { setor: "Atibaia", regional: "SUL", vendas: 3, premio: 0 },
           { setor: "Jundiaí", regional: "SUL", vendas: 1, premio: 0 },
           { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 112, premio: 1800 },
-          { area: "SUL", vendas: 69, premio: 0 }
+          { area: "NORDESTE", vendas: 115, premio: 1800 },
+          { area: "SUL", vendas: 73, premio: 0 }
         ],
         gerencia: null
       },
