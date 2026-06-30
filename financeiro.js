@@ -50,25 +50,25 @@
         ],
         ranking: [
           { setor: "Caraguatatuba", regional: "SUL", vendas: 29, premio: 1500 },
-          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 28, premio: 1300 },
           { setor: "Americana", regional: "NORDESTE", vendas: 24, premio: 1300 },
-          { setor: "Circuito", regional: "NORDESTE", vendas: 20, premio: 900 },
-          { setor: "Rio Claro", regional: "NORDESTE", vendas: 16, premio: 400 },
-          { setor: "S.J. dos Campos", regional: "SUL", vendas: 16, premio: 300 },
-          { setor: "Indaiatuba", regional: "SUL", vendas: 9, premio: 300 },
-          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 15, premio: 150 },
-          { setor: "São Carlos", regional: "NORDESTE", vendas: 12, premio: 150 },
-          { setor: "Sorocaba", regional: "SUL", vendas: 9, premio: 150 },
-          { setor: "Campinas Norte", regional: "SUL", vendas: 9, premio: 0 },
-          { setor: "Franca", regional: "NORDESTE", vendas: 8, premio: 0 },
+          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 28, premio: 1100 },
+          { setor: "Circuito", regional: "NORDESTE", vendas: 21, premio: 850 },
+          { setor: "Indaiatuba", regional: "SUL", vendas: 16, premio: 700 },
+          { setor: "Rio Claro", regional: "NORDESTE", vendas: 16, premio: 300 },
+          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 16, premio: 300 },
+          { setor: "S.J. dos Campos", regional: "SUL", vendas: 16, premio: 200 },
+          { setor: "São Carlos", regional: "NORDESTE", vendas: 15, premio: 200 },
+          { setor: "Sorocaba", regional: "SUL", vendas: 10, premio: 0 },
+          { setor: "Campinas Norte", regional: "SUL", vendas: 10, premio: 0 },
           { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 8, premio: 0 },
+          { setor: "Franca", regional: "NORDESTE", vendas: 8, premio: 0 },
           { setor: "Atibaia", regional: "SUL", vendas: 3, premio: 0 },
           { setor: "Jundiaí", regional: "SUL", vendas: 1, premio: 0 },
           { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 131, premio: 1800 },
-          { area: "SUL", vendas: 76, premio: 0 }
+          { area: "NORDESTE", vendas: 136, premio: 1800 },
+          { area: "SUL", vendas: 85, premio: 0 }
         ],
         gerencia: null
       },
