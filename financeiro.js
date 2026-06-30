@@ -52,11 +52,11 @@
           { setor: "Caraguatatuba", regional: "SUL", vendas: 29, premio: 1500 },
           { setor: "Americana", regional: "NORDESTE", vendas: 24, premio: 1300 },
           { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 28, premio: 1100 },
-          { setor: "Circuito", regional: "NORDESTE", vendas: 21, premio: 850 },
-          { setor: "Indaiatuba", regional: "SUL", vendas: 16, premio: 700 },
-          { setor: "Rio Claro", regional: "NORDESTE", vendas: 16, premio: 300 },
+          { setor: "Circuito", regional: "NORDESTE", vendas: 21, premio: 1000 },
+          { setor: "Indaiatuba", regional: "SUL", vendas: 13, premio: 450 },
+          { setor: "S.J. dos Campos", regional: "SUL", vendas: 17, premio: 300 },
           { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 16, premio: 300 },
-          { setor: "S.J. dos Campos", regional: "SUL", vendas: 16, premio: 200 },
+          { setor: "Rio Claro", regional: "NORDESTE", vendas: 16, premio: 300 },
           { setor: "São Carlos", regional: "NORDESTE", vendas: 15, premio: 200 },
           { setor: "Sorocaba", regional: "SUL", vendas: 10, premio: 0 },
           { setor: "Campinas Norte", regional: "SUL", vendas: 10, premio: 0 },
@@ -68,7 +68,7 @@
         ],
         regionais: [
           { area: "NORDESTE", vendas: 136, premio: 1800 },
-          { area: "SUL", vendas: 85, premio: 0 }
+          { area: "SUL", vendas: 83, premio: 0 }
         ],
         gerencia: null
       },
