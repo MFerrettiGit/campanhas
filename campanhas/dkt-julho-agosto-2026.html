@@ -267,7 +267,7 @@ const CAMPANHA = {
   gatilhoGestor: 100,
 
   modalidades: [
-    { classe:"m1", nivel:1, tag:"Vendedor", titulo:"R$ 20,00 por Positivação",
+    { classe:"m1", nivel:1, notCC:true, tag:"Vendedor", titulo:"R$ 20,00 por Positivação",
       texto:"Cada cliente atendido com pedido contendo no mínimo 3 SKUs Prudence conta como 1 positivação. Prêmio de R$ 20,00 por positivação — sem limite de quantidade no bimestre (01/07 a 31/08/2026)." },
     { classe:"mcc", nivel:1, cc:true, tag:"Contas Chaves", titulo:"Premiação por Dúzias",
       texto:"O Setor Contas Chaves tem premiação própria por volume de dúzias vendidas no bimestre: a partir de 240 dúzias = R$ 1.000,00; a partir de 270 dúzias = R$ 1.500,00." },
@@ -418,8 +418,9 @@ function applyScope(acc) {
 
   const mecLead = document.getElementById('mecLead');
   if (mecLead) { mecLead.textContent=''; mecLead.style.display='none'; }
+  const isCC = acc.tipo==='setor' && _norm(acc.valor)===_norm('Contas Chaves');
   document.getElementById('mods').innerHTML = C.modalidades
-    .filter(m => (m.nivel||1)<=nivel && (!m.cc || showCC))
+    .filter(m => (m.nivel||1)<=nivel && (!m.cc || showCC) && (!m.notCC || !isCC))
     .map(m=>`<div class="mod ${m.classe}"><span class="tag">${m.tag}</span><h3>${m.titulo}</h3><p>${m.texto}</p></div>`)
     .join('');
 
