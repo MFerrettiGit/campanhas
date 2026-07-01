@@ -43,6 +43,26 @@
     // Campanhas (ordem das colunas no RESUMO).
     campanhas: [
       {
+        key: "SEMORIN", nome: "Campanha Semorin", modelo: "colocacao", base: "R$",
+        mecanica: [
+          "Ranking de vendas no bimestre (01/07–31/08/2026): 1º R$ 850 … 11º R$ 200. Bônus SKU: Byts Tira Ferrugem (cód.1306) acima de 15cx R$400 / 10cx R$200; Semorin Lava Jeans (cód.277) 15cx R$300 / 10cx R$150; Semorin Tira Gordura (cód.294) 15cx R$300 / 10cx R$150.",
+          "Supervisores: 1º lugar R$ 1.000,00 · 2º lugar R$ 500,00 (maior faturamento da equipe). Gerente: R$ 1.500,00 condicional à meta de R$ 430.000,00 no bimestre. Pagamento Cartão Caju até 20/09/2026."
+        ],
+        ranking: [],
+        regionais: [],
+        gerencia: null
+      },
+      {
+        key: "DKT", nome: "DKT Time de Vendas", modelo: "positivacao", base: "Positivações",
+        mecanica: [
+          "R$ 20,00 por positivação (cliente com ≥ 3 SKUs Prudence no pedido). Contas Chaves: a partir de 240 dúzias R$ 1.000,00; a partir de 270 dúzias R$ 1.500,00.",
+          "Supervisores: 1º lugar R$ 1.500,00 · 2º lugar R$ 750,00 (maior nº positivações da equipe, mín. 100 clientes). Pagamento Cartão Alelo Premiação até 20/09/2026."
+        ],
+        ranking: [],
+        regionais: [],
+        gerencia: null
+      },
+      {
         key: "BARUEL", nome: "Baruel Baby", modelo: "positivacoes", base: "Positivações",
         mecanica: [
           "Positivação = pedido que contém o item. São 3 rankings (Shampoo Suave, Refil Glicerina, Sabonete Refil); prêmio fixo por posição em cada ranking: 1º R$ 600, 2º R$ 500, 3º R$ 400, 4º R$ 300, 5º R$ 200, 6º R$ 150.",
