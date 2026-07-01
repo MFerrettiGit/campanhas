@@ -209,8 +209,9 @@ const CAMPANHA = {
   inicio: "01/06/2026",
   termino: "31/07/2026",
   gatilho: "Mínimo de 40 positivações no bimestre de cada item",
+  premioMinimo: "R$ 150,00",
   pagamento: "20/08/2026 — no Cartão Premiação",
-  resultadoAte: "01/07/2026 08:00",
+  resultadoAte: "01/07/2026 10:12",
   atualizadoEm: "01/07/2026",
   parcial: true,
   // Prêmio fixo por posição em CADA ranking de produto
@@ -268,7 +269,7 @@ document.getElementById('hSub').textContent = C.subtitulo;
 
 document.getElementById('facts').innerHTML = [
   ['Período', C.inicio + ' a ' + C.termino, ''],
-  ['Gatilho p/ premiar', C.gatilho, 'small'],
+  ['Prêmio mínimo', C.premioMinimo, ''],
   ['Pagamento previsto', C.pagamento, 'small'],
   ['Resultado apurado até', C.resultadoAte + (C.parcial?' (parcial)':''), 'live']
 ].map(f=>`<div class="fact ${f[2]==='live'?'live':''}"><div class="lbl">${f[0]}</div><div class="val ${f[2]==='small'?'small':''}">${f[1]}</div></div>`).join('');

@@ -248,8 +248,9 @@ const CAMPANHA = {
   inicio: "01/07/2026",
   termino: "31/08/2026",
   gatilho: "Mínimo 3 SKUs Prudence por cliente para contar 1 positivação",
+  premioMinimo: "R$ 200,00",
   pagamento: "20/09/2026 — no Cartão Alelo Premiação",
-  resultadoAte: "Aguardando apuração",
+  resultadoAte: "01/07/2026 10:12",
   atualizadoEm: "01/07/2026",
 
   // R$ por positivação (cliente com ≥ 3 SKUs Prudence)
@@ -274,9 +275,29 @@ const CAMPANHA = {
       texto:"O supervisor cuja equipe alcançar o maior número de clientes positivados com 3 SKUs Prudence (mínimo de 100 clientes) recebe o 1º prêmio (R$ 1.500,00); o 2º supervisor recebe R$ 750,00." }
   ],
 
-  ranking: [],     // [{setor, nome, regional, positivacoes, premio}] — sem Contas Chaves
+  ranking: [
+    {nome:"KARINA", regional:"SUL", setor:"Caraguatatuba", positivacoes:0, premio:0},
+    {nome:"LUCAS", regional:"SUL", setor:"Indaiatuba", positivacoes:0, premio:0},
+    {nome:"EUGÊNIO", regional:"SUL", setor:"Atibaia", positivacoes:0, premio:0},
+    {nome:"ALAN", regional:"SUL", setor:"Campinas Norte", positivacoes:0, premio:0},
+    {nome:"MARIÂNGELA", regional:"SUL", setor:"S.J. dos Campos", positivacoes:0, premio:0},
+    {nome:"MAURÍCIO", regional:"SUL", setor:"Sorocaba", positivacoes:0, premio:0},
+    {nome:"NELSON", regional:"SUL", setor:"Itapetininga", positivacoes:0, premio:0},
+    {nome:"CASTRO", regional:"SUL", setor:"Jundiaí", positivacoes:0, premio:0},
+    {nome:"LUIS", regional:"NORDESTE", setor:"Franca", positivacoes:0, premio:0},
+    {nome:"FERNANDO", regional:"NORDESTE", setor:"Ribeirão Preto", positivacoes:0, premio:0},
+    {nome:"MAIRA", regional:"NORDESTE", setor:"Americana", positivacoes:0, premio:0},
+    {nome:"RACHEL", regional:"NORDESTE", setor:"Circuito", positivacoes:0, premio:0},
+    {nome:"BRAGATTO", regional:"NORDESTE", setor:"São Carlos", positivacoes:0, premio:0},
+    {nome:"COMINATO", regional:"NORDESTE", setor:"Setor Piracicaba", positivacoes:0, premio:0},
+    {nome:"COSTINHA", regional:"NORDESTE", setor:"Rio Claro", positivacoes:0, premio:0},
+    {nome:"CELIA", regional:"NORDESTE", setor:"S.J. Boa Vista", positivacoes:0, premio:0}
+  ],
   rankCC: null,    // {duziasVendidas, premio} — apurado separado
-  regionais: []    // [{area, positivacoes, premio}]
+  regionais: [
+    {regional:"SUL", positivacoes:0, premio:0},
+    {regional:"NORDESTE", positivacoes:0, premio:0}
+  ]
 };
 
 const brl = v => (v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
@@ -289,7 +310,7 @@ document.getElementById('hSub').textContent = C.subtitulo;
 
 document.getElementById('facts').innerHTML = [
   ['Período', C.inicio + ' a ' + C.termino, ''],
-  ['Regra de positivação', C.gatilho, 'small'],
+  ['Prêmio mínimo', C.premioMinimo, ''],
   ['Pagamento previsto', C.pagamento, 'small'],
   ['Resultado apurado até', C.resultadoAte, 'live']
 ].map(f=>`<div class="fact ${f[2]==='live'?'live':''}"><div class="lbl">${f[0]}</div><div class="val ${f[2]==='small'?'small':''}">${f[1]}</div></div>`).join('');
@@ -380,7 +401,7 @@ function renderResultados(rank, regs, nivel, showCC) {
       const elegivel = (r.positivacoes||0) >= C.gatilhoGestor;
       return `<div class="mod ${i===0?'m1':'m2'}">
         <span class="tag">${i+1}º Supervisor</span>
-        <h3>Regional ${r.area}</h3>
+        <h3>Regional ${r.regional}</h3>
         <p>Positivações da equipe: <strong>${r.positivacoes||0}</strong><br>
         ${elegivel?'':'<span style="color:#e0405a">Abaixo do mínimo de '+C.gatilhoGestor+' positivações</span><br>'}
         Prêmio: <strong style="color:${(r.premio||0)>0?'#28a745':'#6b6f8a'}">${(r.premio||0)>0?brl(r.premio):'Sem prêmio'}</strong></p>
@@ -406,7 +427,7 @@ function applyScope(acc) {
   let rank = C.ranking, regs = [];
   if (acc.tipo==='regional') {
     rank = C.ranking.filter(r=>_norm(r.regional)===_norm(acc.valor));
-    regs = C.regionais.filter(r=>_norm(r.area)===_norm(acc.valor));
+    regs = C.regionais.filter(r=>_norm(r.regional)===_norm(acc.valor));
   } else if (acc.tipo==='setor') {
     if (_norm(acc.valor)===_norm('Contas Chaves')) {
       rank = [];  // CC não está no ranking geral de positivações

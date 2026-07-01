@@ -50,7 +50,7 @@
         ],
         ranking: [],
         regionais: [],
-        gerencia: null
+        gerencia: { totalVendas: 0.00, atingiu: false, premio: 0 }
       },
       {
         key: "DKT", nome: "DKT Time de Vendas", modelo: "positivacao", base: "Positivações",
