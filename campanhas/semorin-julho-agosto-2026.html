@@ -205,7 +205,7 @@ body.locked{overflow:hidden}
 
   <section id="regSec" style="display:none">
     <h2><span class="bar"></span>Prêmio dos Supervisores</h2>
-    <p class="lead">O supervisor da regional com maior faturamento acumulado da equipe leva o 1º prêmio; o 2º lugar leva o 2º prêmio.</p>
+    <p class="lead">Classificação pelo maior % de atingimento da meta da equipe (pedidos colocados até 31/08/2026). A meta do gestor é a soma das metas individuais da equipe.</p>
     <div class="reg-grid" id="regGrid"></div>
   </section>
 
@@ -312,7 +312,7 @@ function renderTiersWrap(nivel) {
 
   // Tabela de prêmios por colocação — todos os níveis veem
   html += `<p class="lead" style="margin-top:20px;margin-bottom:8px;font-weight:700;color:var(--ink)">Prêmio por colocação no ranking geral</p>
-  <div class="tiers"><table><thead><tr><th>Colocação (por valor de vendas)</th><th style="text-align:right">Prêmio</th></tr></thead><tbody>` +
+  <div class="tiers"><table><thead><tr><th>Colocação (por % de atingimento da meta)</th><th style="text-align:right">Prêmio</th></tr></thead><tbody>` +
   C.premiosVend.map((p,i)=>`<tr><td class="prod">${i+1}º lugar</td><td class="premio" style="text-align:right">${brl(p)}</td></tr>`).join('') +
   `</tbody></table></div>`;
 
@@ -336,7 +336,7 @@ function renderTiersWrap(nivel) {
   if (nivel >= 3) {
     html += `<p class="lead" style="margin-top:24px;margin-bottom:8px;font-weight:700;color:var(--ink)">Prêmio do gerente</p>
     <div class="tiers"><table><thead><tr><th>Condição</th><th style="text-align:right">Prêmio</th></tr></thead><tbody>
-    <tr class="hl"><td class="prod">Atingir R$ ${C.metaGerente.toLocaleString('pt-BR')},00 em compras e recebimento no bimestre</td><td class="premio" style="text-align:right">${brl(C.premioGerente)}</td></tr>
+    <tr class="hl"><td class="prod">Atingir R$ ${C.metaGerente.toLocaleString('pt-BR')},00 em vendas (pedidos colocados até 31/08/2026)</td><td class="premio" style="text-align:right">${brl(C.premioGerente)}</td></tr>
     </tbody></table></div>`;
   }
 
