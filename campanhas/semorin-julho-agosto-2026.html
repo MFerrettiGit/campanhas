@@ -326,7 +326,7 @@ function renderTiersWrap(nivel) {
   // Supervisores — somente nível 2+
   if (nivel >= 2) {
     html += `<p class="lead" style="margin-top:24px;margin-bottom:8px;font-weight:700;color:var(--ink)">Prêmio dos supervisores</p>
-    <div class="tiers"><table><thead><tr><th>Classificação (maior faturamento da equipe)</th><th style="text-align:right">Prêmio</th></tr></thead><tbody>` +
+    <div class="tiers"><table><thead><tr><th>Classificação (maior % de atingimento de meta da equipe)</th><th style="text-align:right">Prêmio</th></tr></thead><tbody>` +
     C.premiosSup.map((p,i)=>`<tr class="hl"><td class="prod">${i+1}º Supervisor</td><td class="premio" style="text-align:right">${brl(p)}</td></tr>`).join('') +
     `</tbody></table></div>`;
   }
