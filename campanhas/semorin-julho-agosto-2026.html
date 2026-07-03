@@ -239,7 +239,7 @@ const CAMPANHA = {
   // Prêmios por colocação (1º ao 11º) — valor de vendas R$
   premiosVend: [850, 700, 600, 500, 450, 400, 400, 350, 300, 250, 200],
 
-  // Prêmios de supervisor (1º e 2º regional por maior faturamento da equipe)
+  // Prêmios de supervisor (1º e 2º regional por maior % de meta da equipe)
   premiosSup: [1000, 500],
 
   // Prêmio do gerente (condicional à meta)
@@ -414,7 +414,7 @@ function renderResultados(rank, regs, nivel) {
     const g = C.gerencia;
     document.getElementById('gerenteNote').innerHTML = g
       ? `Meta de R$ ${C.metaGerente.toLocaleString('pt-BR')},00 — Apurado: ${brl(g.totalVendas)} — <strong style="color:${g.atingiu?'#28a745':'#d33'}">${g.atingiu?'✓ Meta atingida — Prêmio: '+brl(C.premioGerente):'✗ Meta não atingida'}</strong>`
-      : `Meta de <strong>R$ ${C.metaGerente.toLocaleString('pt-BR')},00</strong> em compras e recebimento no bimestre. Prêmio: <strong>${brl(C.premioGerente)}</strong> — <em>aguardando apuração</em>.`;
+      : `Meta de <strong>R$ ${C.metaGerente.toLocaleString('pt-BR')},00</strong> em vendas (pedidos colocados até 31/08/2026). Prêmio: <strong>${brl(C.premioGerente)}</strong> — <em>aguardando apuração</em>.`;
   } else { gerenteSec.style.display = 'none'; }
 }
 
