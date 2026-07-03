@@ -178,7 +178,7 @@ body.locked{overflow:hidden}
 
   <section id="rankSec">
     <h2><span class="bar"></span>Ranking de Vendas</h2>
-    <p class="lead" id="rankLead">Classificação pelo valor total de vendas no bimestre (pedidos emitidos e entregues). O prêmio é definido pela colocação final.</p>
+    <p class="lead" id="rankLead">Classificação pelo maior % de atingimento de meta no bimestre. O prêmio é definido pela colocação final.</p>
     <div class="tbl">
       <table>
         <thead>
@@ -188,6 +188,8 @@ body.locked{overflow:hidden}
             <th>Regional</th>
             <th>Setor</th>
             <th style="text-align:right">Vendas (R$)</th>
+            <th style="text-align:right">Meta (R$)</th>
+            <th style="text-align:right">% Meta</th>
             <th style="text-align:right">Prêmio</th>
           </tr>
         </thead>
@@ -263,27 +265,27 @@ const CAMPANHA = {
   ],
 
   ranking: [
-    {nome:"KARINA", regional:"SUL", setor:"Caraguatatuba", vendas:0.00, premio:0},
-    {nome:"LUCAS", regional:"SUL", setor:"Indaiatuba", vendas:0.00, premio:0},
-    {nome:"EUGÊNIO", regional:"SUL", setor:"Atibaia", vendas:0.00, premio:0},
-    {nome:"ALAN", regional:"SUL", setor:"Campinas Norte", vendas:0.00, premio:0},
-    {nome:"MARIÂNGELA", regional:"SUL", setor:"S.J. dos Campos", vendas:0.00, premio:0},
-    {nome:"MAURÍCIO", regional:"SUL", setor:"Sorocaba", vendas:0.00, premio:0},
-    {nome:"NELSON", regional:"SUL", setor:"Itapetininga", vendas:0.00, premio:0},
-    {nome:"CASTRO", regional:"SUL", setor:"Jundiaí", vendas:0.00, premio:0},
-    {nome:"COMINATO", regional:"NORDESTE", setor:"Setor Piracicaba", vendas:0.00, premio:0},
-    {nome:"EDUARDO", regional:"NORDESTE", setor:"Contas Chaves", vendas:0.00, premio:0},
-    {nome:"LUIS", regional:"NORDESTE", setor:"Franca", vendas:0.00, premio:0},
-    {nome:"MAIRA", regional:"NORDESTE", setor:"Americana", vendas:0.00, premio:0},
-    {nome:"RACHEL", regional:"NORDESTE", setor:"Circuito", vendas:0.00, premio:0},
-    {nome:"CELIA", regional:"NORDESTE", setor:"S.J. Boa Vista", vendas:0.00, premio:0},
-    {nome:"BRAGATTO", regional:"NORDESTE", setor:"São Carlos", vendas:0.00, premio:0},
-    {nome:"FERNANDO", regional:"NORDESTE", setor:"Ribeirão Preto", vendas:0.00, premio:0},
-    {nome:"COSTINHA", regional:"NORDESTE", setor:"Rio Claro", vendas:0.00, premio:0}
+    {nome:"KARINA",    regional:"SUL",     setor:"Caraguatatuba",   vendas:0.00, meta:0, premio:0},
+    {nome:"LUCAS",     regional:"SUL",     setor:"Indaiatuba",      vendas:0.00, meta:0, premio:0},
+    {nome:"EUGÊNIO",   regional:"SUL",     setor:"Atibaia",         vendas:0.00, meta:0, premio:0},
+    {nome:"ALAN",      regional:"SUL",     setor:"Campinas Norte",  vendas:0.00, meta:0, premio:0},
+    {nome:"MARIÂNGELA",regional:"SUL",     setor:"S.J. dos Campos", vendas:0.00, meta:0, premio:0},
+    {nome:"MAURÍCIO",  regional:"SUL",     setor:"Sorocaba",        vendas:0.00, meta:0, premio:0},
+    {nome:"NELSON",    regional:"SUL",     setor:"Itapetininga",    vendas:0.00, meta:0, premio:0},
+    {nome:"CASTRO",    regional:"SUL",     setor:"Jundiaí",         vendas:0.00, meta:0, premio:0},
+    {nome:"COMINATO",  regional:"NORDESTE",setor:"Setor Piracicaba",vendas:0.00, meta:0, premio:0},
+    {nome:"EDUARDO",   regional:"NORDESTE",setor:"Contas Chaves",   vendas:0.00, meta:0, premio:0},
+    {nome:"LUIS",      regional:"NORDESTE",setor:"Franca",          vendas:0.00, meta:0, premio:0},
+    {nome:"MAIRA",     regional:"NORDESTE",setor:"Americana",       vendas:0.00, meta:0, premio:0},
+    {nome:"RACHEL",    regional:"NORDESTE",setor:"Circuito",        vendas:0.00, meta:0, premio:0},
+    {nome:"CELIA",     regional:"NORDESTE",setor:"S.J. Boa Vista",  vendas:0.00, meta:0, premio:0},
+    {nome:"BRAGATTO",  regional:"NORDESTE",setor:"São Carlos",      vendas:0.00, meta:0, premio:0},
+    {nome:"FERNANDO",  regional:"NORDESTE",setor:"Ribeirão Preto",  vendas:0.00, meta:0, premio:0},
+    {nome:"COSTINHA",  regional:"NORDESTE",setor:"Rio Claro",       vendas:0.00, meta:0, premio:0}
   ],
   regionais: [
-    {regional:"SUL", totalVendas:0.00, premio:0},
-    {regional:"NORDESTE", totalVendas:0.00, premio:0}
+    {regional:"SUL",     totalVendas:0.00, meta:0, premio:0},
+    {regional:"NORDESTE",totalVendas:0.00, meta:0, premio:0}
   ],
   gerencia: { totalVendas: 0.00, atingiu: false, premio: 0 }
 };
@@ -343,10 +345,19 @@ function renderTiersWrap(nivel) {
 const _norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
 function regBadge(reg){ return `<span class="reg ${(reg||'').replace(/[^A-Z]/gi,'').toUpperCase()}">${reg||'—'}</span>`; }
 
+function pctMeta(v, m){ return (m&&m>0) ? (v||0)/m*100 : null; }
+function fmtPct(v, m){ const p=pctMeta(v,m); return p!==null ? p.toFixed(1)+'%' : '—'; }
+
 function renderResultados(rank, regs, nivel) {
-  // Pódio (nivel >= 3)
+  // Ordena por % de atingimento de meta (desc); meta=0 vai para o fim
   const podSec = document.getElementById('podiumSec');
-  const sorted = [...rank].sort((a,b)=>(b.vendas||0)-(a.vendas||0));
+  const sorted = [...rank].sort((a,b)=>{
+    const pa = pctMeta(a.vendas,a.meta), pb = pctMeta(b.vendas,b.meta);
+    if(pa===null && pb===null) return 0;
+    if(pa===null) return 1;
+    if(pb===null) return -1;
+    return pb - pa;
+  });
   sorted.forEach((r,i)=>{ r.premio = i < C.premiosVend.length ? C.premiosVend[i] : 0; });
 
   if (nivel >= 3 && sorted.filter(r=>(r.vendas||0)>0).length) {
@@ -355,33 +366,41 @@ function renderResultados(rank, regs, nivel) {
     const order = top3.length===3 ? [1,0,2] : [...Array(top3.length).keys()];
     document.getElementById('podium').innerHTML = order.map(i=>{
       const r=top3[i]; if(!r) return '';
-      return `<div class="pod p${i+1}"><div class="medal">${['🥇','🥈','🥉'][i]}</div><div class="nome">${r.nome}</div><div class="setor">${r.setor} · ${r.regional}</div><div class="vlr">${brl(r.vendas)}</div><div class="prm">${brl(r.premio)}</div></div>`;
+      const pct=pctMeta(r.vendas,r.meta);
+      return `<div class="pod p${i+1}"><div class="medal">${['🥇','🥈','🥉'][i]}</div><div class="nome">${r.nome}</div><div class="setor">${r.setor} · ${r.regional}</div><div class="vlr">${brl(r.vendas)}${pct!==null?' · '+pct.toFixed(1)+'% da meta':''}</div><div class="prm">${brl(r.premio)}</div></div>`;
     }).join('');
   } else { podSec.style.display = 'none'; }
 
   // Ranking
   const totV = sorted.reduce((s,r)=>s+(r.vendas||0),0);
   const totP = sorted.reduce((s,r)=>s+(r.premio||0),0);
-  const totRow = sorted.length ? `<tr class="total-row"><td></td><td colspan="3">TOTAL · ${sorted.length} ${sorted.length===1?'setor':'setores'}</td><td class="v" style="text-align:right"><strong>${brl(totV)}</strong></td><td class="p" style="text-align:right">${brl(totP)}</td></tr>` : '';
+  const totRow = sorted.length ? `<tr class="total-row"><td></td><td colspan="3">TOTAL · ${sorted.length} ${sorted.length===1?'setor':'setores'}</td><td class="v" style="text-align:right"><strong>${brl(totV)}</strong></td><td></td><td></td><td class="p" style="text-align:right">${brl(totP)}</td></tr>` : '';
   document.getElementById('rankBody').innerHTML = sorted.length
     ? sorted.map((r,i)=>`<tr class="${(r.vendas||0)>0&&r.premio>0?'win':'muted-row'}">
         <td class="pos">${i+1}</td><td class="nm">${r.nome}</td>
         <td>${regBadge(r.regional)}</td><td>${r.setor}</td>
         <td class="v" style="text-align:right">${brl(r.vendas||0)}</td>
+        <td class="v" style="text-align:right;color:var(--muted)">${(r.meta||0)>0?brl(r.meta):'—'}</td>
+        <td class="v" style="text-align:right;font-weight:700;color:${pctMeta(r.vendas,r.meta)>=100?'var(--verde-2)':'var(--ink)'}">${fmtPct(r.vendas,r.meta)}</td>
         <td class="p ${r.premio>0?'':'zero'}" style="text-align:right">${r.premio>0?brl(r.premio):'—'}</td>
       </tr>`).join('') + totRow
-    : `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:22px">Aguardando dados do Analytics — volte em breve.</td></tr>`;
+    : `<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:22px">Aguardando dados do Analytics — volte em breve.</td></tr>`;
 
-  // Regionais / supervisores (nivel >= 2)
+  // Regionais / supervisores (nivel >= 2) — classificados por % de meta da equipe
   const regSec = document.getElementById('regSec');
   if (nivel >= 2 && regs.length) {
     regSec.style.display = '';
-    const sortedRegs = [...regs].sort((a,b)=>(b.totalVendas||0)-(a.totalVendas||0));
+    const sortedRegs = [...regs].sort((a,b)=>{
+      const pa=pctMeta(a.totalVendas,a.meta), pb=pctMeta(b.totalVendas,b.meta);
+      if(pa===null && pb===null) return 0;
+      if(pa===null) return 1; if(pb===null) return -1;
+      return pb - pa;
+    });
     document.getElementById('regGrid').innerHTML = sortedRegs.map((r,i)=>
       `<div class="mod ${i===0?'m1':'m2'}">
         <span class="tag">${i+1}º Supervisor</span>
         <h3>Regional ${r.regional}</h3>
-        <p>Total de vendas da equipe: <strong>${brl(r.totalVendas||0)}</strong><br>
+        <p>Vendas da equipe: <strong>${brl(r.totalVendas||0)}</strong>${(r.meta||0)>0?' · Meta: '+brl(r.meta)+' · <strong>'+fmtPct(r.totalVendas,r.meta)+'</strong>':''}<br>
         Prêmio: <strong style="color:${(r.premio||0)>0?'#28a745':'#6b6f8a'}">${(r.premio||0)>0?brl(r.premio):'Sem prêmio'}</strong></p>
       </div>`
     ).join('');
@@ -504,34 +523,40 @@ async function _buildWorkbook(){
   const FMT_MONEY='"R$"\\ #,##0.00';
   const wb=new ExcelJS.Workbook();wb.creator='Ferretti distribuidora';
   const ws=wb.addWorksheet('Resultado',{views:[{showGridLines:false}],pageSetup:{fitToPage:true,fitToWidth:1,fitToHeight:0,orientation:'portrait'}});
-  const widths=[5,24,15,24,16,16,32];widths.forEach((w,i)=>ws.getColumn(i+1).width=w);
+  const widths=[5,24,15,24,16,14,10,16,32];widths.forEach((w,i)=>ws.getColumn(i+1).width=w);
   const fill=(cell,argb)=>{cell.fill={type:'pattern',pattern:'solid',fgColor:{argb}};};
   const thin=(cell)=>{const b={style:'thin',color:{argb:LINE}};cell.border={top:b,bottom:b,left:b,right:b};};
   let r=1;
-  const mergeAll=(val,opts)=>{ws.mergeCells(r,1,r,7);const c=ws.getCell(r,1);c.value=val;Object.assign(c,opts||{});return c;};
+  const mergeAll=(val,opts)=>{ws.mergeCells(r,1,r,9);const c=ws.getCell(r,1);c.value=val;Object.assign(c,opts||{});return c;};
 
   let c=mergeAll(C.titulo+' — '+C.periodo,{font:{size:16,bold:true,color:{argb:'FFFFFFFF'}},alignment:{vertical:'middle',horizontal:'center'}});
   fill(c,AZUL);ws.getRow(r).height=28;r++;
   mergeAll('Parceiro: '+C.parceiro+'  ·  Campanha de vendas — Ferretti distribuidora',{font:{italic:true,color:{argb:MUTED}},alignment:{horizontal:'center'}});r+=2;
 
   [['Período',C.inicio+' a '+C.termino],['Prêmio mínimo',C.premioMinimo],['Pagamento previsto',C.pagamento],['Resultado apurado até',C.resultadoAte],['Seu acesso',(view.acc&&view.acc.label)||'Todos os dados']
-  ].forEach(([k,v])=>{const a=ws.getCell(r,1);a.value=k;a.font={bold:true};ws.mergeCells(r,2,r,7);ws.getCell(r,2).value=v;r++;});r++;
+  ].forEach(([k,v])=>{const a=ws.getCell(r,1);a.value=k;a.font={bold:true};ws.mergeCells(r,2,r,9);ws.getCell(r,2).value=v;r++;});r++;
 
   // Seção resultado
-  ws.mergeCells(r,1,r,7);const sh=ws.getCell(r,1);sh.value='RESULTADO — RANKING DE VENDAS';sh.font={bold:true,size:12,color:{argb:'FFFFFFFF'}};sh.alignment={vertical:'middle'};fill(sh,AZUL);ws.getRow(r).height=20;r++;
-  const head=['#','Vendedor','Regional','Setor','Vendas (R$)','Prêmio','Motivo'];
+  ws.mergeCells(r,1,r,9);const sh=ws.getCell(r,1);sh.value='RESULTADO — RANKING POR % DE ATINGIMENTO DE META';sh.font={bold:true,size:12,color:{argb:'FFFFFFFF'}};sh.alignment={vertical:'middle'};fill(sh,AZUL);ws.getRow(r).height=20;r++;
+  const head=['#','Vendedor','Regional','Setor','Vendas (R$)','Meta (R$)','% Meta','Prêmio','Motivo'];
   head.forEach((t,i)=>{const cc=ws.getCell(r,i+1);cc.value=t;cc.font={bold:true,color:{argb:AZUL}};fill(cc,LIGHT);thin(cc);cc.alignment={horizontal:i>=4?'right':'left'};});r++;
 
-  const rankSorted=[...view.rank].sort((a,b)=>(b.vendas||0)-(a.vendas||0));
+  const rankSorted=[...view.rank].sort((a,b)=>{
+    const pa=(a.meta&&a.meta>0)?(a.vendas||0)/a.meta:null;
+    const pb=(b.meta&&b.meta>0)?(b.vendas||0)/b.meta:null;
+    if(pa===null&&pb===null)return 0; if(pa===null)return 1; if(pb===null)return -1; return pb-pa;
+  });
   rankSorted.forEach((rr,i)=>{
     const premio=i<C.premiosVend.length?C.premiosVend[i]:0;
     const win=premio>0;
-    const vals=[i+1,rr.nome,rr.regional,rr.setor,rr.vendas||0,premio,win?'':'Fora das colocações premiadas'];
-    vals.forEach((v,ci)=>{const cc=ws.getCell(r,ci+1);cc.value=v;thin(cc);cc.alignment={horizontal:ci>=4&&ci<6?'right':'left'};if(win)fill(cc,WIN);else fill(cc,RED);if(ci===4){cc.numFmt=FMT_MONEY;}if(ci===5){cc.numFmt=FMT_MONEY;cc.font={bold:true,color:{argb:win?GREEN:REDTX}};}if(ci===6&&!win){cc.font={italic:true,color:{argb:REDTX}};}});r++;
+    const pct=(rr.meta&&rr.meta>0)?((rr.vendas||0)/rr.meta):null;
+    const pctStr=pct!==null?(pct*100).toFixed(1)+'%':'—';
+    const vals=[i+1,rr.nome,rr.regional,rr.setor,rr.vendas||0,rr.meta||0,pctStr,premio,win?'':'Fora das colocações premiadas'];
+    vals.forEach((v,ci)=>{const cc=ws.getCell(r,ci+1);cc.value=v;thin(cc);cc.alignment={horizontal:ci>=4&&ci<8?'right':'left'};if(win)fill(cc,WIN);else fill(cc,RED);if(ci===4||ci===5){cc.numFmt=FMT_MONEY;}if(ci===7){cc.numFmt=FMT_MONEY;cc.font={bold:true,color:{argb:win?GREEN:REDTX}};}if(ci===8&&!win){cc.font={italic:true,color:{argb:REDTX}};}});r++;
   });
   const totV=rankSorted.reduce((s,rr)=>s+(rr.vendas||0),0);
   const totP=rankSorted.reduce((s,rr)=>{const i=rankSorted.indexOf(rr);return s+(i<C.premiosVend.length?C.premiosVend[i]:0);},0);
-  ['','TOTAL','','',totV,totP,''].forEach((v,ci)=>{const cc=ws.getCell(r,ci+1);cc.value=v;thin(cc);fill(cc,TOTAL);cc.font={bold:true};cc.alignment={horizontal:ci>=4?'right':'left'};if(ci>=4&&ci<6)cc.numFmt=FMT_MONEY;});
+  ['','TOTAL','','',totV,0,'',totP,''].forEach((v,ci)=>{const cc=ws.getCell(r,ci+1);cc.value=v;thin(cc);fill(cc,TOTAL);cc.font={bold:true};cc.alignment={horizontal:ci>=4?'right':'left'};if(ci===4||ci===7)cc.numFmt=FMT_MONEY;});
 
   const buf=await wb.xlsx.writeBuffer();
   const blob=new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});

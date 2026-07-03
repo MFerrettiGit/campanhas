@@ -45,8 +45,8 @@
       {
         key: "SEMORIN", nome: "Campanha Semorin", modelo: "colocacao", base: "R$",
         mecanica: [
-          "Ranking de vendas no bimestre (01/07–31/08/2026): 1º R$ 850 … 11º R$ 200. Bônus SKU: Byts Tira Ferrugem (cód.1306) acima de 15cx R$400 / 10cx R$200; Semorin Lava Jeans (cód.277) 15cx R$300 / 10cx R$150; Semorin Tira Gordura (cód.294) 15cx R$300 / 10cx R$150.",
-          "Supervisores: 1º lugar R$ 1.000,00 · 2º lugar R$ 500,00 (maior faturamento da equipe). Gerente: R$ 1.500,00 condicional à meta de R$ 430.000,00 no bimestre. Pagamento Cartão Caju até 20/09/2026."
+          "Classificação por maior % de atingimento de meta individual no bimestre (01/07–31/08/2026): 1º R$ 850 … 11º R$ 200. Bônus SKU: Byts Tira Ferrugem acima de 15cx R$400 / 10cx R$200; Semorin Lava Jeans 15cx R$300 / 10cx R$150; Semorin Tira Gordura 15cx R$300 / 10cx R$150.",
+          "Supervisores: 1º lugar R$ 1.000,00 · 2º lugar R$ 500,00 (maior % de atingimento de meta da equipe). Gerente: R$ 1.500,00 condicional à meta de R$ 430.000,00 no bimestre. Pagamento Cartão Caju até 20/09/2026."
         ],
         ranking: [],
         regionais: [],
