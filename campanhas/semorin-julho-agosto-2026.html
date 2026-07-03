@@ -255,7 +255,7 @@ const CAMPANHA = {
     { classe:"m1", nivel:1, tag:"Vendedor", titulo:"Ranking de Vendas — Prêmio por Colocação",
       texto:"Prêmio pelo valor total de vendas no bimestre (pedidos emitidos e entregues de 01/07 a 31/08/2026). Quanto maior o faturamento, melhor a colocação — 1º lugar recebe R$ 850,00 e 11º lugar recebe R$ 200,00. Os 11 primeiros colocados são premiados." },
     { classe:"msku", nivel:1, tag:"Bônus SKU", titulo:"Prêmio por Venda de SKUs Específicos",
-      texto:"Bônus extra acumulável com o prêmio de colocação: vender acima de 15 caixas dos SKUs Byts Tira Ferrugem (cód. 1306) ou Semorin no bimestre garante prêmio adicional por produto. Acumulável entre os SKUs." },
+      texto:"Bônus extra acumulável com o prêmio de colocação: vender acima de 15 caixas dos SKUs Byts Tira Ferrugem, Semorin Lava Jeans ou Semorin Tira Gordura no bimestre garante prêmio adicional por produto. Acumulável entre os SKUs." },
     { classe:"m2", nivel:2, tag:"Supervisor", titulo:"Prêmio do Supervisor — 1º e 2º Lugar",
       texto:"Os dois supervisores cujas equipes atingirem o maior faturamento no bimestre recebem prêmio: 1º lugar R$ 1.000,00 e 2º lugar R$ 500,00." },
     { classe:"m3", nivel:3, tag:"Gerente", titulo:"Prêmio do Gerente — Meta Bimestral",
@@ -317,7 +317,7 @@ function renderTiersWrap(nivel) {
   // Bônus SKU — todos os níveis veem
   html += `<p class="lead" style="margin-top:24px;margin-bottom:8px;font-weight:700;color:var(--ink)">Prêmio por venda de SKUs específicos (bônus por vendedor)</p>
   <div class="tiers"><table><thead><tr><th>Produto</th><th style="text-align:right">Acima de 10 cx</th><th style="text-align:right">Acima de 15 cx</th></tr></thead><tbody>` +
-  C.bonusSku.map(s=>`<tr><td class="prod">${s.nome} (cód. ${s.cod})</td><td class="premio" style="text-align:right">${brl(s.premios[1].p)}</td><td class="premio" style="text-align:right">${brl(s.premios[0].p)}</td></tr>`).join('') +
+  C.bonusSku.map(s=>`<tr><td class="prod">${s.nome}</td><td class="premio" style="text-align:right">${brl(s.premios[1].p)}</td><td class="premio" style="text-align:right">${brl(s.premios[0].p)}</td></tr>`).join('') +
   `</tbody></table></div>
   <div class="callout" style="margin-top:14px">⚠️ <b>Atenção:</b> os bônus por SKU são <b>acumuláveis</b> entre si e com o prêmio de colocação. Pagamento via <b>Cartão Caju</b>.</div>`;
 
