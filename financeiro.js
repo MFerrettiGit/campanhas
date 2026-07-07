@@ -50,7 +50,7 @@
         ],
         ranking: [],
         regionais: [],
-        gerencia: { totalVendas: 34342.65, atingiu: false, premio: 0 }
+        gerencia: { totalVendas: 35070.13, atingiu: false, premio: 0 }
       },
       {
         key: "DKT", nome: "DKT Time de Vendas", modelo: "positivacao", base: "Positivações",
@@ -80,15 +80,15 @@
           { setor: "São Carlos", regional: "NORDESTE", vendas: 15, premio: 200 },
           { setor: "Campinas Norte", regional: "SUL", vendas: 13, premio: 150 },
           { setor: "Sorocaba", regional: "SUL", vendas: 12, premio: 0 },
-          { setor: "Franca", regional: "NORDESTE", vendas: 9, premio: 0 },
+          { setor: "Franca", regional: "NORDESTE", vendas: 10, premio: 0 },
           { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 8, premio: 0 },
           { setor: "Atibaia", regional: "SUL", vendas: 3, premio: 0 },
-          { setor: "Jundiaí", regional: "SUL", vendas: 2, premio: 0 },
+          { setor: "Jundiaí", regional: "SUL", vendas: 3, premio: 0 },
           { setor: "Itapetininga", regional: "SUL", vendas: 0, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 142, premio: 1800 },
-          { area: "SUL", vendas: 95, premio: 0 }
+          { area: "NORDESTE", vendas: 143, premio: 1800 },
+          { area: "SUL", vendas: 96, premio: 0 }
         ],
         gerencia: null
       },
