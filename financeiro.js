@@ -50,7 +50,7 @@
         ],
         ranking: [],
         regionais: [],
-        gerencia: { totalVendas: 53242.44, atingiu: false, premio: 0 }
+        gerencia: { totalVendas: 57220.29, atingiu: false, premio: 0 }
       },
       {
         key: "DKT", nome: "DKT Time de Vendas", modelo: "positivacao", base: "Positivações",
@@ -70,14 +70,14 @@
         ],
         ranking: [
           { setor: "Caraguatatuba", regional: "SUL", vendas: 31, premio: 1500 },
-          { setor: "Americana", regional: "NORDESTE", vendas: 31, premio: 1250 },
+          { setor: "Americana", regional: "NORDESTE", vendas: 31, premio: 1100 },
           { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 30, premio: 1100 },
           { setor: "Indaiatuba", regional: "SUL", vendas: 19, premio: 700 },
           { setor: "Circuito", regional: "NORDESTE", vendas: 22, premio: 500 },
+          { setor: "Rio Claro", regional: "NORDESTE", vendas: 20, premio: 500 },
           { setor: "Campinas Norte", regional: "SUL", vendas: 16, premio: 400 },
-          { setor: "Rio Claro", regional: "NORDESTE", vendas: 18, premio: 300 },
           { setor: "S.J. dos Campos", regional: "SUL", vendas: 19, premio: 200 },
-          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 18, premio: 200 },
+          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 18, premio: 150 },
           { setor: "São Carlos", regional: "NORDESTE", vendas: 16, premio: 150 },
           { setor: "Sorocaba", regional: "SUL", vendas: 15, premio: 150 },
           { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 12, premio: 0 },
@@ -87,7 +87,7 @@
           { setor: "Itapetininga", regional: "SUL", vendas: 1, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 159, premio: 1800 },
+          { area: "NORDESTE", vendas: 161, premio: 1800 },
           { area: "SUL", vendas: 107, premio: 0 }
         ],
         gerencia: null
