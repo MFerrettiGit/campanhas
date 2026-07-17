@@ -50,7 +50,7 @@
         ],
         ranking: [],
         regionais: [],
-        gerencia: { totalVendas: 68952.26, atingiu: false, premio: 0 }
+        gerencia: { totalVendas: 69593.84, atingiu: false, premio: 0 }
       },
       {
         key: "DKT", nome: "DKT Time de Vendas", modelo: "positivacao", base: "Positivações",
@@ -69,7 +69,7 @@
           "Gatilho: mínimo de 40 positivações no bimestre de cada item. Supervisor: R$ 600 à regional líder de cada item. Valores PREVISTOS — campanha em andamento."
         ],
         ranking: [
-          { setor: "Caraguatatuba", regional: "SUL", vendas: 31, premio: 1500 },
+          { setor: "Caraguatatuba", regional: "SUL", vendas: 32, premio: 1500 },
           { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 33, premio: 1400 },
           { setor: "Americana", regional: "NORDESTE", vendas: 33, premio: 1200 },
           { setor: "Indaiatuba", regional: "SUL", vendas: 19, premio: 700 },
@@ -88,7 +88,7 @@
         ],
         regionais: [
           { area: "NORDESTE", vendas: 168, premio: 1800 },
-          { area: "SUL", vendas: 110, premio: 0 }
+          { area: "SUL", vendas: 111, premio: 0 }
         ],
         gerencia: null
       },
