@@ -50,7 +50,7 @@
         ],
         ranking: [],
         regionais: [],
-        gerencia: { totalVendas: 106878.64, atingiu: false, premio: 0 }
+        gerencia: { totalVendas: 108247.42, atingiu: false, premio: 0 }
       },
       {
         key: "DKT", nome: "DKT Time de Vendas", modelo: "positivacao", base: "Positivações",
