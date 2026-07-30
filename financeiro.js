@@ -50,7 +50,7 @@
         ],
         ranking: [],
         regionais: [],
-        gerencia: { totalVendas: 135316.65, atingiu: false, premio: 0 }
+        gerencia: { totalVendas: 136095.17, atingiu: false, premio: 0 }
       },
       {
         key: "DKT", nome: "DKT Time de Vendas", modelo: "positivacao", base: "Positivações",
@@ -70,25 +70,25 @@
         ],
         ranking: [
           { setor: "Caraguatatuba", regional: "SUL", vendas: 37, premio: 1400 },
-          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 34, premio: 1250 },
+          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 34, premio: 1150 },
           { setor: "Americana", regional: "NORDESTE", vendas: 41, premio: 1100 },
-          { setor: "Circuito", regional: "NORDESTE", vendas: 28, premio: 750 },
-          { setor: "Indaiatuba", regional: "SUL", vendas: 22, premio: 600 },
+          { setor: "Circuito", regional: "NORDESTE", vendas: 32, premio: 1000 },
           { setor: "São Carlos", regional: "NORDESTE", vendas: 26, premio: 500 },
-          { setor: "Campinas Norte", regional: "SUL", vendas: 21, premio: 300 },
+          { setor: "Indaiatuba", regional: "SUL", vendas: 22, premio: 500 },
+          { setor: "Campinas Norte", regional: "SUL", vendas: 22, premio: 300 },
           { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 22, premio: 200 },
-          { setor: "S.J. dos Campos", regional: "SUL", vendas: 22, premio: 200 },
+          { setor: "S.J. dos Campos", regional: "SUL", vendas: 22, premio: 150 },
           { setor: "Rio Claro", regional: "NORDESTE", vendas: 20, premio: 150 },
           { setor: "Sorocaba", regional: "SUL", vendas: 20, premio: 0 },
           { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 16, premio: 0 },
           { setor: "Franca", regional: "NORDESTE", vendas: 13, premio: 0 },
           { setor: "Jundiaí", regional: "SUL", vendas: 10, premio: 0 },
-          { setor: "Atibaia", regional: "SUL", vendas: 5, premio: 0 },
+          { setor: "Atibaia", regional: "SUL", vendas: 6, premio: 0 },
           { setor: "Itapetininga", regional: "SUL", vendas: 1, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 200, premio: 1800 },
-          { area: "SUL", vendas: 138, premio: 0 }
+          { area: "NORDESTE", vendas: 204, premio: 1800 },
+          { area: "SUL", vendas: 140, premio: 0 }
         ],
         gerencia: null
       },
