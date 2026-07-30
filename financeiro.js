@@ -50,7 +50,7 @@
         ],
         ranking: [],
         regionais: [],
-        gerencia: { totalVendas: 136530.67, atingiu: false, premio: 0 }
+        gerencia: { totalVendas: 140399.30, atingiu: false, premio: 0 }
       },
       {
         key: "DKT", nome: "DKT Time de Vendas", modelo: "positivacao", base: "Positivações",
@@ -69,16 +69,16 @@
           "Gatilho: mínimo de 40 positivações no bimestre de cada item. Supervisor: R$ 600 à regional líder de cada item. Valores PREVISTOS — campanha em andamento."
         ],
         ranking: [
-          { setor: "Caraguatatuba", regional: "SUL", vendas: 37, premio: 1400 },
-          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 34, premio: 1150 },
-          { setor: "Americana", regional: "NORDESTE", vendas: 41, premio: 1100 },
+          { setor: "Caraguatatuba", regional: "SUL", vendas: 38, premio: 1400 },
+          { setor: "S.J. Boa Vista", regional: "NORDESTE", vendas: 35, premio: 1150 },
+          { setor: "Americana", regional: "NORDESTE", vendas: 44, premio: 1100 },
           { setor: "Circuito", regional: "NORDESTE", vendas: 32, premio: 1000 },
           { setor: "São Carlos", regional: "NORDESTE", vendas: 26, premio: 500 },
-          { setor: "Indaiatuba", regional: "SUL", vendas: 22, premio: 500 },
+          { setor: "Indaiatuba", regional: "SUL", vendas: 22, premio: 450 },
           { setor: "Campinas Norte", regional: "SUL", vendas: 22, premio: 300 },
-          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 22, premio: 200 },
-          { setor: "S.J. dos Campos", regional: "SUL", vendas: 22, premio: 150 },
-          { setor: "Rio Claro", regional: "NORDESTE", vendas: 20, premio: 150 },
+          { setor: "S.J. dos Campos", regional: "SUL", vendas: 24, premio: 200 },
+          { setor: "Ribeirão Preto", regional: "NORDESTE", vendas: 23, premio: 200 },
+          { setor: "Rio Claro", regional: "NORDESTE", vendas: 21, premio: 150 },
           { setor: "Sorocaba", regional: "SUL", vendas: 20, premio: 0 },
           { setor: "Setor Piracicaba", regional: "NORDESTE", vendas: 16, premio: 0 },
           { setor: "Franca", regional: "NORDESTE", vendas: 14, premio: 0 },
@@ -87,8 +87,8 @@
           { setor: "Itapetininga", regional: "SUL", vendas: 2, premio: 0 }
         ],
         regionais: [
-          { area: "NORDESTE", vendas: 205, premio: 1800 },
-          { area: "SUL", vendas: 141, premio: 0 }
+          { area: "NORDESTE", vendas: 211, premio: 1800 },
+          { area: "SUL", vendas: 144, premio: 0 }
         ],
         gerencia: null
       },
